@@ -51,61 +51,61 @@ export default function TermsOfServicePage() {
         {/* Back Button */}
         <button
           onClick={() => navigate('/profile')}
-          className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-slate-200 transition mb-6"
+          className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-700 transition mb-6"
         >
           <ArrowLeft size={14} />
           <span>{tr.back}</span>
         </button>
 
-        <h2 className="text-xl font-extrabold text-slate-100 flex items-center gap-2 mb-1.5">
-          <FileText className="text-purple-400 w-5 h-5" />
+        <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2 mb-1.5">
+          <FileText className="text-orange-500 w-5 h-5" />
           <span>{tr.title}</span>
         </h2>
-        <p className="text-xs text-slate-500 mb-6">{tr.sub}</p>
+        <p className="text-xs text-gray-400 mb-6">{tr.sub}</p>
 
         {/* Content Panel */}
-        <div className="bg-slate-950 border border-slate-900 rounded-2.5xl p-5 space-y-6 shadow-xl leading-relaxed">
+        <div className="bg-white border border-gray-100 rounded-2.5xl p-5 space-y-6 shadow-sm leading-relaxed">
           
           {/* Age Section */}
           <div className="space-y-2">
-            <h3 className="text-sm font-bold text-slate-200 flex items-center gap-2">
-              <CheckCircle size={15} className="text-purple-500 shrink-0" />
+            <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2">
+              <CheckCircle size={15} className="text-orange-500 shrink-0" />
               <span>{tr.section_age}</span>
             </h3>
-            <p className="text-xs text-slate-400 pl-7 leading-relaxed">
+            <p className="text-xs text-gray-700 pl-7 leading-relaxed">
               {tr.section_age_text}
             </p>
           </div>
 
           {/* GDPR Section */}
-          <div className="border-t border-slate-900/80 pt-5 space-y-2">
-            <h3 className="text-sm font-bold text-slate-200 flex items-center gap-2">
-              <Eye size={15} className="text-purple-500 shrink-0" />
+          <div className="border-t border-gray-100 pt-5 space-y-2">
+            <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2">
+              <Eye size={15} className="text-orange-500 shrink-0" />
               <span>{tr.section_gdpr}</span>
             </h3>
-            <p className="text-xs text-slate-400 pl-7 leading-relaxed">
+            <p className="text-xs text-gray-700 pl-7 leading-relaxed">
               {tr.section_gdpr_text}
             </p>
           </div>
 
           {/* Prohibited Content */}
-          <div className="border-t border-slate-900/80 pt-5 space-y-2">
-            <h3 className="text-sm font-bold text-slate-200 flex items-center gap-2">
-              <ShieldAlert size={15} className="text-purple-500 shrink-0" />
+          <div className="border-t border-gray-100 pt-5 space-y-2">
+            <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2">
+              <ShieldAlert size={15} className="text-orange-500 shrink-0" />
               <span>{tr.section_prohibited}</span>
             </h3>
-            <p className="text-xs text-slate-400 pl-7 leading-relaxed">
+            <p className="text-xs text-gray-700 pl-7 leading-relaxed">
               {tr.section_prohibited_text}
             </p>
           </div>
 
           {/* Liability waiver Section */}
-          <div className="border-t border-slate-900/80 pt-5 space-y-2">
-            <h3 className="text-sm font-bold text-slate-200 flex items-center gap-2">
-              <Scale size={15} className="text-purple-500 shrink-0" />
+          <div className="border-t border-gray-100 pt-5 space-y-2">
+            <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2">
+              <Scale size={15} className="text-orange-500 shrink-0" />
               <span>{tr.section_liability}</span>
             </h3>
-            <p className="text-xs text-slate-400 pl-7 leading-relaxed">
+            <p className="text-xs text-gray-700 pl-7 leading-relaxed">
               {tr.section_liability_text}
             </p>
           </div>

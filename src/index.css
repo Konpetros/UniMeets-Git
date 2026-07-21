@@ -6,18 +6,18 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
-/* Custom scrollbars for a clean tech look */
+/* Custom scrollbars for a clean light look */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #020617;
+  background: #f9fafb;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #e5e7eb;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #d1d5db;
 }

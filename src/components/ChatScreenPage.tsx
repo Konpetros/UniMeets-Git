@@ -272,8 +272,8 @@ export default function ChatScreenPage() {
     return (
       <Layout>
         <div className="flex-1 flex flex-col items-center justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
-          <p className="text-xs text-slate-500 mt-4">Connecting to room...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+          <p className="text-xs text-gray-500 mt-4">Connecting to room...</p>
         </div>
       </Layout>
     );
@@ -286,11 +286,11 @@ export default function ChatScreenPage() {
   return (
     <Layout>
       {/* Sticky Top Header */}
-      <header className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-900 px-4 py-3 flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-200 px-4 py-3 flex items-center justify-between">
         <button
           id="chat-back-btn"
           onClick={() => navigate('/my-unimeets')}
-          className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-850 border border-slate-800/60 text-slate-400 hover:text-slate-200 transition"
+          className="p-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-500 hover:text-gray-700 transition"
         >
           <ArrowLeft size={16} />
         </button>
@@ -299,16 +299,16 @@ export default function ChatScreenPage() {
         <div className="flex-1 min-w-0 mx-3 text-center">
           <div className="flex items-center justify-center gap-1.5">
             <span className="text-sm">{CATEGORY_EMOJIS[meet.category]}</span>
-            <h2 className="text-xs font-extrabold text-slate-200 truncate max-w-[180px]">
+            <h2 className="text-xs font-extrabold text-gray-900 truncate max-w-[180px]">
               {meet.title}
             </h2>
           </div>
           <div className="flex items-center justify-center gap-2 mt-0.5 text-[10px] font-mono">
-            <span className={timeState.error ? 'text-red-400' : 'text-amber-400'}>
+            <span className={timeState.error ? 'text-red-600' : 'text-amber-600'}>
               {timeState.text}
             </span>
-            <span className="text-slate-700">•</span>
-            <span className="text-purple-400 flex items-center gap-0.5">
+            <span className="text-gray-300">•</span>
+            <span className="text-orange-600 flex items-center gap-0.5">
               <Users size={10} />
               <span>{meet.participant_ids.length + 1} students</span>
             </span>
@@ -321,7 +321,7 @@ export default function ChatScreenPage() {
             <button
               id="toggle-queue-btn"
               onClick={() => setShowQueue(!showQueue)}
-              className="p-1.5 rounded-lg bg-amber-950/30 border border-amber-900/40 text-amber-400 hover:bg-amber-900/30 relative"
+              className="p-1.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-600 hover:bg-amber-100 relative"
               title="Approval Queue"
             >
               <ShieldAlert size={16} />
@@ -336,13 +336,13 @@ export default function ChatScreenPage() {
             <button
               id="chat-header-menu-btn"
               onClick={() => setShowHeaderMenu(!showHeaderMenu)}
-              className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-850 border border-slate-800/60 text-slate-400 hover:text-slate-200 transition"
+              className="p-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-500 hover:text-gray-700 transition"
             >
               <MoreVertical size={16} />
             </button>
 
             {showHeaderMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-slate-950 border border-slate-900 rounded-2xl py-1.5 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2">
+              <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-2xl py-1.5 shadow-xl z-50 animate-in fade-in slide-in-from-top-2">
                 {/* Option for participant to block organizer */}
                 {!isCreator && (
                   <button
@@ -354,7 +354,7 @@ export default function ChatScreenPage() {
                         username: meet.creator_username,
                       });
                     }}
-                    className="w-full text-left px-4 py-2.5 text-xs font-semibold text-red-500 hover:bg-slate-900 transition flex items-center gap-2"
+                    className="w-full text-left px-4 py-2.5 text-xs font-semibold text-red-600 hover:bg-gray-50 transition flex items-center gap-2"
                   >
                     <Ban size={12} />
                     <span>Block @{meet.creator_username}</span>
@@ -364,7 +364,7 @@ export default function ChatScreenPage() {
                 {/* Option for organizer to block any of the participants */}
                 {isCreator && meet.participant_ids.length > 0 && (
                   <>
-                    <div className="px-4 py-1.5 text-[9px] font-extrabold uppercase tracking-wider text-slate-500 border-b border-slate-900 mb-1">
+                    <div className="px-4 py-1.5 text-[9px] font-extrabold uppercase tracking-wider text-gray-400 border-b border-gray-100 mb-1">
                       Block Participant
                     </div>
                     {meet.participant_ids.map((pId) => {
@@ -380,7 +380,7 @@ export default function ChatScreenPage() {
                               username: pUsername,
                             });
                           }}
-                          className="w-full text-left px-4 py-2 text-xs font-medium text-slate-300 hover:bg-slate-900 hover:text-red-500 transition flex items-center gap-2"
+                          className="w-full text-left px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50 hover:text-red-600 transition flex items-center gap-2"
                         >
                           <Ban size={11} className="text-red-600" />
                           <span className="truncate">@{pUsername}</span>
@@ -392,7 +392,7 @@ export default function ChatScreenPage() {
 
                 {/* Empty state if organizer with no participants yet */}
                 {isCreator && meet.participant_ids.length === 0 && (
-                  <div className="px-4 py-3 text-[10px] text-slate-500 text-center">
+                  <div className="px-4 py-3 text-[10px] text-gray-400 text-center">
                     No participants to block yet.
                   </div>
                 )}
@@ -404,23 +404,22 @@ export default function ChatScreenPage() {
 
       {/* Main chat layout */}
       <div className="flex-1 flex flex-col min-h-0 relative">
-        
-        {/* Real-time Approval Queue Panel for Organizer */}
+               {/* Real-time Approval Queue Panel for Organizer */}
         <AnimatePresence>
           {isCreator && meet.requires_approval && showQueue && (meet.pending_ids?.length || 0) > 0 && (
             <motion.div
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="bg-slate-950 border-b border-slate-900 overflow-hidden shrink-0 z-20"
+              className="bg-white border-b border-gray-200 overflow-hidden shrink-0 z-20"
             >
               <div className="p-3.5 space-y-3">
-                <div className="flex justify-between items-center text-[10px] font-extrabold uppercase tracking-widest text-slate-400">
-                  <span className="text-amber-400 flex items-center gap-1">
+                <div className="flex justify-between items-center text-[10px] font-extrabold uppercase tracking-widest text-gray-500">
+                  <span className="text-amber-600 flex items-center gap-1">
                     <Sparkles size={11} />
                     <span>Pending Requests ({meet.pending_ids?.length})</span>
                   </span>
-                  <button onClick={() => setShowQueue(false)} className="text-slate-600 hover:text-slate-400">
+                  <button onClick={() => setShowQueue(false)} className="text-gray-400 hover:text-gray-650">
                     Hide
                   </button>
                 </div>
@@ -432,15 +431,15 @@ export default function ChatScreenPage() {
                       <div
                         key={studentId}
                         id={`request-row-${studentId}`}
-                        className="p-2 bg-slate-900/40 border border-slate-900 rounded-xl flex items-center justify-between gap-3"
+                        className="p-2 bg-gray-50 border border-gray-250 rounded-xl flex items-center justify-between gap-3"
                       >
                         <div className="flex items-center gap-2">
                           <img
                             src={`https://api.dicebear.com/7.x/bottts/svg?seed=${studentSeed}`}
                             alt="Student"
-                            className="w-6 h-6 rounded-full bg-slate-900"
+                            className="w-6 h-6 rounded-full bg-gray-100"
                           />
-                          <span className="text-xs font-bold text-slate-200">
+                          <span className="text-xs font-bold text-gray-800">
                             Student @{studentSeed}
                           </span>
                         </div>
@@ -448,7 +447,7 @@ export default function ChatScreenPage() {
                           <button
                             id={`approve-btn-${studentId}`}
                             onClick={() => handleApprove(studentId)}
-                            className="p-1 bg-emerald-950/40 border border-emerald-900/50 hover:bg-emerald-900/30 text-emerald-400 rounded-lg transition"
+                            className="p-1 bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 text-emerald-600 rounded-lg transition"
                             title="Approve"
                           >
                             <Check size={13} />
@@ -456,7 +455,7 @@ export default function ChatScreenPage() {
                           <button
                             id={`reject-btn-${studentId}`}
                             onClick={() => handleReject(studentId)}
-                            className="p-1 bg-red-950/40 border border-red-900/50 hover:bg-red-900/30 text-red-400 rounded-lg transition"
+                            className="p-1 bg-red-50 border border-red-200 hover:bg-red-100 text-red-650 rounded-lg transition"
                             title="Decline"
                           >
                             <X size={13} />
@@ -475,18 +474,18 @@ export default function ChatScreenPage() {
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           
           {/* Welcome Intro bubble */}
-          <div className="p-4 bg-slate-950 border border-slate-900 rounded-2xl text-center max-w-sm mx-auto my-2">
+          <div className="p-4 bg-white border border-gray-200 rounded-2xl text-center max-w-sm mx-auto my-2 shadow-sm">
             <span className="text-3xl block mb-2">🎉</span>
-            <h4 className="text-xs font-extrabold text-slate-200">
+            <h4 className="text-xs font-extrabold text-gray-800">
               {isCreator ? "Your meetup room is open!" : `You joined @${meet.creator_username}'s meetup!`}
             </h4>
-            <p className="text-[10px] text-slate-500 mt-1">
+            <p className="text-[10px] text-gray-500 mt-1">
               Be friendly, suggest a coordinate, and stay safe. Meetups expire automatically.
             </p>
           </div>
 
           {messages.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12 text-slate-600">
+            <div className="flex flex-col items-center justify-center py-12 text-gray-400">
               <MessageSquare size={24} className="opacity-30 mb-2" />
               <p className="text-[10px] font-medium uppercase tracking-wide">No messages yet. Say hi!</p>
             </div>
@@ -504,7 +503,7 @@ export default function ChatScreenPage() {
                     <img
                       src={msg.sender_avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${msg.sender_username}`}
                       alt={msg.sender_username}
-                      className="w-7 h-7 rounded-full bg-slate-900 border border-slate-800 shrink-0"
+                      className="w-7 h-7 rounded-full bg-gray-100 border border-gray-200 shrink-0"
                     />
                   )}
 
@@ -512,24 +511,24 @@ export default function ChatScreenPage() {
                     
                     {/* Username detail */}
                     {!isMe && (
-                      <span className="text-[10px] font-bold text-slate-400 mb-1 ml-1">
+                      <span className="text-[10px] font-bold text-gray-500 mb-1 ml-1">
                         @{msg.sender_username}
                       </span>
                     )}
 
                     {/* Speech bubble */}
                     <div
-                      className={`p-3 rounded-2xl text-xs leading-relaxed break-words shadow ${
+                      className={`p-3 rounded-2xl text-xs leading-relaxed break-words shadow-sm ${
                         isMe
-                          ? 'bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded-tr-none'
-                          : 'bg-slate-900 border border-slate-800/80 text-slate-200 rounded-tl-none'
+                          ? 'bg-gradient-to-r from-orange-500 to-orange-400 text-white rounded-tr-none'
+                          : 'bg-gray-100 border border-gray-200 text-gray-800 rounded-tl-none'
                       }`}
                     >
                       {msg.text}
                     </div>
 
                     {/* Time of send */}
-                    <span className="text-[8px] text-slate-600 font-mono mt-1 px-1">
+                    <span className="text-[8px] text-gray-400 font-mono mt-1 px-1">
                       {msg.created_at ? new Date(msg.created_at.toDate()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
                     </span>
                   </div>
@@ -541,9 +540,9 @@ export default function ChatScreenPage() {
         </div>
 
         {/* Message Input section */}
-        <div className="p-4 bg-slate-950 border-t border-slate-900 shrink-0 z-30">
+        <div className="p-4 bg-white border-t border-gray-200 shrink-0 z-30">
           {!timeState.active ? (
-            <div className="p-3 bg-red-950/20 border border-red-900/30 text-red-400 text-xs rounded-xl flex items-center gap-2 justify-center font-bold">
+            <div className="p-3 bg-red-50 border border-red-200 text-red-650 text-xs rounded-xl flex items-center gap-2 justify-center font-bold">
               <AlertCircle size={14} />
               <span>{meet.status === 'cancelled' ? 'This meetup was cancelled.' : 'This meetup has expired.'}</span>
             </div>
@@ -557,13 +556,13 @@ export default function ChatScreenPage() {
                 placeholder="Type your message..."
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-purple-500"
+                className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-orange-400"
               />
               <button
                 id="chat-send-btn"
                 type="submit"
                 disabled={!inputText.trim() || sending}
-                className="p-2.5 bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-500 hover:to-blue-400 text-white rounded-xl shadow-lg hover:shadow-purple-600/20 active:scale-[0.98] transition disabled:opacity-50"
+                className="p-2.5 bg-gradient-to-r from-orange-500 to-orange-400 hover:from-orange-600 hover:to-orange-500 text-white rounded-xl shadow-sm active:scale-[0.98] transition disabled:opacity-50"
               >
                 <Send size={14} />
               </button>
@@ -575,29 +574,29 @@ export default function ChatScreenPage() {
 
       {/* Block Confirmation Modal */}
       {confirmBlockUser && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-[60] animate-in fade-in duration-200">
-          <div className="bg-slate-950 border border-slate-900 rounded-3xl p-6 w-full max-w-sm shadow-2xl animate-in zoom-in-95 duration-200">
-            <div className="w-12 h-12 rounded-2xl bg-red-950/20 border border-red-900/30 text-red-500 flex items-center justify-center mb-4 mx-auto">
+        <div className="fixed inset-0 bg-gray-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-[60] animate-in fade-in duration-200">
+          <div className="bg-white border border-gray-200 rounded-3xl p-6 w-full max-w-sm shadow-xl animate-in zoom-in-95 duration-200">
+            <div className="w-12 h-12 rounded-2xl bg-red-50 border border-red-200 text-red-655 flex items-center justify-center mb-4 mx-auto">
               <Ban size={22} />
             </div>
-            <h3 className="text-base font-extrabold text-slate-100 text-center">
+            <h3 className="text-base font-extrabold text-gray-900 text-center">
               Block @{confirmBlockUser.username}?
             </h3>
-            <p className="text-xs text-slate-400 text-center mt-2 leading-relaxed">
+            <p className="text-xs text-gray-500 text-center mt-2 leading-relaxed">
               They won't be able to see your UniMeets and you won't see theirs.
             </p>
             <div className="flex gap-2.5 mt-6">
               <button
                 id="cancel-chat-block"
                 onClick={() => setConfirmBlockUser(null)}
-                className="flex-1 py-2.5 bg-slate-900 border border-slate-850 text-slate-400 hover:text-slate-200 rounded-xl text-xs font-bold transition"
+                className="flex-1 py-2.5 bg-gray-100 border border-gray-200 text-gray-600 hover:text-gray-800 rounded-xl text-xs font-bold transition"
               >
                 Cancel
               </button>
               <button
                 id="submit-chat-block"
                 onClick={handleBlockUserInChat}
-                className="flex-1 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold transition"
+                className="flex-1 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold transition shadow-sm"
               >
                 Block
               </button>

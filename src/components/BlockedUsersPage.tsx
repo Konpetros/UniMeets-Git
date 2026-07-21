@@ -124,31 +124,31 @@ export default function BlockedUsersPage() {
         {/* Back Button */}
         <button
           onClick={() => navigate('/profile')}
-          className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-slate-200 transition mb-6"
+          className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-700 transition mb-6"
         >
           <ArrowLeft size={14} />
           <span>{tr.back}</span>
         </button>
 
-        <h2 className="text-xl font-extrabold text-slate-100 flex items-center gap-2 mb-1.5">
-          <Ban className="text-purple-400 w-5 h-5" />
+        <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2 mb-1.5">
+          <Ban className="text-orange-500 w-5 h-5" />
           <span>{tr.title}</span>
         </h2>
-        <p className="text-xs text-slate-500 mb-6">{tr.sub}</p>
+        <p className="text-xs text-gray-400 mb-6">{tr.sub}</p>
 
         {loading ? (
-          <div className="flex-1 flex flex-col items-center justify-center py-12 text-slate-500 text-xs font-medium gap-2">
-            <RefreshCw className="animate-spin text-purple-500" size={20} />
+          <div className="flex-1 flex flex-col items-center justify-center py-12 text-gray-400 text-xs font-semibold gap-2">
+            <RefreshCw className="animate-spin text-orange-500" size={20} />
             <span>{tr.loading_list}</span>
           </div>
         ) : blockedList.length === 0 ? (
           /* Empty State */
-          <div className="flex-1 flex flex-col items-center justify-center py-12 px-4 text-center bg-slate-950 border border-slate-900 rounded-2.5xl my-auto">
-            <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-850/60 text-slate-500 flex items-center justify-center mb-4">
+          <div className="flex-1 flex flex-col items-center justify-center py-12 px-4 text-center bg-white border border-gray-100 rounded-2.5xl shadow-sm my-auto">
+            <div className="w-14 h-14 rounded-2xl bg-gray-100 border border-gray-200 text-gray-400 flex items-center justify-center mb-4">
               <ShieldCheck size={26} />
             </div>
-            <h3 className="text-sm font-bold text-slate-200">{tr.empty}</h3>
-            <p className="text-xs text-slate-500 mt-2 max-w-[280px] leading-relaxed mx-auto">
+            <h3 className="text-sm font-bold text-gray-800">{tr.empty}</h3>
+            <p className="text-xs text-gray-400 mt-2 max-w-[280px] leading-relaxed mx-auto">
               {tr.empty_desc}
             </p>
           </div>
@@ -158,10 +158,10 @@ export default function BlockedUsersPage() {
             {blockedList.map((item) => (
               <div 
                 key={item.uid}
-                className="bg-slate-950 border border-slate-900 rounded-2xl p-4 flex items-center justify-between gap-4 shadow-md"
+                className="bg-white border border-gray-100 rounded-2xl p-4 flex items-center justify-between gap-4 shadow-sm"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full border border-slate-800 bg-slate-900 overflow-hidden shrink-0">
+                  <div className="w-10 h-10 rounded-full border border-gray-200 bg-gray-50 overflow-hidden shrink-0">
                     <img 
                       src={item.avatar_url} 
                       alt={item.username} 
@@ -169,7 +169,7 @@ export default function BlockedUsersPage() {
                     />
                   </div>
                   <div>
-                    <span className="block text-sm font-bold text-slate-200">@{item.username}</span>
+                    <span className="block text-sm font-bold text-gray-800">@{item.username}</span>
                   </div>
                 </div>
 
@@ -177,7 +177,7 @@ export default function BlockedUsersPage() {
                   id={`unblock-btn-${item.username}`}
                   onClick={() => handleUnblock(item)}
                   disabled={unblockingId === item.uid}
-                  className="px-4 py-2 bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-200 text-xs font-bold rounded-xl transition shrink-0 disabled:opacity-50"
+                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-700 text-xs font-bold rounded-xl transition shrink-0 disabled:opacity-50"
                 >
                   {unblockingId === item.uid ? '...' : tr.unblock_btn}
                 </button>

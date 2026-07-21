@@ -78,29 +78,29 @@ export default function PrivacySettingsPage() {
         {/* Back Button */}
         <button
           onClick={() => navigate('/profile')}
-          className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-slate-200 transition mb-6"
+          className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-700 transition mb-6"
         >
           <ArrowLeft size={14} />
           <span>{tr.back}</span>
         </button>
 
-        <h2 className="text-xl font-extrabold text-slate-100 flex items-center gap-2 mb-1.5">
-          <Lock className="text-purple-400 w-5 h-5" />
+        <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2 mb-1.5">
+          <Lock className="text-orange-500 w-5 h-5" />
           <span>{tr.title}</span>
         </h2>
-        <p className="text-xs text-slate-500 mb-6">{tr.sub}</p>
+        <p className="text-xs text-gray-400 mb-6">{tr.sub}</p>
 
         {/* Toggles */}
-        <div className="bg-slate-950 border border-slate-900 rounded-2.5xl p-5 space-y-6 shadow-xl">
+        <div className="bg-white border border-gray-100 rounded-2.5xl p-5 space-y-6 shadow-sm">
           {/* Show University */}
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-start gap-3">
-              <div className="p-2 bg-purple-500/10 rounded-xl text-purple-400 mt-0.5">
+              <div className="p-2 bg-orange-50 rounded-xl text-orange-500 mt-0.5">
                 <Shield size={16} />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-slate-200">{tr.show_university}</h4>
-                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.show_university_desc}</p>
+                <h4 className="text-sm font-semibold text-gray-800">{tr.show_university}</h4>
+                <p className="text-[10px] text-gray-400 mt-1 max-w-[220px] leading-relaxed">{tr.show_university_desc}</p>
               </div>
             </div>
             
@@ -108,7 +108,7 @@ export default function PrivacySettingsPage() {
               id="toggle-show-university"
               onClick={() => handleToggle('show_university', showUniversity)}
               className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none shrink-0 ${
-                showUniversity ? 'bg-purple-600' : 'bg-slate-800'
+                showUniversity ? 'bg-orange-500' : 'bg-gray-200'
               }`}
             >
               <div
@@ -120,14 +120,14 @@ export default function PrivacySettingsPage() {
           </div>
 
           {/* Show Joined Count */}
-          <div className="flex items-center justify-between gap-4 border-t border-slate-900/80 pt-5">
+          <div className="flex items-center justify-between gap-4 border-t border-gray-100 pt-5">
             <div className="flex items-start gap-3">
-              <div className="p-2 bg-blue-500/10 rounded-xl text-blue-400 mt-0.5">
+              <div className="p-2 bg-blue-50 rounded-xl text-blue-500 mt-0.5">
                 <Flame size={16} />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-slate-200">{tr.show_joined_count}</h4>
-                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.show_joined_count_desc}</p>
+                <h4 className="text-sm font-semibold text-gray-800">{tr.show_joined_count}</h4>
+                <p className="text-[10px] text-gray-400 mt-1 max-w-[220px] leading-relaxed">{tr.show_joined_count_desc}</p>
               </div>
             </div>
             
@@ -135,7 +135,7 @@ export default function PrivacySettingsPage() {
               id="toggle-show-joined-count"
               onClick={() => handleToggle('show_joined_count', showJoinedCount)}
               className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none shrink-0 ${
-                showJoinedCount ? 'bg-purple-600' : 'bg-slate-800'
+                showJoinedCount ? 'bg-orange-500' : 'bg-gray-200'
               }`}
             >
               <div
@@ -147,14 +147,14 @@ export default function PrivacySettingsPage() {
           </div>
 
           {/* Show Online Status */}
-          <div className="flex items-center justify-between gap-4 border-t border-slate-900/80 pt-5">
+          <div className="flex items-center justify-between gap-4 border-t border-gray-100 pt-5">
             <div className="flex items-start gap-3">
-              <div className="p-2 bg-emerald-500/10 rounded-xl text-emerald-400 mt-0.5">
+              <div className="p-2 bg-emerald-50 rounded-xl text-emerald-500 mt-0.5">
                 <Eye size={16} />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-slate-200">{tr.show_online_status}</h4>
-                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.show_online_status_desc}</p>
+                <h4 className="text-sm font-semibold text-gray-800">{tr.show_online_status}</h4>
+                <p className="text-[10px] text-gray-400 mt-1 max-w-[220px] leading-relaxed">{tr.show_online_status_desc}</p>
               </div>
             </div>
             
@@ -162,7 +162,7 @@ export default function PrivacySettingsPage() {
               id="toggle-show-online-status"
               onClick={() => handleToggle('show_online_status', showOnlineStatus)}
               className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none shrink-0 ${
-                showOnlineStatus ? 'bg-purple-600' : 'bg-slate-800'
+                showOnlineStatus ? 'bg-orange-500' : 'bg-gray-200'
               }`}
             >
               <div

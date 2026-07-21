@@ -101,32 +101,32 @@ export default function DeleteAccountPage() {
         {/* Back Button */}
         <button
           onClick={() => navigate('/profile')}
-          className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-slate-200 transition mb-6"
+          className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-700 transition mb-6"
         >
           <ArrowLeft size={14} />
           <span>{tr.back}</span>
         </button>
 
-        <h2 className="text-xl font-extrabold text-slate-100 flex items-center gap-2 mb-1.5 animate-pulse">
+        <h2 className="text-xl font-bold text-red-600 flex items-center gap-2 mb-1.5">
           <Trash2 className="text-red-500 w-5 h-5" />
-          <span className="text-red-500">{tr.title}</span>
+          <span>{tr.title}</span>
         </h2>
-        <p className="text-xs text-slate-500 mb-6">{tr.sub}</p>
+        <p className="text-xs text-gray-400 mb-6">{tr.sub}</p>
 
         {/* Warning Card */}
-        <div className="bg-red-950/10 border border-red-900/30 rounded-2.5xl p-5 mb-6 flex flex-col items-center text-center">
-          <div className="w-12 h-12 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center mb-4">
+        <div className="bg-red-50 border border-red-200 rounded-2.5xl p-5 mb-6 flex flex-col items-center text-center shadow-sm">
+          <div className="w-12 h-12 rounded-xl bg-red-100 text-red-600 flex items-center justify-center mb-4">
             <ShieldAlert size={22} />
           </div>
-          <h3 className="text-sm font-bold text-red-400">{tr.warning_head}</h3>
-          <p className="text-xs text-slate-400 mt-2 leading-relaxed max-w-[280px]">
+          <h3 className="text-sm font-bold text-red-600">{tr.warning_head}</h3>
+          <p className="text-xs text-gray-600 mt-2 leading-relaxed max-w-[280px]">
             {tr.warning_body}
           </p>
         </div>
 
         {/* Confirmation Text Input */}
         <div className="mb-6 space-y-2">
-          <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+          <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">
             {tr.confirm_placeholder}
           </label>
           <input
@@ -135,7 +135,7 @@ export default function DeleteAccountPage() {
             value={confirmText}
             onChange={(e) => setConfirmText(e.target.value)}
             placeholder='Type "DELETE"'
-            className="w-full bg-slate-950 border border-slate-900 focus:border-red-500 rounded-xl p-3 text-sm text-center font-bold text-red-500 placeholder-slate-800 tracking-wider focus:outline-none transition-all"
+            className="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl p-3 text-sm text-center font-bold text-red-600 placeholder-gray-300 tracking-wider focus:outline-none transition-all"
           />
         </div>
 
@@ -144,7 +144,7 @@ export default function DeleteAccountPage() {
           id="confirm-delete-account-btn"
           disabled={loading || confirmText !== 'DELETE'}
           onClick={handleDeleteAccount}
-          className="w-full bg-red-600 hover:bg-red-500 disabled:bg-slate-900/40 text-white font-extrabold py-3.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-red-500/10 transition disabled:opacity-50 disabled:text-slate-600 border border-transparent disabled:border-slate-900/60"
+          className="w-full bg-red-600 hover:bg-red-500 disabled:bg-gray-100 text-white disabled:text-gray-400 font-bold py-3.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-red-500/10 transition disabled:opacity-50 disabled:border-gray-200 border border-transparent"
         >
           {loading ? (
             <>

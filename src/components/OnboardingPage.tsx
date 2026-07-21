@@ -39,7 +39,7 @@ export default function OnboardingPage() {
     return (
       <Layout>
         <div className="flex-1 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
         </div>
       </Layout>
     );
@@ -211,13 +211,13 @@ export default function OnboardingPage() {
       <div className="flex-1 flex flex-col px-6 py-6 overflow-y-auto">
         {/* Progress Bar */}
         <div className="mb-6">
-          <div className="flex justify-between items-center text-xs text-slate-500 mb-2 font-mono">
+          <div className="flex justify-between items-center text-xs text-gray-400 mb-2 font-mono">
             <span>{t('onboarding_progress', { current: step, total: 6 })}</span>
             <span>{Math.round((step / 6) * 100)}%</span>
           </div>
-          <div className="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden">
+          <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-gradient-to-r from-purple-500 to-blue-500 transition-all duration-300"
+              className="h-full bg-gradient-to-r from-orange-500 to-orange-400 transition-all duration-300"
               style={{ width: `${(step / 6) * 100}%` }}
             ></div>
           </div>
@@ -240,39 +240,39 @@ export default function OnboardingPage() {
               {step === 1 && (
                 <div className="flex-1 flex flex-col justify-between" id="onboarding-step-1">
                   <div className="flex-1 flex flex-col justify-center text-center py-4">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 to-blue-500 flex items-center justify-center shadow-lg shadow-purple-500/20 mb-4 mx-auto">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-orange-500 to-orange-400 flex items-center justify-center shadow-lg shadow-orange-500/20 mb-4 mx-auto animate-bounce">
                       <span className="text-2.5xl">🎓</span>
                     </div>
-                    <h2 className="text-2.5xl font-extrabold text-slate-100 tracking-tight">
+                    <h2 className="text-2.5xl font-bold text-gray-900 tracking-tight">
                       {t('onboarding_welcome')}
                     </h2>
-                    <p className="text-sm text-slate-400 mt-2 max-w-[320px] mx-auto">
+                    <p className="text-sm text-gray-500 mt-2 max-w-[320px] mx-auto">
                       {t('onboarding_welcome_sub')}
                     </p>
 
                     {/* Features cards */}
                     <div className="grid grid-cols-1 gap-3 mt-8 text-left">
-                      <div className="flex gap-4 p-3.5 bg-slate-900/40 border border-slate-900/80 rounded-xl">
-                        <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-xl shrink-0">🎯</div>
+                      <div className="flex gap-4 p-3.5 bg-white border border-gray-100 rounded-xl shadow-sm">
+                        <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center text-xl shrink-0">🎯</div>
                         <div>
-                          <h4 className="text-sm font-semibold text-slate-200">{t('feature_1_title')}</h4>
-                          <p className="text-xs text-slate-400 mt-0.5">{t('feature_1_desc')}</p>
+                          <h4 className="text-sm font-bold text-gray-800">{t('feature_1_title')}</h4>
+                          <p className="text-xs text-gray-500 mt-0.5">{t('feature_1_desc')}</p>
                         </div>
                       </div>
 
-                      <div className="flex gap-4 p-3.5 bg-slate-900/40 border border-slate-900/80 rounded-xl">
-                        <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-xl shrink-0">💬</div>
+                      <div className="flex gap-4 p-3.5 bg-white border border-gray-100 rounded-xl shadow-sm">
+                        <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center text-xl shrink-0">💬</div>
                         <div>
-                          <h4 className="text-sm font-semibold text-slate-200">{t('feature_2_title')}</h4>
-                          <p className="text-xs text-slate-400 mt-0.5">{t('feature_2_desc')}</p>
+                          <h4 className="text-sm font-bold text-gray-800">{t('feature_2_title')}</h4>
+                          <p className="text-xs text-gray-500 mt-0.5">{t('feature_2_desc')}</p>
                         </div>
                       </div>
 
-                      <div className="flex gap-4 p-3.5 bg-slate-900/40 border border-slate-900/80 rounded-xl">
-                        <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-xl shrink-0">📍</div>
+                      <div className="flex gap-4 p-3.5 bg-white border border-gray-100 rounded-xl shadow-sm">
+                        <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center text-xl shrink-0">📍</div>
                         <div>
-                          <h4 className="text-sm font-semibold text-slate-200">{t('feature_3_title')}</h4>
-                          <p className="text-xs text-slate-400 mt-0.5">{t('feature_3_desc')}</p>
+                          <h4 className="text-sm font-bold text-gray-800">{t('feature_3_title')}</h4>
+                          <p className="text-xs text-gray-500 mt-0.5">{t('feature_3_desc')}</p>
                         </div>
                       </div>
                     </div>
@@ -284,8 +284,8 @@ export default function OnboardingPage() {
                         onClick={() => setLanguage('el')}
                         className={`px-4 py-2 rounded-xl text-sm font-semibold border transition flex items-center gap-2 ${
                           language === 'el'
-                            ? 'bg-purple-950/40 border-purple-500 text-purple-300'
-                            : 'bg-slate-900 border-slate-800 text-slate-400'
+                            ? 'bg-orange-50 border-orange-400 text-orange-600'
+                            : 'bg-gray-100 border-gray-200 text-gray-500'
                         }`}
                       >
                         <span>🇬🇷</span> Ελληνικά
@@ -295,8 +295,8 @@ export default function OnboardingPage() {
                         onClick={() => setLanguage('en')}
                         className={`px-4 py-2 rounded-xl text-sm font-semibold border transition flex items-center gap-2 ${
                           language === 'en'
-                            ? 'bg-purple-950/40 border-purple-500 text-purple-300'
-                            : 'bg-slate-900 border-slate-800 text-slate-400'
+                            ? 'bg-orange-50 border-orange-400 text-orange-600'
+                            : 'bg-gray-100 border-gray-200 text-gray-500'
                         }`}
                       >
                         <span>🇬🇧</span> English
@@ -308,7 +308,7 @@ export default function OnboardingPage() {
                     <button
                       id="onboarding-start-btn"
                       onClick={handleNext}
-                      className="w-full bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-500 hover:to-blue-400 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-sm"
+                      className="w-full bg-gradient-to-r from-orange-500 to-orange-400 hover:from-orange-600 hover:to-orange-500 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-sm"
                     >
                       <span>{t('lets_start')}</span>
                       <ArrowRight size={16} />
@@ -321,10 +321,10 @@ export default function OnboardingPage() {
               {step === 2 && (
                 <div className="flex-1 flex flex-col justify-between" id="onboarding-step-2">
                   <div className="py-4">
-                    <h2 className="text-xl font-extrabold text-slate-100 tracking-tight">
+                    <h2 className="text-xl font-bold text-gray-900 tracking-tight">
                       {t('step_username_title')}
                     </h2>
-                    <p className="text-xs text-slate-400 mt-1">{t('step_username_desc')}</p>
+                    <p className="text-xs text-gray-500 mt-1">{t('step_username_desc')}</p>
 
                     <div className="mt-8 relative">
                       <input
@@ -333,31 +333,31 @@ export default function OnboardingPage() {
                         placeholder="e.g. niki_papadopoulou"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        className="w-full bg-slate-950 border border-slate-900 rounded-xl py-3.5 px-4 text-sm text-slate-100 placeholder:text-slate-700 focus:outline-none focus:border-purple-500 uppercase-none"
+                        className="w-full bg-white border border-gray-200 rounded-xl py-3.5 px-4 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-orange-400 shadow-sm"
                       />
 
                       <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center">
                         {usernameChecking && (
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-purple-500"></div>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-orange-500"></div>
                         )}
                         {!usernameChecking && usernameAvailable === true && (
-                          <span className="text-emerald-500 bg-emerald-500/10 p-1 rounded-full"><Check size={14} /></span>
+                          <span className="text-emerald-600 bg-emerald-50 p-1 rounded-full"><Check size={14} /></span>
                         )}
                         {!usernameChecking && usernameAvailable === false && (
-                          <span className="text-red-500 text-xs font-bold font-mono">✕</span>
+                          <span className="text-red-600 text-xs font-bold font-mono">✕</span>
                         )}
                       </div>
                     </div>
 
                     <div className="mt-2 min-h-[20px]">
                       {usernameChecking && (
-                        <p className="text-xs text-slate-500 font-medium">{t('checking_username')}</p>
+                        <p className="text-xs text-gray-400 font-medium">{t('checking_username')}</p>
                       )}
                       {!usernameChecking && usernameAvailable === true && (
-                        <p className="text-xs text-emerald-500 font-semibold">{t('username_available')}</p>
+                        <p className="text-xs text-emerald-600 font-semibold">{t('username_available')}</p>
                       )}
                       {!usernameChecking && usernameAvailable === false && (
-                        <p className="text-xs text-red-500 font-semibold">{usernameError}</p>
+                        <p className="text-xs text-red-600 font-semibold">{usernameError}</p>
                       )}
                     </div>
                   </div>
@@ -366,7 +366,7 @@ export default function OnboardingPage() {
                     <button
                       id="onboarding-back-btn"
                       onClick={handleBack}
-                      className="flex-1 py-3 px-4 border border-slate-800 rounded-xl text-slate-400 hover:bg-slate-900 font-semibold text-sm transition flex items-center justify-center gap-2"
+                      className="flex-1 py-3 px-4 border border-gray-200 rounded-xl text-gray-500 hover:bg-gray-100 font-semibold text-sm transition flex items-center justify-center gap-2"
                     >
                       <ArrowLeft size={16} />
                       <span>{t('back')}</span>
@@ -375,7 +375,7 @@ export default function OnboardingPage() {
                       id="onboarding-next-btn"
                       onClick={handleNext}
                       disabled={!usernameAvailable || usernameChecking}
-                      className="flex-1 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:from-purple-500 hover:to-blue-400 transition flex items-center justify-center gap-2 text-sm disabled:opacity-50"
+                      className="flex-1 bg-gradient-to-r from-orange-500 to-orange-400 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:from-orange-600 hover:to-orange-500 transition flex items-center justify-center gap-2 text-sm disabled:opacity-50"
                     >
                       <span>{t('next')}</span>
                       <ArrowRight size={16} />
@@ -388,15 +388,15 @@ export default function OnboardingPage() {
               {step === 3 && (
                 <div className="flex-1 flex flex-col justify-between" id="onboarding-step-3">
                   <div className="py-4 flex-1 flex flex-col">
-                    <h2 className="text-xl font-extrabold text-slate-100 tracking-tight">
+                    <h2 className="text-xl font-bold text-gray-900 tracking-tight">
                       {t('step_uni_title')}
                     </h2>
-                    <p className="text-xs text-slate-400 mt-1">{t('step_uni_desc')}</p>
+                    <p className="text-xs text-gray-500 mt-1">{t('step_uni_desc')}</p>
 
                     {/* Custom search combobox */}
                     <div className="mt-6 relative flex-1 flex flex-col">
                       <div className="relative">
-                        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4" />
+                        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
                         <input
                           id="onboarding-uni-search"
                           type="text"
@@ -407,13 +407,13 @@ export default function OnboardingPage() {
                             setShowUniDropdown(true);
                           }}
                           onFocus={() => setShowUniDropdown(true)}
-                          className="w-full bg-slate-950 border border-slate-900 rounded-xl py-3 pl-11 pr-4 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-purple-500"
+                          className="w-full bg-white border border-gray-200 rounded-xl py-3 pl-11 pr-4 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-orange-400 shadow-sm"
                         />
                       </div>
 
                       {/* Dropdown Options */}
                       {showUniDropdown && (
-                        <div className="mt-2 bg-slate-950 border border-slate-900 rounded-xl overflow-y-auto max-h-[220px] shadow-2xl z-20">
+                        <div className="mt-2 bg-white border border-gray-200 rounded-xl overflow-y-auto max-h-[220px] shadow-lg z-20">
                           {filteredUnis.length > 0 ? (
                             filteredUnis.map((uni) => (
                               <button
@@ -425,8 +425,8 @@ export default function OnboardingPage() {
                                   setUniSearch(language === 'el' ? uni.el : uni.en);
                                   setShowUniDropdown(false);
                                 }}
-                                className={`w-full text-left px-4 py-3 text-xs border-b border-slate-900/60 hover:bg-slate-900 transition flex items-center justify-between ${
-                                  selectedUni?.id === uni.id ? 'bg-purple-950/20 text-purple-400' : 'text-slate-300'
+                                className={`w-full text-left px-4 py-3 text-xs border-b border-gray-100 hover:bg-gray-50 transition flex items-center justify-between ${
+                                  selectedUni?.id === uni.id ? 'bg-orange-50 text-orange-600 font-bold' : 'text-gray-700'
                                 }`}
                               >
                                 <span>{language === 'el' ? uni.el : uni.en}</span>
@@ -434,18 +434,18 @@ export default function OnboardingPage() {
                               </button>
                             ))
                           ) : (
-                            <div className="p-4 text-center text-xs text-slate-600">No universities found</div>
+                            <div className="p-4 text-center text-xs text-gray-400">No universities found</div>
                           )}
                         </div>
                       )}
 
                       {/* Display Selected Uni card */}
                       {selectedUni && !showUniDropdown && (
-                        <div className="mt-4 p-4 bg-purple-950/10 border border-purple-500/20 rounded-xl flex items-start gap-3">
+                        <div className="mt-4 p-4 bg-orange-50 border border-orange-100 rounded-xl flex items-start gap-3">
                           <span className="text-xl">🏫</span>
                           <div>
-                            <h4 className="text-xs font-bold text-purple-400 uppercase tracking-wider">Selected University</h4>
-                            <p className="text-sm text-slate-200 mt-1 font-medium">{language === 'el' ? selectedUni.el : selectedUni.en}</p>
+                            <h4 className="text-[10px] font-bold text-orange-600 uppercase tracking-wider">Selected University</h4>
+                            <p className="text-sm text-gray-800 mt-1 font-semibold">{language === 'el' ? selectedUni.el : selectedUni.en}</p>
                           </div>
                         </div>
                       )}
@@ -456,7 +456,7 @@ export default function OnboardingPage() {
                     <button
                       id="onboarding-back-btn"
                       onClick={handleBack}
-                      className="flex-1 py-3 px-4 border border-slate-800 rounded-xl text-slate-400 hover:bg-slate-900 font-semibold text-sm transition flex items-center justify-center gap-2"
+                      className="flex-1 py-3 px-4 border border-gray-200 rounded-xl text-gray-500 hover:bg-gray-100 font-semibold text-sm transition flex items-center justify-center gap-2"
                     >
                       <ArrowLeft size={16} />
                       <span>{t('back')}</span>
@@ -465,7 +465,7 @@ export default function OnboardingPage() {
                       id="onboarding-next-btn"
                       onClick={handleNext}
                       disabled={!selectedUni}
-                      className="flex-1 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:from-purple-500 hover:to-blue-400 transition flex items-center justify-center gap-2 text-sm disabled:opacity-50"
+                      className="flex-1 bg-gradient-to-r from-orange-500 to-orange-400 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:from-orange-600 hover:to-orange-500 transition flex items-center justify-center gap-2 text-sm disabled:opacity-50"
                     >
                       <span>{t('next')}</span>
                       <ArrowRight size={16} />
@@ -478,20 +478,20 @@ export default function OnboardingPage() {
               {step === 4 && (
                 <div className="flex-1 flex flex-col justify-between" id="onboarding-step-4">
                   <div className="py-4 text-center">
-                    <h2 className="text-xl font-extrabold text-slate-100 tracking-tight text-left">
+                    <h2 className="text-xl font-bold text-gray-900 tracking-tight text-left">
                       {t('step_photo_title')}
                     </h2>
-                    <p className="text-xs text-slate-400 mt-1 text-left">{t('step_photo_desc')}</p>
+                    <p className="text-xs text-gray-500 mt-1 text-left">{t('step_photo_desc')}</p>
 
                     {/* Circular photo preview */}
                     <div className="my-8 flex justify-center">
                       <div className="relative group">
-                        <div className="w-32 h-32 rounded-full border-4 border-slate-900 overflow-hidden bg-slate-950 flex items-center justify-center shadow-2xl relative">
+                        <div className="w-32 h-32 rounded-full border-4 border-gray-100 overflow-hidden bg-white flex items-center justify-center shadow-md relative">
                           {avatarBase64 ? (
                             <img src={avatarBase64} alt="Avatar preview" className="w-full h-full object-cover" />
                           ) : (
                             <div className="text-center p-4">
-                              <span className="text-4xl text-slate-700">👤</span>
+                              <span className="text-4xl text-gray-400">👤</span>
                             </div>
                           )}
                         </div>
@@ -508,9 +508,9 @@ export default function OnboardingPage() {
                     </div>
 
                     {/* File Dropzone */}
-                    <label className="border border-dashed border-slate-800 rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer bg-slate-950/20 hover:bg-slate-900/30 transition-all">
-                      <Upload className="text-purple-500 mb-2" size={24} />
-                      <span className="text-xs text-slate-400 font-medium">{t('drag_drop_photo')}</span>
+                    <label className="border border-dashed border-gray-200 rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100/70 transition-all">
+                      <Upload className="text-orange-500 mb-2" size={24} />
+                      <span className="text-xs text-gray-500 font-semibold">{t('drag_drop_photo')}</span>
                       <input 
                         id="onboarding-avatar-file-input"
                         type="file" 
@@ -525,7 +525,7 @@ export default function OnboardingPage() {
                     <button
                       id="onboarding-back-btn"
                       onClick={handleBack}
-                      className="py-3 px-4 border border-slate-800 rounded-xl text-slate-400 hover:bg-slate-900 font-semibold text-sm transition flex items-center justify-center gap-1"
+                      className="py-3 px-4 border border-gray-200 rounded-xl text-gray-500 hover:bg-gray-100 font-semibold text-sm transition flex items-center justify-center gap-1"
                     >
                       <ArrowLeft size={16} />
                       <span>{t('back')}</span>
@@ -533,14 +533,14 @@ export default function OnboardingPage() {
                     <button
                       id="onboarding-skip-btn"
                       onClick={handleNext}
-                      className="flex-1 py-3 px-4 bg-slate-900 text-slate-300 font-bold rounded-xl border border-slate-800 hover:bg-slate-800 transition text-sm"
+                      className="flex-1 py-3 px-4 bg-gray-100 text-gray-700 font-bold rounded-xl border border-gray-200 hover:bg-gray-200 transition text-sm"
                     >
                       {t('skip')}
                     </button>
                     <button
                       id="onboarding-next-btn"
                       onClick={handleNext}
-                      className="flex-1 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:from-purple-500 hover:to-blue-400 transition flex items-center justify-center gap-1 text-sm"
+                      className="flex-1 bg-gradient-to-r from-orange-500 to-orange-400 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:from-orange-600 hover:to-orange-500 transition flex items-center justify-center gap-1 text-sm"
                     >
                       <span>{t('next')}</span>
                       <ArrowRight size={16} />
@@ -553,10 +553,10 @@ export default function OnboardingPage() {
               {step === 5 && (
                 <div className="flex-1 flex flex-col justify-between" id="onboarding-step-5">
                   <div className="py-4">
-                    <h2 className="text-xl font-extrabold text-slate-100 tracking-tight">
+                    <h2 className="text-xl font-bold text-gray-900 tracking-tight">
                       {t('step_bio_title')}
                     </h2>
-                    <p className="text-xs text-slate-400 mt-1">{t('step_bio_desc')}</p>
+                    <p className="text-xs text-gray-500 mt-1">{t('step_bio_desc')}</p>
 
                     <div className="mt-6 relative">
                       <textarea
@@ -565,9 +565,9 @@ export default function OnboardingPage() {
                         value={bio}
                         onChange={(e) => setBio(e.target.value.slice(0, 300))}
                         rows={5}
-                        className="w-full bg-slate-950 border border-slate-900 rounded-xl p-4 text-sm text-slate-100 placeholder:text-slate-700 focus:outline-none focus:border-purple-500 resize-none"
+                        className="w-full bg-white border border-gray-200 rounded-xl p-4 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-orange-400 resize-none shadow-sm"
                       />
-                      <div className="text-right text-xs text-slate-600 mt-1 font-mono">
+                      <div className="text-right text-xs text-gray-400 mt-1 font-mono">
                         {t('char_count', { count: bio.length, max: 300 })}
                       </div>
                     </div>
@@ -577,7 +577,7 @@ export default function OnboardingPage() {
                     <button
                       id="onboarding-back-btn"
                       onClick={handleBack}
-                      className="py-3 px-4 border border-slate-800 rounded-xl text-slate-400 hover:bg-slate-900 font-semibold text-sm transition flex items-center justify-center gap-1"
+                      className="py-3 px-4 border border-gray-200 rounded-xl text-gray-500 hover:bg-gray-100 font-semibold text-sm transition flex items-center justify-center gap-1"
                     >
                       <ArrowLeft size={16} />
                       <span>{t('back')}</span>
@@ -585,14 +585,14 @@ export default function OnboardingPage() {
                     <button
                       id="onboarding-skip-btn"
                       onClick={handleNext}
-                      className="flex-1 py-3 px-4 bg-slate-900 text-slate-300 font-bold rounded-xl border border-slate-800 hover:bg-slate-800 transition text-sm"
+                      className="flex-1 py-3 px-4 bg-gray-100 text-gray-700 font-bold rounded-xl border border-gray-200 hover:bg-gray-200 transition text-sm"
                     >
                       {t('skip')}
                     </button>
                     <button
                       id="onboarding-next-btn"
                       onClick={handleNext}
-                      className="flex-1 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:from-purple-500 hover:to-blue-400 transition flex items-center justify-center gap-1 text-sm"
+                      className="flex-1 bg-gradient-to-r from-orange-500 to-orange-400 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:from-orange-600 hover:to-orange-500 transition flex items-center justify-center gap-1 text-sm"
                     >
                       <span>{t('next')}</span>
                       <ArrowRight size={16} />
@@ -605,10 +605,10 @@ export default function OnboardingPage() {
               {step === 6 && (
                 <div className="flex-1 flex flex-col justify-between" id="onboarding-step-6">
                   <div className="py-4">
-                    <h2 className="text-xl font-extrabold text-slate-100 tracking-tight">
+                    <h2 className="text-xl font-bold text-gray-900 tracking-tight">
                       {t('step_interests_title')}
                     </h2>
-                    <p className="text-xs text-slate-400 mt-1">{t('step_interests_desc')}</p>
+                    <p className="text-xs text-gray-500 mt-1">{t('step_interests_desc')}</p>
 
                     {/* Badge Interest Chips */}
                     <div className="flex flex-wrap gap-2.5 mt-6 max-h-[300px] overflow-y-auto pr-1">
@@ -622,8 +622,8 @@ export default function OnboardingPage() {
                             onClick={() => handleInterestToggle(interest.id)}
                             className={`px-3 py-2 rounded-xl text-xs font-semibold border flex items-center gap-2 transition-all duration-150 ${
                               isSelected
-                                ? 'bg-purple-950/40 border-purple-500 text-purple-300 scale-[1.03] shadow-lg shadow-purple-500/10'
-                                : 'bg-slate-950 border-slate-900/80 text-slate-400 hover:bg-slate-900'
+                                ? 'bg-orange-50 border-orange-400 text-orange-600 scale-[1.03] shadow-md shadow-orange-500/10'
+                                : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
                             }`}
                           >
                             <span>{interest.icon}</span>
@@ -633,8 +633,8 @@ export default function OnboardingPage() {
                       })}
                     </div>
 
-                    <div className="mt-4 flex items-center gap-2 text-xs text-slate-500">
-                      <Info size={14} className="text-purple-400" />
+                    <div className="mt-4 flex items-center gap-2 text-xs text-gray-400">
+                      <Info size={14} className="text-orange-500" />
                       <span>{t('interests_range_error')}</span>
                     </div>
                   </div>
@@ -643,7 +643,7 @@ export default function OnboardingPage() {
                     <button
                       id="onboarding-back-btn"
                       onClick={handleBack}
-                      className="flex-1 py-3 px-4 border border-slate-800 rounded-xl text-slate-400 hover:bg-slate-900 font-semibold text-sm transition flex items-center justify-center gap-2"
+                      className="flex-1 py-3 px-4 border border-gray-200 rounded-xl text-gray-500 hover:bg-gray-100 font-semibold text-sm transition flex items-center justify-center gap-2"
                     >
                       <ArrowLeft size={16} />
                       <span>{t('back')}</span>
@@ -652,7 +652,7 @@ export default function OnboardingPage() {
                       id="onboarding-finish-btn"
                       onClick={handleFinish}
                       disabled={selectedInterests.length === 0 || submitting}
-                      className="flex-1 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:from-purple-500 hover:to-blue-400 transition flex items-center justify-center gap-2 text-sm disabled:opacity-50"
+                      className="flex-1 bg-gradient-to-r from-orange-500 to-orange-400 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:from-orange-600 hover:to-orange-500 transition flex items-center justify-center gap-2 text-sm disabled:opacity-50"
                     >
                       {submitting ? (
                         <>

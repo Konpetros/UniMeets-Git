@@ -13,22 +13,22 @@ import { db, handleFirestoreError, OperationType } from '../firebase';
 
 // Beautiful category color mapping for all interests
 const INTEREST_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-  movies: { bg: 'bg-red-950/25', text: 'text-red-400', border: 'border-red-900/40' },
-  coffee: { bg: 'bg-amber-950/25', text: 'text-amber-400', border: 'border-amber-900/40' },
-  study: { bg: 'bg-blue-950/25', text: 'text-blue-400', border: 'border-blue-900/40' },
-  walk: { bg: 'bg-emerald-950/25', text: 'text-emerald-400', border: 'border-emerald-900/40' },
-  party: { bg: 'bg-purple-950/25', text: 'text-purple-400', border: 'border-purple-900/40' },
-  gaming: { bg: 'bg-pink-950/25', text: 'text-pink-400', border: 'border-pink-900/40' },
-  sports: { bg: 'bg-orange-950/25', text: 'text-orange-400', border: 'border-orange-900/40' },
-  music: { bg: 'bg-violet-950/25', text: 'text-violet-400', border: 'border-violet-900/40' },
-  reading: { bg: 'bg-teal-950/25', text: 'text-teal-400', border: 'border-teal-900/40' },
-  travel: { bg: 'bg-sky-950/25', text: 'text-sky-400', border: 'border-sky-900/40' },
-  photography: { bg: 'bg-indigo-950/25', text: 'text-indigo-400', border: 'border-indigo-900/40' },
-  food: { bg: 'bg-yellow-950/25', text: 'text-yellow-400', border: 'border-yellow-900/40' },
-  art: { bg: 'bg-fuchsia-950/25', text: 'text-fuchsia-400', border: 'border-fuchsia-900/40' },
-  technology: { bg: 'bg-cyan-950/25', text: 'text-cyan-400', border: 'border-cyan-900/40' },
-  fitness: { bg: 'bg-rose-950/25', text: 'text-rose-400', border: 'border-rose-900/40' },
-  nature: { bg: 'bg-green-950/25', text: 'text-green-400', border: 'border-green-900/40' },
+  movies: { bg: 'bg-red-50', text: 'text-red-600', border: 'border-red-100' },
+  coffee: { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-100' },
+  study: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'border-blue-100' },
+  walk: { bg: 'bg-emerald-50', text: 'text-emerald-600', border: 'border-emerald-100' },
+  party: { bg: 'bg-purple-50', text: 'text-purple-600', border: 'border-purple-100' },
+  gaming: { bg: 'bg-pink-50', text: 'text-pink-600', border: 'border-pink-100' },
+  sports: { bg: 'bg-orange-50', text: 'text-orange-600', border: 'border-orange-100' },
+  music: { bg: 'bg-violet-50', text: 'text-violet-600', border: 'border-violet-100' },
+  reading: { bg: 'bg-teal-50', text: 'text-teal-650', border: 'border-teal-100' },
+  travel: { bg: 'bg-sky-50', text: 'text-sky-600', border: 'border-sky-100' },
+  photography: { bg: 'bg-indigo-50', text: 'text-indigo-600', border: 'border-indigo-100' },
+  food: { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-100' },
+  art: { bg: 'bg-fuchsia-50', text: 'text-fuchsia-600', border: 'border-fuchsia-100' },
+  technology: { bg: 'bg-cyan-50', text: 'text-cyan-600', border: 'border-cyan-100' },
+  fitness: { bg: 'bg-rose-50', text: 'text-rose-600', border: 'border-rose-100' },
+  nature: { bg: 'bg-green-50', text: 'text-green-600', border: 'border-green-100' },
 };
 
 const LOCAL_TR = {
@@ -129,7 +129,7 @@ export default function ProfilePage() {
     return (
       <Layout showHeader>
         <div className="flex-1 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
         </div>
       </Layout>
     );
@@ -215,16 +215,16 @@ export default function ProfilePage() {
       <div className="flex-1 flex flex-col p-4 pb-20 overflow-y-auto">
         
         {/* Title */}
-        <h2 className="text-xl font-extrabold text-slate-100 mb-6 flex items-center gap-2">
-          <UserIcon className="text-purple-400 w-5 h-5 animate-pulse" />
+        <h2 className="text-xl font-extrabold text-gray-900 mb-6 flex items-center gap-2">
+          <UserIcon className="text-orange-500 w-5 h-5 animate-pulse" />
           <span>{tr.title}</span>
         </h2>
 
         {/* Profile Card */}
-        <div className="bg-slate-950 border border-slate-900 rounded-2.5xl p-6 shadow-2xl relative flex flex-col items-center text-center">
+        <div className="bg-white border border-gray-200 rounded-2.5xl p-6 shadow-sm relative flex flex-col items-center text-center">
           
           {/* Avatar (large circular centered) */}
-          <div className="w-24 h-24 rounded-full border-4 border-slate-900 overflow-hidden bg-slate-900 mb-4 shadow-2xl relative">
+          <div className="w-24 h-24 rounded-full border-4 border-gray-100 overflow-hidden bg-gray-50 mb-4 shadow-md relative">
             <img
               src={profile.avatar_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${profile.username}`}
               alt={profile.username}
@@ -233,29 +233,29 @@ export default function ProfilePage() {
           </div>
 
           {/* Username (bold) */}
-          <h3 className="text-xl font-extrabold text-slate-50 tracking-tight">@{profile.username}</h3>
+          <h3 className="text-xl font-extrabold text-gray-900 tracking-tight">@{profile.username}</h3>
           
           {/* University with Graduate icon */}
-          <p className="text-xs text-slate-400 font-semibold flex items-center gap-1.5 mt-1.5">
-            <GraduationCap size={15} className="text-purple-400" />
+          <p className="text-xs text-gray-500 font-semibold flex items-center gap-1.5 mt-1.5">
+            <GraduationCap size={15} className="text-orange-500" />
             <span>{profile.university}</span>
           </p>
 
           {/* Bio text if exists */}
-          <div className="mt-5 w-full text-left bg-slate-900/40 border border-slate-900 rounded-2xl p-4">
-            <h4 className="text-[10px] font-bold text-purple-400 uppercase tracking-widest mb-1">{tr.bio_label}</h4>
-            <p className="text-xs text-slate-300 leading-relaxed italic">
+          <div className="mt-5 w-full text-left bg-gray-55 border border-gray-150 rounded-2xl p-4">
+            <h4 className="text-[10px] font-bold text-orange-600 uppercase tracking-widest mb-1">{tr.bio_label}</h4>
+            <p className="text-xs text-gray-700 leading-relaxed italic">
               {profile.bio || tr.empty_bio}
             </p>
           </div>
 
           {/* Interests display as custom colored chips */}
           <div className="mt-5 w-full text-left">
-            <h4 className="text-[10px] font-bold text-purple-400 uppercase tracking-widest mb-2.5">{tr.interests_label}</h4>
+            <h4 className="text-[10px] font-bold text-orange-600 uppercase tracking-widest mb-2.5">{tr.interests_label}</h4>
             <div className="flex flex-wrap gap-2">
               {profile.interests.map((intId) => {
                 const item = INTEREST_OPTIONS.find((o) => o.id === intId);
-                const col = INTEREST_COLORS[intId] || { bg: 'bg-purple-950/25', text: 'text-purple-400', border: 'border-purple-900/40' };
+                const col = INTEREST_COLORS[intId] || { bg: 'bg-orange-50', text: 'text-orange-600', border: 'border-orange-100' };
                 return (
                   <span
                     key={intId}
@@ -270,19 +270,19 @@ export default function ProfilePage() {
           </div>
 
           {/* Stats Row */}
-          <div className="grid grid-cols-2 gap-4 mt-6 w-full border-t border-slate-900 pt-5">
-            <div className="bg-slate-900/20 border border-slate-900 rounded-2xl p-3 flex flex-col items-center justify-center">
-              <span className="text-2xl font-black text-purple-400 font-mono">
+          <div className="grid grid-cols-2 gap-4 mt-6 w-full border-t border-gray-150 pt-5">
+            <div className="bg-gray-50 border border-gray-200 rounded-2xl p-3 flex flex-col items-center justify-center">
+              <span className="text-2xl font-black text-orange-500 font-mono">
                 {statsLoading ? '...' : createdCount}
               </span>
-              <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">{tr.stats_created}</span>
+              <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">{tr.stats_created}</span>
             </div>
 
-            <div className="bg-slate-900/20 border border-slate-900 rounded-2xl p-3 flex flex-col items-center justify-center">
-              <span className="text-2xl font-black text-blue-400 font-mono">
+            <div className="bg-gray-50 border border-gray-200 rounded-2xl p-3 flex flex-col items-center justify-center">
+              <span className="text-2xl font-black text-orange-500 font-mono">
                 {statsLoading ? '...' : joinedCount}
               </span>
-              <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">{tr.stats_joined}</span>
+              <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">{tr.stats_joined}</span>
             </div>
           </div>
 
@@ -290,38 +290,38 @@ export default function ProfilePage() {
           <button
             id="open-edit-sheet-btn"
             onClick={handleOpenSheet}
-            className="w-full mt-6 bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-200 text-xs font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition"
+            className="w-full mt-6 bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 text-xs font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition"
           >
-            <Edit size={14} className="text-purple-400" />
+            <Edit size={14} className="text-orange-500" />
             <span>{tr.edit_profile}</span>
           </button>
         </div>
 
         {/* Settings list below profile */}
         <div className="mt-8">
-          <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-1 mb-3">{tr.settings_header}</h4>
+          <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1 mb-3">{tr.settings_header}</h4>
           
-          <div className="bg-slate-950 border border-slate-900 rounded-2.5xl overflow-hidden divide-y divide-slate-900/80">
+          <div className="bg-white border border-gray-200 rounded-2.5xl overflow-hidden divide-y divide-gray-100 shadow-sm">
             {/* Language toggle inline row */}
             <button
               id="settings-lang-row"
               onClick={toggleLanguage}
-              className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-slate-900/30 transition text-sm"
+              className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-gray-55 transition text-sm"
             >
               <div className="flex items-center gap-3.5">
-                <div className="p-2 bg-blue-500/10 rounded-xl text-blue-400 shrink-0">
+                <div className="p-2 bg-blue-50 rounded-xl text-blue-650 shrink-0">
                   <Globe size={16} />
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-200">{tr.lang_label}</p>
-                  <p className="text-[10px] text-slate-500 mt-0.5 font-medium">Greek / English</p>
+                  <p className="font-semibold text-gray-800">{tr.lang_label}</p>
+                  <p className="text-[10px] text-gray-400 mt-0.5 font-medium">Greek / English</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-xs bg-purple-950/40 border border-purple-900/40 px-2.5 py-1 rounded-lg text-purple-400 font-bold">
+                <span className="text-xs bg-orange-50 border border-orange-100 px-2.5 py-1 rounded-lg text-orange-600 font-bold">
                   {language === 'el' ? '🇬🇷 Ελληνικά' : '🇬🇧 English'}
                 </span>
-                <ChevronRight size={16} className="text-slate-600" />
+                <ChevronRight size={16} className="text-gray-400" />
               </div>
             </button>
 
@@ -329,85 +329,85 @@ export default function ProfilePage() {
             <button
               id="settings-notifs-row"
               onClick={() => navigate('/account/notifications')}
-              className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-slate-900/30 transition text-sm"
+              className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-gray-55 transition text-sm"
             >
               <div className="flex items-center gap-3.5">
-                <div className="p-2 bg-amber-500/10 rounded-xl text-amber-400 shrink-0">
+                <div className="p-2 bg-amber-50 rounded-xl text-amber-600 shrink-0">
                   <Bell size={16} />
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-200">{tr.notifications}</p>
+                  <p className="font-semibold text-gray-800">{tr.notifications}</p>
                 </div>
               </div>
-              <ChevronRight size={16} className="text-slate-600" />
+              <ChevronRight size={16} className="text-gray-400" />
             </button>
 
             {/* Privacy Settings */}
             <button
               id="settings-privacy-row"
               onClick={() => navigate('/account/privacy-settings')}
-              className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-slate-900/30 transition text-sm"
+              className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-gray-55 transition text-sm"
             >
               <div className="flex items-center gap-3.5">
-                <div className="p-2 bg-emerald-500/10 rounded-xl text-emerald-400 shrink-0">
+                <div className="p-2 bg-emerald-50 rounded-xl text-emerald-650 shrink-0">
                   <Lock size={16} />
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-200">{tr.privacy}</p>
+                  <p className="font-semibold text-gray-800">{tr.privacy}</p>
                 </div>
               </div>
-              <ChevronRight size={16} className="text-slate-600" />
+              <ChevronRight size={16} className="text-gray-400" />
             </button>
 
             {/* Blocked Users */}
             <button
               id="settings-blocked-row"
               onClick={() => navigate('/account/blocked')}
-              className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-slate-900/30 transition text-sm"
+              className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-gray-55 transition text-sm"
             >
               <div className="flex items-center gap-3.5">
-                <div className="p-2 bg-red-500/10 rounded-xl text-red-400 shrink-0">
+                <div className="p-2 bg-red-50 rounded-xl text-red-600 shrink-0">
                   <Ban size={16} />
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-200">{tr.blocked}</p>
+                  <p className="font-semibold text-gray-800">{tr.blocked}</p>
                 </div>
               </div>
-              <ChevronRight size={16} className="text-slate-600" />
+              <ChevronRight size={16} className="text-gray-400" />
             </button>
 
             {/* Terms of Service */}
             <button
               id="settings-terms-row"
               onClick={() => navigate('/account/terms')}
-              className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-slate-900/30 transition text-sm"
+              className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-gray-55 transition text-sm"
             >
               <div className="flex items-center gap-3.5">
-                <div className="p-2 bg-slate-500/10 rounded-xl text-slate-400 shrink-0">
+                <div className="p-2 bg-gray-100 rounded-xl text-gray-500 shrink-0">
                   <FileText size={16} />
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-200">{tr.terms}</p>
+                  <p className="font-semibold text-gray-800">{tr.terms}</p>
                 </div>
               </div>
-              <ChevronRight size={16} className="text-slate-600" />
+              <ChevronRight size={16} className="text-gray-400" />
             </button>
 
             {/* Delete Account */}
             <button
               id="settings-delete-row"
               onClick={() => navigate('/account/delete')}
-              className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-slate-900/30 transition text-sm bg-red-950/5"
+              className="w-full px-5 py-4 flex items-center justify-between text-left hover:bg-red-50/10 transition text-sm bg-red-50/5"
             >
               <div className="flex items-center gap-3.5">
-                <div className="p-2 bg-red-500/10 rounded-xl text-red-500 shrink-0">
+                <div className="p-2 bg-red-50 rounded-xl text-red-600 shrink-0">
                   <Trash2 size={16} />
                 </div>
                 <div>
-                  <p className="font-semibold text-red-400">{tr.delete_account}</p>
+                  <p className="font-semibold text-red-600">{tr.delete_account}</p>
                 </div>
               </div>
-              <ChevronRight size={16} className="text-red-900/40" />
+              <ChevronRight size={16} className="text-red-300" />
             </button>
           </div>
         </div>
@@ -416,7 +416,7 @@ export default function ProfilePage() {
         <button
           id="profile-signout-btn"
           onClick={logout}
-          className="w-full mt-8 py-3.5 bg-red-950/20 hover:bg-red-950/30 border border-red-900/30 text-red-400 font-extrabold rounded-xl text-xs flex items-center justify-center gap-2 transition"
+          className="w-full mt-8 py-3.5 bg-red-50 hover:bg-red-100 border border-red-200 text-red-600 font-extrabold rounded-xl text-xs flex items-center justify-center gap-2 transition"
         >
           <LogOut size={14} />
           <span>{t('sign_out')}</span>
@@ -433,7 +433,7 @@ export default function ProfilePage() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setIsSheetOpen(false)}
-                className="absolute inset-0 bg-black/85 backdrop-blur-sm"
+                className="absolute inset-0 bg-black/40 backdrop-blur-sm"
               />
 
               {/* Bottom Sheet Card */}
@@ -442,18 +442,18 @@ export default function ProfilePage() {
                 animate={{ y: 0 }}
                 exit={{ y: '100%' }}
                 transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-                className="relative w-full max-w-md bg-slate-950 border-t border-slate-900 rounded-t-3xl shadow-2xl p-6 flex flex-col max-h-[85vh] overflow-y-auto z-10"
+                className="relative w-full max-w-md bg-white border-t border-gray-200 rounded-t-3xl shadow-2xl p-6 flex flex-col max-h-[85vh] overflow-y-auto z-10"
               >
                 {/* Visual drag handle */}
-                <div className="w-12 h-1.5 bg-slate-800 rounded-full mx-auto mb-5 shrink-0" />
+                <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-5 shrink-0" />
 
                 {/* Header */}
                 <div className="flex justify-between items-center mb-6 shrink-0">
-                  <h3 className="text-base font-extrabold text-slate-100">{tr.edit_profile}</h3>
+                  <h3 className="text-base font-extrabold text-gray-900">{tr.edit_profile}</h3>
                   <button
                     id="close-edit-sheet-btn"
                     onClick={() => setIsSheetOpen(false)}
-                    className="text-xs font-bold text-slate-500 hover:text-slate-300"
+                    className="text-xs font-bold text-gray-400 hover:text-gray-600"
                   >
                     ✕
                   </button>
@@ -464,7 +464,7 @@ export default function ProfilePage() {
                   
                   {/* Photo upload section */}
                   <div className="flex flex-col items-center">
-                    <div className="w-20 h-20 rounded-full border-4 border-slate-900 overflow-hidden bg-slate-900 mb-3 shadow-xl relative">
+                    <div className="w-20 h-20 rounded-full border-4 border-gray-100 overflow-hidden bg-gray-50 mb-3 shadow-md relative">
                       <img
                         src={editAvatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${profile.username}`}
                         alt="Edit preview"
@@ -472,8 +472,8 @@ export default function ProfilePage() {
                       />
                     </div>
                     
-                    <label className="cursor-pointer bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-300 text-[11px] font-bold py-2 px-4 rounded-xl flex items-center gap-1.5 transition">
-                      <Upload size={12} className="text-purple-400" />
+                    <label className="cursor-pointer bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 text-[11px] font-bold py-2 px-4 rounded-xl flex items-center gap-1.5 transition">
+                      <Upload size={12} className="text-orange-500" />
                       <span>{tr.edit_photo_btn}</span>
                       <input
                         id="avatar-upload-file-input"
@@ -488,14 +488,14 @@ export default function ProfilePage() {
                   {/* Non-editable Username & University after onboarding */}
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <span className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Username</span>
-                      <div className="bg-slate-900/40 border border-slate-900 px-3.5 py-3 rounded-xl text-xs text-slate-400 font-semibold font-mono">
+                      <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Username</span>
+                      <div className="bg-gray-50 border border-gray-150 px-3.5 py-3 rounded-xl text-xs text-gray-500 font-semibold font-mono">
                         @{profile.username}
                       </div>
                     </div>
                     <div>
-                      <span className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">University</span>
-                      <div className="bg-slate-900/40 border border-slate-900 px-3.5 py-3 rounded-xl text-xs text-slate-400 font-semibold truncate" title={profile.university}>
+                      <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">University</span>
+                      <div className="bg-gray-50 border border-gray-150 px-3.5 py-3 rounded-xl text-xs text-gray-500 font-semibold truncate" title={profile.university}>
                         {profile.university}
                       </div>
                     </div>
@@ -503,23 +503,23 @@ export default function ProfilePage() {
 
                   {/* Bio textarea */}
                   <div>
-                    <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">{tr.bio_label}</span>
+                    <span className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">{tr.bio_label}</span>
                     <textarea
                       id="profile-edit-bio-textarea"
                       placeholder={tr.edit_bio_placeholder}
                       value={editBio}
                       onChange={(e) => setEditBio(e.target.value.slice(0, 300))}
                       rows={3}
-                      className="w-full bg-slate-900 border border-slate-850 rounded-xl p-3 text-xs text-slate-100 placeholder:text-slate-700 focus:outline-none focus:border-purple-500 resize-none"
+                      className="w-full bg-white border border-gray-200 rounded-xl p-3 text-xs text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-orange-400 resize-none"
                     />
-                    <div className="text-right text-[10px] text-slate-600 mt-1 font-mono">
+                    <div className="text-right text-[10px] text-gray-400 mt-1 font-mono">
                       {t('char_count', { count: editBio.length, max: 300 })}
                     </div>
                   </div>
 
                   {/* Interests Selector chips (max 1-5) */}
                   <div>
-                    <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">{tr.edit_interests_info}</span>
+                    <span className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2">{tr.edit_interests_info}</span>
                     <div className="flex flex-wrap gap-2 max-h-[160px] overflow-y-auto pr-1">
                       {INTEREST_OPTIONS.map((opt) => {
                         const isSelected = editInterests.includes(opt.id);
@@ -531,8 +531,8 @@ export default function ProfilePage() {
                             onClick={() => toggleInterest(opt.id)}
                             className={`px-3 py-2 rounded-xl text-xs font-semibold border flex items-center gap-1.5 transition-all duration-150 ${
                               isSelected
-                                ? 'bg-purple-950/40 border-purple-500 text-purple-300'
-                                : 'bg-slate-900 border-slate-850/80 text-slate-400 hover:bg-slate-850'
+                                ? 'bg-orange-50 border-orange-400 text-orange-600 font-bold'
+                                : 'bg-gray-50 border-gray-200 text-gray-550 hover:bg-gray-100'
                             }`}
                           >
                             <span>{opt.icon}</span>
@@ -550,7 +550,7 @@ export default function ProfilePage() {
                   id="save-profile-btn"
                   onClick={handleSaveChanges}
                   disabled={saving}
-                  className="w-full mt-6 bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-500 hover:to-blue-400 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-xs shrink-0 disabled:opacity-50"
+                  className="w-full mt-6 bg-gradient-to-r from-orange-500 to-orange-400 hover:from-orange-600 hover:to-orange-500 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-xs shrink-0 disabled:opacity-50"
                 >
                   {saving ? (
                     <>
@@ -571,11 +571,11 @@ export default function ProfilePage() {
         </AnimatePresence>
 
         {/* BOTTOM NAVIGATION TAB BAR */}
-        <nav className="absolute bottom-0 left-0 right-0 h-16 bg-slate-950/95 backdrop-blur-md border-t border-slate-900 flex items-stretch z-40">
+        <nav className="absolute bottom-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-md border-t border-gray-200 flex items-stretch z-40">
           <button
             id="nav-tab-home"
             onClick={() => navigate('/')}
-            className="flex-1 flex flex-col justify-center items-center gap-1 text-slate-500 hover:text-slate-400 transition"
+            className="flex-1 flex flex-col justify-center items-center gap-1 text-gray-400 hover:text-gray-600 transition"
           >
             <HomeIcon size={18} />
             <span className="text-[10px]">{t('tab_home')}</span>
@@ -584,7 +584,7 @@ export default function ProfilePage() {
           <button
             id="nav-tab-my-meets"
             onClick={() => navigate('/my-unimeets')}
-            className="flex-1 flex flex-col justify-center items-center gap-1 text-slate-500 hover:text-slate-400 transition"
+            className="flex-1 flex flex-col justify-center items-center gap-1 text-gray-400 hover:text-gray-600 transition"
           >
             <Calendar size={18} />
             <span className="text-[10px]">{t('tab_my_meets')}</span>
@@ -593,7 +593,7 @@ export default function ProfilePage() {
           <button
             id="nav-tab-profile"
             onClick={() => {}}
-            className="flex-1 flex flex-col justify-center items-center gap-1 text-purple-400 font-bold transition"
+            className="flex-1 flex flex-col justify-center items-center gap-1 text-orange-500 font-bold transition"
           >
             <UserIcon size={18} />
             <span className="text-[10px]">{t('tab_profile')}</span>

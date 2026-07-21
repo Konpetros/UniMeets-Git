@@ -87,30 +87,30 @@ export default function NotificationsPage() {
         {/* Back Button */}
         <button
           onClick={() => navigate('/profile')}
-          className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-slate-200 transition mb-6"
+          className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-700 transition mb-6"
         >
           <ArrowLeft size={14} />
           <span>{tr.back}</span>
         </button>
 
-        <h2 className="text-xl font-extrabold text-slate-100 flex items-center gap-2 mb-1.5">
-          <Bell className="text-purple-400 w-5 h-5" />
+        <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2 mb-1.5">
+          <Bell className="text-orange-500 w-5 h-5" />
           <span>{tr.title}</span>
         </h2>
-        <p className="text-xs text-slate-500 mb-6">{tr.sub}</p>
+        <p className="text-xs text-gray-400 mb-6">{tr.sub}</p>
 
         {/* Toggles Container */}
-        <div className="bg-slate-950 border border-slate-900 rounded-2.5xl p-5 space-y-6 shadow-xl">
+        <div className="bg-white border border-gray-100 rounded-2.5xl p-5 space-y-6 shadow-sm">
           
           {/* New join request on my UniMeet */}
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-start gap-3">
-              <div className="p-2 bg-purple-500/10 rounded-xl text-purple-400 mt-0.5">
+              <div className="p-2 bg-orange-50 rounded-xl text-orange-500 mt-0.5">
                 <Users size={16} />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-slate-200">{tr.new_join_request}</h4>
-                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.new_join_request_desc}</p>
+                <h4 className="text-sm font-semibold text-gray-800">{tr.new_join_request}</h4>
+                <p className="text-[10px] text-gray-400 mt-1 max-w-[220px] leading-relaxed">{tr.new_join_request_desc}</p>
               </div>
             </div>
             
@@ -118,7 +118,7 @@ export default function NotificationsPage() {
               id="toggle-new-join-request"
               onClick={() => handleToggle('new_join_request', newJoinRequest)}
               className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none shrink-0 ${
-                newJoinRequest ? 'bg-purple-600' : 'bg-slate-800'
+                newJoinRequest ? 'bg-orange-500' : 'bg-gray-200'
               }`}
             >
               <div
@@ -130,14 +130,14 @@ export default function NotificationsPage() {
           </div>
 
           {/* Someone joined my UniMeet */}
-          <div className="flex items-center justify-between gap-4 border-t border-slate-900/80 pt-5">
+          <div className="flex items-center justify-between gap-4 border-t border-gray-100 pt-5">
             <div className="flex items-start gap-3">
-              <div className="p-2 bg-blue-500/10 rounded-xl text-blue-400 mt-0.5">
+              <div className="p-2 bg-blue-50 rounded-xl text-blue-500 mt-0.5">
                 <Users size={16} />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-slate-200">{tr.someone_joined}</h4>
-                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.someone_joined_desc}</p>
+                <h4 className="text-sm font-semibold text-gray-800">{tr.someone_joined}</h4>
+                <p className="text-[10px] text-gray-400 mt-1 max-w-[220px] leading-relaxed">{tr.someone_joined_desc}</p>
               </div>
             </div>
             
@@ -145,7 +145,7 @@ export default function NotificationsPage() {
               id="toggle-someone-joined"
               onClick={() => handleToggle('someone_joined', someoneJoined)}
               className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none shrink-0 ${
-                someoneJoined ? 'bg-purple-600' : 'bg-slate-800'
+                someoneJoined ? 'bg-orange-500' : 'bg-gray-200'
               }`}
             >
               <div
@@ -157,14 +157,14 @@ export default function NotificationsPage() {
           </div>
 
           {/* My join request was approved */}
-          <div className="flex items-center justify-between gap-4 border-t border-slate-900/80 pt-5">
+          <div className="flex items-center justify-between gap-4 border-t border-gray-100 pt-5">
             <div className="flex items-start gap-3">
-              <div className="p-2 bg-emerald-500/10 rounded-xl text-emerald-400 mt-0.5">
+              <div className="p-2 bg-emerald-50 rounded-xl text-emerald-500 mt-0.5">
                 <CheckCircle size={16} />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-slate-200">{tr.join_approved}</h4>
-                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.join_approved_desc}</p>
+                <h4 className="text-sm font-semibold text-gray-800">{tr.join_approved}</h4>
+                <p className="text-[10px] text-gray-400 mt-1 max-w-[220px] leading-relaxed">{tr.join_approved_desc}</p>
               </div>
             </div>
             
@@ -172,7 +172,7 @@ export default function NotificationsPage() {
               id="toggle-join-approved"
               onClick={() => handleToggle('join_approved', joinApproved)}
               className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none shrink-0 ${
-                joinApproved ? 'bg-purple-600' : 'bg-slate-800'
+                joinApproved ? 'bg-orange-500' : 'bg-gray-200'
               }`}
             >
               <div
@@ -184,14 +184,14 @@ export default function NotificationsPage() {
           </div>
 
           {/* New message in chat */}
-          <div className="flex items-center justify-between gap-4 border-t border-slate-900/80 pt-5">
+          <div className="flex items-center justify-between gap-4 border-t border-gray-100 pt-5">
             <div className="flex items-start gap-3">
-              <div className="p-2 bg-amber-500/10 rounded-xl text-amber-400 mt-0.5">
+              <div className="p-2 bg-amber-50 rounded-xl text-amber-500 mt-0.5">
                 <MessageSquare size={16} />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-slate-200">{tr.new_message}</h4>
-                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.new_message_desc}</p>
+                <h4 className="text-sm font-semibold text-gray-800">{tr.new_message}</h4>
+                <p className="text-[10px] text-gray-400 mt-1 max-w-[220px] leading-relaxed">{tr.new_message_desc}</p>
               </div>
             </div>
             
@@ -199,7 +199,7 @@ export default function NotificationsPage() {
               id="toggle-new-message"
               onClick={() => handleToggle('new_message', newMessage)}
               className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none shrink-0 ${
-                newMessage ? 'bg-purple-600' : 'bg-slate-800'
+                newMessage ? 'bg-orange-500' : 'bg-gray-200'
               }`}
             >
               <div

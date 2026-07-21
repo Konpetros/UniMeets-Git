@@ -17,14 +17,14 @@ import confetti from 'canvas-confetti';
 
 // Color map for categories
 export const CATEGORY_COLORS: Record<CategoryType, { bg: string; text: string; border: string; accent: string }> = {
-  movies: { bg: 'bg-purple-950/30', text: 'text-purple-300', border: 'border-purple-900/50', accent: 'bg-purple-500' },
-  coffee: { bg: 'bg-amber-950/30', text: 'text-amber-300', border: 'border-amber-900/50', accent: 'bg-amber-500' },
-  study: { bg: 'bg-blue-950/30', text: 'text-blue-300', border: 'border-blue-900/50', accent: 'bg-blue-500' },
-  walk: { bg: 'bg-emerald-950/30', text: 'text-emerald-300', border: 'border-emerald-900/50', accent: 'bg-emerald-500' },
-  party: { bg: 'bg-pink-950/30', text: 'text-pink-300', border: 'border-pink-900/50', accent: 'bg-pink-500' },
-  gaming: { bg: 'bg-indigo-950/30', text: 'text-indigo-300', border: 'border-indigo-900/50', accent: 'bg-indigo-500' },
-  sports: { bg: 'bg-orange-950/30', text: 'text-orange-300', border: 'border-orange-900/50', accent: 'bg-orange-500' },
-  music: { bg: 'bg-rose-950/30', text: 'text-rose-300', border: 'border-rose-900/50', accent: 'bg-rose-500' },
+  movies: { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-250', accent: 'bg-purple-500' },
+  coffee: { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-250', accent: 'bg-amber-500' },
+  study: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-250', accent: 'bg-blue-500' },
+  walk: { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-250', accent: 'bg-emerald-500' },
+  party: { bg: 'bg-pink-50', text: 'text-pink-700', border: 'border-pink-250', accent: 'bg-pink-500' },
+  gaming: { bg: 'bg-indigo-50', text: 'text-indigo-700', border: 'border-indigo-250', accent: 'bg-indigo-500' },
+  sports: { bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-250', accent: 'bg-orange-500' },
+  music: { bg: 'bg-rose-50', text: 'text-rose-700', border: 'border-rose-250', accent: 'bg-rose-500' },
 };
 
 export const CATEGORY_EMOJIS: Record<CategoryType, string> = {
@@ -442,9 +442,9 @@ export default function FeedPage() {
     <Layout showHeader>
       {/* Search Header Extension */}
       {activeTab === 'home' && searchOpen && (
-        <div className="bg-slate-950 px-4 pb-3 pt-1 border-b border-slate-900 transition-all">
+        <div className="bg-white px-4 pb-3 pt-1 border-b border-gray-200 transition-all">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
             <input
               id="feed-search-input"
               type="text"
@@ -452,13 +452,13 @@ export default function FeedPage() {
               placeholder={t('search_placeholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-900/60 border border-slate-900 rounded-xl py-2.5 pl-10 pr-10 text-sm text-slate-200 focus:outline-none focus:border-purple-500"
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl py-2.5 pl-10 pr-10 text-sm text-gray-800 focus:outline-none focus:border-orange-400"
             />
             {searchQuery && (
               <button
                 id="feed-search-clear"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 text-xs"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs"
               >
                 ✕
               </button>
@@ -476,10 +476,10 @@ export default function FeedPage() {
             
             {/* Header / Actions Row */}
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-extrabold text-slate-100 flex items-center gap-2">
-                <Compass className="text-purple-400 w-5 h-5 animate-pulse" />
+              <h2 className="text-xl font-extrabold text-gray-900 flex items-center gap-2">
+                <Compass className="text-orange-500 w-5 h-5 animate-pulse" />
                 <span>{t('near_you')}</span>
-                <span className="text-xs bg-slate-900 text-purple-400 px-2.5 py-1 rounded-full font-mono border border-slate-800">
+                <span className="text-xs bg-gray-100 text-orange-600 px-2.5 py-1 rounded-full font-mono border border-gray-200">
                   {filteredMeetups.length}
                 </span>
               </h2>
@@ -494,8 +494,8 @@ export default function FeedPage() {
                   }}
                   className={`p-2 rounded-xl border transition ${
                     searchOpen
-                      ? 'bg-purple-950/20 border-purple-500 text-purple-300'
-                      : 'bg-slate-900 border-slate-800/80 text-slate-400 hover:text-slate-200'
+                      ? 'bg-orange-50 border-orange-400 text-orange-600'
+                      : 'bg-gray-100 border-gray-200 text-gray-500 hover:text-gray-700'
                   }`}
                 >
                   <Search size={16} />
@@ -507,13 +507,13 @@ export default function FeedPage() {
                   onClick={() => setShowFilterModal(true)}
                   className={`p-2 rounded-xl border transition flex items-center gap-1.5 ${
                     selectedCategory
-                      ? 'bg-purple-950/20 border-purple-500 text-purple-300'
-                      : 'bg-slate-900 border-slate-800/80 text-slate-400 hover:text-slate-200'
+                      ? 'bg-orange-50 border-orange-400 text-orange-600'
+                      : 'bg-gray-100 border-gray-200 text-gray-500 hover:text-gray-700'
                   }`}
                 >
                   <SlidersHorizontal size={16} />
                   {selectedCategory && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
                   )}
                 </button>
               </div>
@@ -522,14 +522,14 @@ export default function FeedPage() {
             {/* Active post / Available banner */}
             <div className="mb-6">
               {activeMeetup ? (
-                <div className="p-4 bg-gradient-to-r from-purple-950/40 to-blue-950/40 border border-purple-900/40 rounded-2xl shadow-xl flex items-center justify-between gap-4">
+                <div className="p-4 bg-gradient-to-r from-orange-50 to-orange-100/30 border border-orange-200 rounded-2xl shadow-sm flex items-center justify-between gap-4">
                   <div className="flex-1 min-w-0">
-                    <span className="text-xs font-bold text-purple-400 uppercase tracking-wider block">My Spontaneous Status</span>
-                    <h4 className="text-sm font-semibold text-slate-200 mt-1 truncate">
+                    <span className="text-xs font-bold text-orange-600 uppercase tracking-wider block">My Spontaneous Status</span>
+                    <h4 className="text-sm font-semibold text-gray-800 mt-1 truncate">
                       Looking for: {activeMeetup.title}
                     </h4>
-                    <span className="text-xs text-slate-400 mt-0.5 flex items-center gap-1">
-                      <Clock size={12} className="text-slate-500" />
+                    <span className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
+                      <Clock size={12} className="text-gray-400" />
                       {getRemainingTime(activeMeetup)} remaining
                     </span>
                   </div>
@@ -537,26 +537,26 @@ export default function FeedPage() {
                   <button
                     id="cancel-active-meetup-btn"
                     onClick={() => handleCancelMeetup(activeMeetup!)}
-                    className="p-2.5 rounded-xl bg-red-950/20 border border-red-900/30 text-red-400 hover:bg-red-900/30 transition duration-150"
+                    className="p-2.5 rounded-xl bg-red-50 border border-red-200 text-red-600 hover:bg-red-100/50 transition duration-150"
                     title={t('cancel_meetup')}
                   >
                     <Trash2 size={16} />
                   </button>
                 </div>
               ) : (
-                <div className="p-4 bg-slate-950 border border-slate-900 rounded-2xl shadow-xl flex items-center justify-between gap-4">
+                <div className="p-4 bg-white border border-gray-200 rounded-2xl shadow-sm flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-xl shrink-0">✨</div>
+                    <div className="w-10 h-10 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-xl shrink-0">✨</div>
                     <div>
-                      <h4 className="text-sm font-semibold text-slate-200">{t('become_available_banner')}</h4>
-                      <p className="text-xs text-slate-500 mt-0.5">Expires after 6 hours</p>
+                      <h4 className="text-sm font-semibold text-gray-800">{t('become_available_banner')}</h4>
+                      <p className="text-xs text-gray-500 mt-0.5">Expires after 6 hours</p>
                     </div>
                   </div>
 
                   <button
                     id="create-meetup-btn"
                     onClick={() => navigate('/create')}
-                    className="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-500 hover:to-blue-400 text-white font-bold rounded-xl shadow-lg shadow-purple-600/10 text-xs flex items-center gap-1.5 transition-all active:scale-[0.98]"
+                    className="px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-400 hover:from-orange-600 hover:to-orange-500 text-white font-bold rounded-xl shadow-sm shadow-orange-500/10 text-xs flex items-center gap-1.5 transition-all active:scale-[0.98]"
                   >
                     <Plus size={14} />
                     <span>{t('create_button')}</span>
@@ -567,10 +567,10 @@ export default function FeedPage() {
 
             {/* Locked Feed State if Geolocation Denied */}
             {locationDenied ? (
-              <div className="bg-slate-950/60 border border-slate-900 rounded-2xl p-6 text-center my-6 flex flex-col items-center">
-                <div className="w-14 h-14 rounded-2xl bg-purple-500/10 flex items-center justify-center text-2.5xl mb-4">📍</div>
-                <h3 className="text-base font-bold text-slate-100">{t('location_denied')}</h3>
-                <p className="text-xs text-slate-400 mt-2 max-w-[320px] leading-relaxed">
+              <div className="bg-white border border-gray-200 rounded-2xl p-6 text-center my-6 flex flex-col items-center">
+                <div className="w-14 h-14 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-2.5xl mb-4">📍</div>
+                <h3 className="text-base font-bold text-gray-900">{t('location_denied')}</h3>
+                <p className="text-xs text-gray-500 mt-2 max-w-[320px] leading-relaxed">
                   {t('location_denied_sub')}
                 </p>
 
@@ -584,14 +584,14 @@ export default function FeedPage() {
                       setLocationDenied(false);
                       showToast('Location simulated successfully!', 'success');
                     }}
-                    className="w-full py-2.5 bg-slate-900 border border-slate-800 text-purple-400 rounded-xl text-xs font-semibold hover:bg-slate-800 transition"
+                    className="w-full py-2.5 bg-gray-50 border border-gray-200 text-orange-600 rounded-xl text-xs font-semibold hover:bg-gray-100 transition"
                   >
                     Simulate Athens Campus Location
                   </button>
                   <button
                     id="request-loc-retry"
                     onClick={requestLocation}
-                    className="w-full py-2.5 bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded-xl text-xs font-bold shadow-lg transition"
+                    className="w-full py-2.5 bg-gradient-to-r from-orange-500 to-orange-400 text-white rounded-xl text-xs font-bold shadow-sm transition"
                   >
                     {t('re_request_location')}
                   </button>
@@ -599,15 +599,15 @@ export default function FeedPage() {
               </div>
             ) : gettingLocation ? (
               <div className="flex-1 flex flex-col items-center justify-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
-                <p className="text-xs text-slate-500 mt-3 font-mono">Fetching coordinates...</p>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+                <p className="text-xs text-gray-400 mt-3 font-mono">Fetching coordinates...</p>
               </div>
             ) : (
               /* Meets List */
               <div className="flex-1 space-y-4">
                 {loadingMeets ? (
                   <div className="flex justify-center py-12">
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-500"></div>
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-500"></div>
                   </div>
                 ) : filteredMeetups.length > 0 ? (
                   <AnimatePresence mode="popLayout">
@@ -630,14 +630,14 @@ export default function FeedPage() {
                                 handleJoin(meet);
                               }
                             } else if (info.offset.x < -100) {
-                              // Swipe left to dismiss
+                               // Swipe left to dismiss
                               handleDismiss(meet.id);
                             }
                           }}
                           initial={{ opacity: 0, scale: 0.95, y: 10 }}
                           animate={{ opacity: 1, scale: 1, y: 0 }}
                           exit={{ opacity: 0, x: -200, scale: 0.95 }}
-                          className="bg-slate-950 border border-slate-900 rounded-2.5xl p-4 shadow-xl hover:border-slate-800 transition relative overflow-hidden group touch-none cursor-grab active:cursor-grabbing"
+                          className="bg-white border border-gray-200 rounded-2.5xl p-4 shadow-sm hover:border-gray-300 transition relative overflow-hidden group touch-none cursor-grab active:cursor-grabbing"
                         >
                           {/* Slide Indicator hints */}
                           <div className="absolute inset-y-0 left-0 w-1 bg-emerald-500 opacity-0 group-hover:opacity-40 transition"></div>
@@ -649,11 +649,11 @@ export default function FeedPage() {
                               <img
                                 src={meet.creator_avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${meet.creator_username}`}
                                 alt={meet.creator_username}
-                                className="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 object-cover"
+                                className="w-10 h-10 rounded-full bg-gray-100 border border-gray-200 object-cover"
                               />
                               <div>
-                                <h4 className="text-sm font-bold text-slate-200">@{meet.creator_username}</h4>
-                                <span className="text-[10px] text-slate-500 font-medium block max-w-[220px] truncate">
+                                <h4 className="text-sm font-bold text-gray-800">@{meet.creator_username}</h4>
+                                <span className="text-[10px] text-gray-500 font-medium block max-w-[220px] truncate">
                                   {meet.creator_university}
                                 </span>
                               </div>
@@ -675,13 +675,13 @@ export default function FeedPage() {
                                       e.stopPropagation();
                                       setActiveMenuMeetId(activeMenuMeetId === meet.id ? null : meet.id);
                                     }}
-                                    className="p-1.5 bg-slate-900/60 hover:bg-slate-900 rounded-lg text-slate-400 hover:text-slate-200 transition"
+                                    className="p-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-500 hover:text-gray-700 transition"
                                   >
                                     <MoreVertical size={14} />
                                   </button>
 
                                   {activeMenuMeetId === meet.id && (
-                                    <div className="absolute right-0 mt-1.5 w-36 bg-slate-900 border border-slate-800 rounded-xl py-1 shadow-xl z-50 animate-in fade-in slide-in-from-top-1">
+                                    <div className="absolute right-0 mt-1.5 w-36 bg-white border border-gray-200 rounded-xl py-1 shadow-md z-50 animate-in fade-in slide-in-from-top-1">
                                       <button
                                         id={`report-opt-${meet.id}`}
                                         onClick={(e) => {
@@ -689,7 +689,7 @@ export default function FeedPage() {
                                           setActiveMenuMeetId(null);
                                           handleOpenReportSheet(meet);
                                         }}
-                                        className="w-full text-left px-3.5 py-2 text-xs font-semibold text-slate-300 hover:bg-slate-850 hover:text-rose-400 transition flex items-center gap-2"
+                                        className="w-full text-left px-3.5 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 hover:text-red-600 transition flex items-center gap-2"
                                       >
                                         <Flag size={12} />
                                         <span>Report</span>
@@ -701,7 +701,7 @@ export default function FeedPage() {
                                           setActiveMenuMeetId(null);
                                           handleOpenBlockConfirm(meet);
                                         }}
-                                        className="w-full text-left px-3.5 py-2 text-xs font-semibold text-slate-300 hover:bg-slate-850 hover:text-red-500 transition flex items-center gap-2 border-t border-slate-850"
+                                        className="w-full text-left px-3.5 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 hover:text-red-600 transition flex items-center gap-2 border-t border-gray-100"
                                       >
                                         <Ban size={12} />
                                         <span>Block User</span>
@@ -715,25 +715,25 @@ export default function FeedPage() {
 
                           {/* Meet Title */}
                           <div className="my-3">
-                            <p className="text-xs text-slate-500 font-bold tracking-wide uppercase">Looking for someone to</p>
-                            <h3 className="text-base font-extrabold text-slate-100 mt-0.5 leading-snug">
+                            <p className="text-xs text-gray-400 font-bold tracking-wide uppercase">Looking for someone to</p>
+                            <h3 className="text-base font-extrabold text-gray-900 mt-0.5 leading-snug">
                               {meet.title}
                             </h3>
                           </div>
 
                           {/* Location & Time Footer */}
-                          <div className="flex items-center justify-between border-t border-slate-900 pt-3 mt-4 text-[11px] text-slate-400 font-medium font-mono">
-                            <div className="flex items-center gap-1 text-purple-400">
+                          <div className="flex items-center justify-between border-t border-gray-100 pt-3 mt-4 text-[11px] text-gray-500 font-medium font-mono">
+                            <div className="flex items-center gap-1 text-orange-600">
                               <MapPin size={12} />
                               <span>{distance.label}</span>
                             </div>
 
-                            <div className="flex items-center gap-1.5 text-amber-400">
+                            <div className="flex items-center gap-1.5 text-amber-600">
                               <Clock size={12} />
                               <span>{t('expires_in', { time: getRemainingTime(meet) })}</span>
                             </div>
 
-                            <div className="flex items-center gap-1.5 text-blue-400">
+                            <div className="flex items-center gap-1.5 text-blue-600">
                               <Users size={12} />
                               <span>{meet.participant_ids.length + 1} / 10</span>
                             </div>
@@ -742,14 +742,14 @@ export default function FeedPage() {
                           {/* Participant Bubble List (If any) */}
                           {meet.participant_ids.length > 0 && (
                             <div className="mt-3 flex items-center gap-1.5">
-                              <span className="text-[9px] text-slate-500 uppercase font-bold tracking-wider">Joined:</span>
+                              <span className="text-[9px] text-gray-400 uppercase font-bold tracking-wider">Joined:</span>
                               <div className="flex -space-x-1.5 overflow-hidden">
                                 {meet.participant_ids.map((pId) => (
                                   <img
                                     key={pId}
                                     src={`https://api.dicebear.com/7.x/bottts/svg?seed=${pId}`}
                                     alt="Participant"
-                                    className="inline-block h-4.5 w-4.5 rounded-full ring-2 ring-slate-950 bg-slate-900"
+                                    className="inline-block h-4.5 w-4.5 rounded-full ring-2 ring-white bg-gray-100"
                                   />
                                 ))}
                               </div>
@@ -763,14 +763,14 @@ export default function FeedPage() {
                                 <button
                                   id={`chat-meetup-btn-${meet.id}`}
                                   onClick={() => navigate(`/chat/${meet.id}`)}
-                                  className="flex-1 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-500 text-white text-xs font-bold hover:from-purple-500 hover:to-blue-400 transition text-center"
+                                  className="flex-1 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-orange-400 text-white text-xs font-bold hover:from-orange-600 hover:to-orange-500 transition text-center shadow-sm"
                                 >
                                   Chat
                                 </button>
                                 <button
                                   id={`cancel-meetup-btn-${meet.id}`}
                                   onClick={() => handleCancelMeetup(meet)}
-                                  className="px-3.5 py-2 rounded-xl bg-red-950/20 border border-red-900/30 text-red-400 text-xs font-bold hover:bg-red-950/40 transition"
+                                  className="px-3.5 py-2 rounded-xl bg-red-50 border border-red-200 text-red-600 text-xs font-bold hover:bg-red-100 transition"
                                   title={t('cancel_meetup')}
                                 >
                                   <Trash2 size={14} />
@@ -781,14 +781,14 @@ export default function FeedPage() {
                                 <button
                                   id={`chat-meetup-btn-${meet.id}`}
                                   onClick={() => navigate(`/chat/${meet.id}`)}
-                                  className="flex-1 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-500 text-white text-xs font-bold hover:from-purple-500 hover:to-blue-400 transition text-center"
+                                  className="flex-1 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-orange-400 text-white text-xs font-bold hover:from-orange-600 hover:to-orange-500 transition text-center shadow-sm"
                                 >
                                   Chat
                                 </button>
                                 <button
                                   id={`leave-meetup-btn-${meet.id}`}
                                   onClick={() => handleLeave(meet)}
-                                  className="px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 text-xs font-bold hover:bg-slate-850 transition"
+                                  className="px-3.5 py-2 rounded-xl bg-gray-100 border border-gray-200 text-gray-600 text-xs font-bold hover:bg-gray-200 transition"
                                 >
                                   Leave
                                 </button>
@@ -797,7 +797,7 @@ export default function FeedPage() {
                               <button
                                 id={`pending-meetup-btn-${meet.id}`}
                                 disabled
-                                className="w-full py-2 rounded-xl bg-slate-900 border border-slate-800 text-amber-500 text-xs font-bold cursor-not-allowed"
+                                className="w-full py-2 rounded-xl bg-gray-100 border border-gray-200 text-amber-600 text-xs font-bold cursor-not-allowed"
                               >
                                 Pending Approval
                               </button>
@@ -805,7 +805,7 @@ export default function FeedPage() {
                               <button
                                 id={`join-meetup-btn-${meet.id}`}
                                 onClick={() => handleJoin(meet)}
-                                className="w-full py-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-500 text-white text-xs font-bold hover:from-purple-500 hover:to-blue-400 transition"
+                                className="w-full py-2 rounded-xl bg-gradient-to-r from-orange-500 to-orange-400 text-white text-xs font-bold hover:from-orange-600 hover:to-orange-500 transition shadow-sm"
                               >
                                 {meet.requires_approval ? 'Request to Join' : t('join')}
                               </button>
@@ -814,7 +814,7 @@ export default function FeedPage() {
                             <button
                               id={`dismiss-meetup-btn-${meet.id}`}
                               onClick={() => handleDismiss(meet.id)}
-                              className="px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-500 hover:text-slate-300 text-xs"
+                              className="px-3 py-2 rounded-xl bg-gray-100 border border-gray-200 text-gray-500 hover:text-gray-700 text-xs"
                               title="Dismiss / Hide"
                             >
                               ✕
@@ -825,10 +825,10 @@ export default function FeedPage() {
                     })}
                   </AnimatePresence>
                 ) : (
-                  <div className="text-center py-16 px-4 bg-slate-950 border border-slate-900/60 rounded-2.5xl">
-                    <div className="w-14 h-14 rounded-2xl bg-purple-500/5 flex items-center justify-center text-3xl mx-auto mb-4">🔍</div>
-                    <h3 className="text-slate-200 font-bold">{t('no_meets')}</h3>
-                    <p className="text-xs text-slate-500 mt-2 max-w-[280px] mx-auto leading-relaxed">
+                  <div className="text-center py-16 px-4 bg-white border border-gray-200 rounded-2.5xl shadow-sm">
+                    <div className="w-14 h-14 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-3xl mx-auto mb-4">🔍</div>
+                    <h3 className="text-gray-800 font-bold">{t('no_meets')}</h3>
+                    <p className="text-xs text-gray-500 mt-2 max-w-[280px] mx-auto leading-relaxed">
                       {t('no_meets_sub')}
                     </p>
                   </div>
@@ -838,24 +838,24 @@ export default function FeedPage() {
           </div>
         )}
 
-        {/* TAB 2: MY UNIMEETS */}
+             {/* TAB 2: MY UNIMEETS */}
         {activeTab === 'my-meets' && (
           <div className="flex-1 flex flex-col p-4" id="my-meets-tab-content">
-            <h2 className="text-xl font-extrabold text-slate-100 mb-6 flex items-center gap-2">
-              <Calendar className="text-purple-400 w-5 h-5" />
+            <h2 className="text-xl font-extrabold text-gray-900 mb-6 flex items-center gap-2">
+              <Calendar className="text-orange-500 w-5 h-5" />
               <span>{t('tab_my_meets')}</span>
             </h2>
 
             {myCreatedMeets.length === 0 && myJoinedMeets.length === 0 ? (
-              <div className="text-center py-16 px-4 bg-slate-950 border border-slate-900/60 rounded-2.5xl my-auto">
+              <div className="text-center py-16 px-4 bg-white border border-gray-200 rounded-2.5xl my-auto shadow-sm">
                 <span className="text-4xl">📋</span>
-                <h3 className="text-slate-300 font-bold mt-4">No active meetups</h3>
-                <p className="text-xs text-slate-500 mt-2 max-w-[280px] mx-auto">
+                <h3 className="text-gray-800 font-bold mt-4">No active meetups</h3>
+                <p className="text-xs text-gray-500 mt-2 max-w-[280px] mx-auto">
                   {t('no_active_meets_user')}
                 </p>
                 <button
                   onClick={() => navigate('/create')}
-                  className="mt-6 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-500 hover:to-blue-400 text-white font-bold rounded-xl text-xs transition"
+                  className="mt-6 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-400 hover:from-orange-600 hover:to-orange-500 text-white font-bold rounded-xl text-xs transition shadow-sm"
                 >
                   Create availability
                 </button>
@@ -865,21 +865,21 @@ export default function FeedPage() {
                 {/* Created by me */}
                 {myCreatedMeets.length > 0 && (
                   <div>
-                    <h3 className="text-xs font-extrabold text-purple-400 uppercase tracking-wider mb-3">Created by me</h3>
+                    <h3 className="text-xs font-extrabold text-orange-650 uppercase tracking-wider mb-3">Created by me</h3>
                     <div className="space-y-3">
                       {myCreatedMeets.map((meet) => (
-                        <div key={meet.id} className="p-4 bg-slate-950 border border-slate-900 rounded-xl flex justify-between items-center gap-4">
+                        <div key={meet.id} className="p-4 bg-white border border-gray-200 rounded-xl flex justify-between items-center gap-4 shadow-sm">
                           <div>
-                            <span className="text-[10px] text-purple-400 uppercase font-mono font-bold block">{meet.category}</span>
-                            <h4 className="text-sm font-bold text-slate-100 mt-1">{meet.title}</h4>
-                            <span className="text-xs text-slate-400 mt-0.5 flex items-center gap-1">
+                            <span className="text-[10px] text-orange-655 uppercase font-mono font-bold block">{meet.category}</span>
+                            <h4 className="text-sm font-bold text-gray-900 mt-1">{meet.title}</h4>
+                            <span className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
                               <Users size={12} /> {meet.participant_ids.length} Joined
                             </span>
                           </div>
                           <button
                             id={`cancel-meetup-btn-${meet.id}`}
                             onClick={() => handleCancelMeetup(meet)}
-                            className="p-2 bg-red-950/20 border border-red-900/30 text-red-400 rounded-xl hover:bg-red-950/40 transition"
+                            className="p-2 bg-red-50 border border-red-200 text-red-600 rounded-xl hover:bg-red-100 transition"
                           >
                             <Trash2 size={14} />
                           </button>
@@ -892,21 +892,21 @@ export default function FeedPage() {
                 {/* Joined by me */}
                 {myJoinedMeets.length > 0 && (
                   <div>
-                    <h3 className="text-xs font-extrabold text-blue-400 uppercase tracking-wider mb-3">Joined by me</h3>
+                    <h3 className="text-xs font-extrabold text-blue-600 uppercase tracking-wider mb-3">Joined by me</h3>
                     <div className="space-y-3">
                       {myJoinedMeets.map((meet) => (
-                        <div key={meet.id} className="p-4 bg-slate-950 border border-slate-900 rounded-xl flex justify-between items-center gap-4">
+                        <div key={meet.id} className="p-4 bg-white border border-gray-200 rounded-xl flex justify-between items-center gap-4 shadow-sm">
                           <div>
-                            <span className="text-[10px] text-blue-400 uppercase font-mono font-bold block">@{meet.creator_username}</span>
-                            <h4 className="text-sm font-bold text-slate-100 mt-1">{meet.title}</h4>
-                            <span className="text-xs text-slate-400 mt-0.5 flex items-center gap-1">
+                            <span className="text-[10px] text-blue-600 uppercase font-mono font-bold block">@{meet.creator_username}</span>
+                            <h4 className="text-sm font-bold text-gray-900 mt-1">{meet.title}</h4>
+                            <span className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
                               <Users size={12} /> {meet.participant_ids.length + 1} participants
                             </span>
                           </div>
                           <button
                             id={`leave-meetup-btn-${meet.id}`}
                             onClick={() => handleLeave(meet)}
-                            className="px-3 py-1.5 bg-slate-900 border border-slate-800 hover:bg-slate-850 text-slate-400 text-xs font-semibold rounded-xl transition"
+                            className="px-3 py-1.5 bg-gray-100 border border-gray-200 hover:bg-gray-200 text-gray-600 text-xs font-semibold rounded-xl transition"
                           >
                             {t('leave_meetup')}
                           </button>
@@ -923,13 +923,13 @@ export default function FeedPage() {
         {/* TAB 3: PROFILE */}
         {activeTab === 'profile' && profile && (
           <div className="flex-1 flex flex-col p-4" id="profile-tab-content">
-            <h2 className="text-xl font-extrabold text-slate-100 mb-6 flex items-center gap-2">
-              <UserIcon className="text-purple-400 w-5 h-5" />
+            <h2 className="text-xl font-extrabold text-gray-900 mb-6 flex items-center gap-2">
+              <UserIcon className="text-orange-500 w-5 h-5" />
               <span>{t('tab_profile')}</span>
             </h2>
 
             {/* Profile Info card */}
-            <div className="bg-slate-950 border border-slate-900 rounded-2.5xl p-5 shadow-2xl relative">
+            <div className="bg-white border border-gray-200 rounded-2.5xl p-5 shadow-sm relative">
               
               {/* Edit toggle */}
               <button
@@ -941,48 +941,48 @@ export default function FeedPage() {
                     startEditing();
                   }
                 }}
-                className="absolute top-4 right-4 p-2 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 text-purple-400 transition"
+                className="absolute top-4 right-4 p-2 rounded-xl bg-gray-100 hover:bg-gray-200 border border-gray-200 text-orange-600 transition"
               >
                 {isEditingProfile ? <span className="text-xs font-bold">✕ Cancel</span> : <Edit size={14} />}
               </button>
 
               <div className="flex flex-col items-center text-center">
-                <div className="w-20 h-20 rounded-full border-4 border-slate-900 overflow-hidden bg-slate-900 mb-3 shadow-xl">
+                <div className="w-20 h-20 rounded-full border-4 border-white overflow-hidden bg-gray-100 mb-3 shadow-md">
                   <img
                     src={profile.avatar_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${profile.username}`}
                     alt={profile.username}
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <h3 className="text-lg font-extrabold text-slate-100">@{profile.username}</h3>
+                <h3 className="text-lg font-extrabold text-gray-900">@{profile.username}</h3>
                 
                 {isEditingProfile ? (
                   /* Editing Mode */
                   <div className="w-full text-left space-y-4 mt-6">
                     <div>
-                      <label className="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wide">University</label>
+                      <label className="block text-xs font-bold text-gray-500 mb-1.5 uppercase tracking-wide">University</label>
                       <input
                         id="profile-edit-uni-search"
                         type="text"
                         value={editUni}
                         onChange={(e) => setEditUni(e.target.value)}
-                        className="w-full bg-slate-900 border border-slate-850 rounded-xl py-2.5 px-3.5 text-xs text-slate-100 focus:outline-none focus:border-purple-500"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-xl py-2.5 px-3.5 text-xs text-gray-800 focus:outline-none focus:border-orange-400"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wide">Short Bio</label>
+                      <label className="block text-xs font-bold text-gray-500 mb-1.5 uppercase tracking-wide">Short Bio</label>
                       <textarea
                         id="profile-edit-bio-textarea"
                         value={editBio}
                         onChange={(e) => setEditBio(e.target.value.slice(0, 300))}
                         rows={3}
-                        className="w-full bg-slate-900 border border-slate-850 rounded-xl p-3 text-xs text-slate-100 focus:outline-none focus:border-purple-500 resize-none"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs text-gray-800 focus:outline-none focus:border-orange-400 resize-none"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-400 mb-1.5 uppercase tracking-wide">Interests (1 to 5)</label>
+                      <label className="block text-xs font-bold text-gray-500 mb-1.5 uppercase tracking-wide">Interests (1 to 5)</label>
                       <div className="flex flex-wrap gap-2 mt-2">
                         {INTEREST_OPTIONS.map((opt) => {
                           const isSel = editInterests.includes(opt.id);
@@ -994,8 +994,8 @@ export default function FeedPage() {
                               onClick={() => toggleEditInterest(opt.id)}
                               className={`px-2.5 py-1.5 rounded-lg text-[10px] font-bold border transition ${
                                 isSel
-                                  ? 'bg-purple-950/40 border-purple-500 text-purple-300'
-                                  : 'bg-slate-900 border-slate-850 text-slate-400'
+                                  ? 'bg-orange-50 border-orange-400 text-orange-600'
+                                  : 'bg-gray-100 border-gray-200 text-gray-500'
                               }`}
                             >
                               <span>{opt.icon}</span> {language === 'el' ? opt.labelEl : opt.labelEn}
@@ -1009,7 +1009,7 @@ export default function FeedPage() {
                       id="save-profile-btn"
                       onClick={handleSaveProfile}
                       disabled={savingProfile}
-                      className="w-full mt-4 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:from-purple-500 hover:to-blue-400 transition flex items-center justify-center gap-2 text-xs"
+                      className="w-full mt-4 bg-gradient-to-r from-orange-500 to-orange-400 text-white font-bold py-3 px-4 rounded-xl shadow-sm hover:from-orange-600 hover:to-orange-500 transition flex items-center justify-center gap-2 text-xs"
                     >
                       {savingProfile ? (
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
@@ -1024,27 +1024,27 @@ export default function FeedPage() {
                 ) : (
                   /* Standard display Mode */
                   <>
-                    <p className="text-xs text-slate-500 font-semibold flex items-center gap-1.5 mt-1">
-                      <MapPin size={12} className="text-purple-400" />
+                    <p className="text-xs text-gray-500 font-semibold flex items-center gap-1.5 mt-1">
+                      <MapPin size={12} className="text-orange-500" />
                       {profile.university}
                     </p>
 
-                    <div className="mt-6 w-full text-left bg-slate-900/40 border border-slate-900 rounded-2xl p-4">
-                      <h4 className="text-[10px] font-bold text-purple-400 uppercase tracking-widest mb-1.5">Student Bio</h4>
-                      <p className="text-xs text-slate-300 leading-relaxed italic">
+                    <div className="mt-6 w-full text-left bg-gray-50 border border-gray-100 rounded-2xl p-4">
+                      <h4 className="text-[10px] font-bold text-orange-600 uppercase tracking-widest mb-1.5">Student Bio</h4>
+                      <p className="text-xs text-gray-750 leading-relaxed italic">
                         {profile.bio || 'No bio written yet. Tell nearby students about yourself!'}
                       </p>
                     </div>
 
                     <div className="mt-6 w-full text-left">
-                      <h4 className="text-[10px] font-bold text-purple-400 uppercase tracking-widest mb-3">Student Interests</h4>
+                      <h4 className="text-[10px] font-bold text-orange-600 uppercase tracking-widest mb-3">Student Interests</h4>
                       <div className="flex flex-wrap gap-2">
                         {profile.interests.map((intId) => {
                           const item = INTEREST_OPTIONS.find((o) => o.id === intId);
                           return (
                             <span
                               key={intId}
-                              className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-[11px] font-semibold text-slate-300 flex items-center gap-1.5"
+                              className="px-3 py-1.5 rounded-xl bg-gray-50 border border-gray-200 text-[11px] font-semibold text-gray-700 flex items-center gap-1.5"
                             >
                               <span>{item?.icon || '✨'}</span>
                               <span>{language === 'el' ? item?.labelEl : item?.labelEn}</span>
@@ -1057,7 +1057,7 @@ export default function FeedPage() {
                     <button
                       id="profile-signout-btn"
                       onClick={logout}
-                      className="w-full mt-8 py-3 bg-red-950/20 hover:bg-red-950/30 border border-red-900/30 text-red-400 font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition"
+                      className="w-full mt-8 py-3 bg-red-50 hover:bg-red-100 border border-red-200 text-red-650 font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition"
                     >
                       <LogOut size={14} />
                       <span>{t('sign_out')}</span>
@@ -1070,7 +1070,7 @@ export default function FeedPage() {
         )}
 
         {/* BOTTOM NAVIGATION TAB BAR */}
-        <nav className="absolute bottom-0 left-0 right-0 h-16 bg-slate-950/95 backdrop-blur-md border-t border-slate-900 flex items-stretch z-40">
+        <nav className="absolute bottom-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-md border-t border-gray-200 flex items-stretch z-40">
           <button
             id="nav-tab-home"
             onClick={() => {
@@ -1079,7 +1079,7 @@ export default function FeedPage() {
               setSearchQuery('');
             }}
             className={`flex-1 flex flex-col justify-center items-center gap-1 transition ${
-              activeTab === 'home' ? 'text-purple-400 font-bold' : 'text-slate-500 hover:text-slate-400'
+              activeTab === 'home' ? 'text-orange-500 font-bold' : 'text-gray-400 hover:text-gray-600'
             }`}
           >
             <HomeIcon size={18} />
@@ -1090,7 +1090,7 @@ export default function FeedPage() {
             id="nav-tab-my-meets"
             onClick={() => navigate('/my-unimeets')}
             className={`flex-1 flex flex-col justify-center items-center gap-1 transition ${
-              activeTab === 'my-meets' ? 'text-purple-400 font-bold' : 'text-slate-500 hover:text-slate-400'
+              activeTab === 'my-meets' ? 'text-orange-500 font-bold' : 'text-gray-400 hover:text-gray-600'
             }`}
           >
             <Calendar size={18} />
@@ -1100,7 +1100,7 @@ export default function FeedPage() {
           <button
             id="nav-tab-profile"
             onClick={() => navigate('/profile')}
-            className="flex-1 flex flex-col justify-center items-center gap-1 text-slate-500 hover:text-slate-400 transition"
+            className="flex-1 flex flex-col justify-center items-center gap-1 text-gray-400 hover:text-gray-600 transition"
           >
             <UserIcon size={18} />
             <span className="text-[10px]">{t('tab_profile')}</span>
@@ -1110,14 +1110,14 @@ export default function FeedPage() {
 
       {/* FILTER MODAL OVERLAY */}
       {showFilterModal && (
-        <div className="absolute inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex flex-col justify-end">
-          <div className="bg-slate-950 border-t border-slate-900 rounded-t-3xl p-6 space-y-4 max-h-[85%] overflow-y-auto">
-            <div className="flex justify-between items-center pb-2 border-b border-slate-900">
-              <h3 className="text-base font-extrabold text-slate-100">Filter Activities</h3>
+        <div className="absolute inset-0 z-50 bg-gray-900/40 backdrop-blur-sm flex flex-col justify-end">
+          <div className="bg-white border-t border-gray-200 rounded-t-3xl p-6 space-y-4 max-h-[85%] overflow-y-auto shadow-xl">
+            <div className="flex justify-between items-center pb-2 border-b border-gray-100">
+              <h3 className="text-base font-extrabold text-gray-900">Filter Activities</h3>
               <button
                 id="filter-close-btn"
                 onClick={() => setShowFilterModal(false)}
-                className="text-xs text-slate-500 hover:text-slate-300 font-bold px-2 py-1"
+                className="text-xs text-gray-500 hover:text-gray-700 font-bold px-2 py-1"
               >
                 ✕ Close
               </button>
@@ -1137,8 +1137,8 @@ export default function FeedPage() {
                     }}
                     className={`p-3 rounded-xl border text-xs font-semibold flex items-center gap-2.5 transition ${
                       isSel
-                        ? 'bg-purple-950/40 border-purple-500 text-purple-300'
-                        : 'bg-slate-900/50 border-slate-900/80 text-slate-400 hover:bg-slate-900'
+                        ? 'bg-orange-50 border-orange-400 text-orange-600'
+                        : 'bg-gray-50 border-gray-105 text-gray-500 hover:bg-gray-100'
                     }`}
                   >
                     <span>{opt.icon}</span>
@@ -1155,7 +1155,7 @@ export default function FeedPage() {
                   setSelectedCategory(null);
                   setShowFilterModal(false);
                 }}
-                className="w-full py-2.5 mt-4 bg-slate-900 border border-slate-800 text-purple-400 text-xs font-bold rounded-xl hover:bg-slate-850 transition"
+                className="w-full py-2.5 mt-4 bg-gray-100 border border-gray-200 text-orange-600 text-xs font-bold rounded-xl hover:bg-gray-200 transition"
               >
                 Clear Filters
               </button>
@@ -1166,29 +1166,29 @@ export default function FeedPage() {
 
       {/* Block Confirmation Modal */}
       {blockingUser && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-[60] animate-in fade-in duration-200">
-          <div className="bg-slate-950 border border-slate-900 rounded-3xl p-6 w-full max-w-sm shadow-2xl animate-in zoom-in-95 duration-200">
-            <div className="w-12 h-12 rounded-2xl bg-red-950/20 border border-red-900/30 text-red-500 flex items-center justify-center mb-4 mx-auto">
+        <div className="fixed inset-0 bg-gray-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-[60] animate-in fade-in duration-200">
+          <div className="bg-white border border-gray-200 rounded-3xl p-6 w-full max-w-sm shadow-xl animate-in zoom-in-95 duration-200">
+            <div className="w-12 h-12 rounded-2xl bg-red-50 border border-red-200 text-red-650 flex items-center justify-center mb-4 mx-auto">
               <Ban size={22} />
             </div>
-            <h3 className="text-base font-extrabold text-slate-100 text-center">
+            <h3 className="text-base font-extrabold text-gray-900 text-center">
               Block @{blockingUser.creator_username}?
             </h3>
-            <p className="text-xs text-slate-400 text-center mt-2 leading-relaxed">
+            <p className="text-xs text-gray-500 text-center mt-2 leading-relaxed">
               They won't be able to see your UniMeets and you won't see theirs.
             </p>
             <div className="flex gap-2.5 mt-6">
               <button
                 id="cancel-block-confirm"
                 onClick={() => setBlockingUser(null)}
-                className="flex-1 py-2.5 bg-slate-900 border border-slate-850 text-slate-400 hover:text-slate-200 rounded-xl text-xs font-bold transition"
+                className="flex-1 py-2.5 bg-gray-100 border border-gray-200 text-gray-600 hover:text-gray-800 rounded-xl text-xs font-bold transition"
               >
                 Cancel
               </button>
               <button
                 id="submit-block-confirm"
                 onClick={handleBlockSubmit}
-                className="flex-1 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold transition"
+                className="flex-1 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold transition shadow-sm"
               >
                 Block
               </button>
@@ -1199,22 +1199,22 @@ export default function FeedPage() {
 
       {/* Report Bottom Sheet */}
       {reportingMeet && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-end justify-center z-[60] animate-in fade-in duration-200">
-          <div className="bg-slate-950 border-t border-slate-900 rounded-t-3xl p-6 w-full max-w-md shadow-2xl animate-in slide-in-from-bottom duration-300">
-            <div className="w-12 h-1.5 bg-slate-900 rounded-full mx-auto mb-4"></div>
+        <div className="fixed inset-0 bg-gray-900/40 backdrop-blur-sm flex items-end justify-center z-[60] animate-in fade-in duration-200">
+          <div className="bg-white border-t border-gray-200 rounded-t-3xl p-6 w-full max-w-md shadow-xl animate-in slide-in-from-bottom duration-300">
+            <div className="w-12 h-1.5 bg-gray-250 rounded-full mx-auto mb-4"></div>
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-base font-extrabold text-slate-100">
+              <h3 className="text-base font-extrabold text-gray-900">
                 Report @{reportingMeet.creator_username}
               </h3>
               <button
                 id="close-report-sheet"
                 onClick={() => setReportingMeet(null)}
-                className="text-slate-500 hover:text-slate-300 text-sm"
+                className="text-gray-400 hover:text-gray-600 text-sm"
               >
                 ✕
               </button>
             </div>
-            <p className="text-xs text-slate-500 mb-4">
+            <p className="text-xs text-gray-500 mb-4">
               Why are you reporting this student? Your report is confidential.
             </p>
 
@@ -1233,13 +1233,13 @@ export default function FeedPage() {
                   onClick={() => setReportReason(reasonOption.id)}
                   className={`w-full text-left p-3 rounded-xl border text-xs font-semibold flex items-center justify-between transition ${
                     reportReason === reasonOption.id
-                      ? 'bg-purple-950/20 border-purple-500 text-purple-300'
-                      : 'bg-slate-900/40 border-slate-900 text-slate-300 hover:bg-slate-900'
+                      ? 'bg-orange-50 border-orange-400 text-orange-600'
+                      : 'bg-gray-50 border-gray-150 text-gray-700 hover:bg-gray-100'
                   }`}
                 >
                   <span>{language === 'el' ? reasonOption.el : reasonOption.en}</span>
                   {reportReason === reasonOption.id && (
-                    <Check size={14} className="text-purple-400" />
+                    <Check size={14} className="text-orange-500" />
                   )}
                 </button>
               ))}
@@ -1247,7 +1247,7 @@ export default function FeedPage() {
 
             {/* Optional details textarea */}
             <div className="mb-6">
-              <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">
                 Additional Details (Optional)
               </label>
               <textarea
@@ -1257,9 +1257,9 @@ export default function FeedPage() {
                 value={reportDetails}
                 onChange={(e) => setReportDetails(e.target.value)}
                 placeholder="Include any helpful details (max 200 characters)..."
-                className="w-full bg-slate-900 border border-slate-900 rounded-xl p-3 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-purple-500 resize-none"
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:border-orange-400 resize-none"
               />
-              <div className="text-[10px] text-slate-600 text-right font-mono mt-1">
+              <div className="text-[10px] text-gray-400 text-right font-mono mt-1">
                 {reportDetails.length}/200
               </div>
             </div>
@@ -1269,7 +1269,7 @@ export default function FeedPage() {
               id="submit-report-btn"
               onClick={handleReportSubmit}
               disabled={submittingReport || !reportReason}
-              className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-500 hover:to-blue-400 text-white rounded-xl text-xs font-bold shadow-lg transition disabled:opacity-50"
+              className="w-full py-3 bg-gradient-to-r from-orange-500 to-orange-400 hover:from-orange-600 hover:to-orange-500 text-white rounded-xl text-xs font-bold shadow-sm transition disabled:opacity-50"
             >
               {submittingReport ? 'Submitting...' : 'Submit Report'}
             </button>

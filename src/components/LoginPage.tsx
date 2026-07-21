@@ -87,7 +87,7 @@ export default function LoginPage() {
           <button
             id="login-lang-toggle"
             onClick={() => setLanguage(language === 'el' ? 'en' : 'el')}
-            className="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs font-semibold hover:bg-slate-800 transition"
+            className="px-3 py-1.5 rounded-lg bg-gray-100 border border-gray-200 text-xs font-semibold hover:bg-gray-200 text-gray-700 transition"
           >
             {language === 'el' ? '🇬🇧 English' : '🇬🇷 Ελληνικά'}
           </button>
@@ -95,13 +95,13 @@ export default function LoginPage() {
 
         {/* App Logo area */}
         <div className="text-center mb-8 flex flex-col items-center">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-purple-600 to-blue-500 flex items-center justify-center shadow-xl shadow-purple-500/20 mb-4 animate-bounce">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-orange-500 to-orange-400 flex items-center justify-center shadow-xl shadow-orange-500/20 mb-4 animate-bounce">
             <span className="text-3xl">🎓</span>
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-orange-500 to-orange-400 bg-clip-text text-transparent">
             {t('app_name')}
           </h1>
-          <p className="text-sm text-slate-400 mt-1.5">{t('subtitle')}</p>
+          <p className="text-sm text-gray-500 mt-1.5">{t('subtitle')}</p>
         </div>
 
         {/* Social Buttons */}
@@ -109,7 +109,7 @@ export default function LoginPage() {
           <button
             id="google-login-btn"
             onClick={loginWithGoogle}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-slate-800 rounded-xl bg-slate-950 hover:bg-slate-900 font-medium text-sm text-slate-200 transition-all shadow-sm"
+            className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-200 rounded-xl bg-white hover:bg-gray-50 font-semibold text-sm text-gray-700 transition-all shadow-sm"
           >
             {/* Google SVG Icon */}
             <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -136,10 +136,10 @@ export default function LoginPage() {
           <button
             id="apple-login-btn"
             onClick={loginWithApple}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-slate-800 rounded-xl bg-slate-950 hover:bg-slate-900 font-medium text-sm text-slate-200 transition-all shadow-sm"
+            className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-200 rounded-xl bg-white hover:bg-gray-50 font-semibold text-sm text-gray-700 transition-all shadow-sm"
           >
             {/* Apple SVG Icon */}
-            <svg className="w-5 h-5 fill-slate-200" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 fill-gray-800" viewBox="0 0 24 24">
               <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.2.67-2.92 1.49-.62.71-1.16 1.85-1.01 2.96 1.1.09 2.23-.58 2.94-1.39z" />
             </svg>
             <span>{t('continue_apple')}</span>
@@ -148,19 +148,19 @@ export default function LoginPage() {
 
         {/* Divider */}
         <div className="flex items-center gap-3 my-4">
-          <div className="flex-1 h-px bg-slate-900"></div>
-          <span className="text-xs uppercase tracking-wider text-slate-500 font-bold">{t('or')}</span>
-          <div className="flex-1 h-px bg-slate-900"></div>
+          <div className="flex-1 h-px bg-gray-200"></div>
+          <span className="text-xs uppercase tracking-wider text-gray-400 font-bold">{t('or')}</span>
+          <div className="flex-1 h-px bg-gray-200"></div>
         </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-400 mb-1.5 tracking-wide">
+            <label className="block text-xs font-semibold text-gray-500 mb-1.5 tracking-wide">
               {t('email_label')}
             </label>
             <div className="relative">
-              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4" />
+              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
               <input
                 id="login-email-input"
                 type="email"
@@ -168,30 +168,30 @@ export default function LoginPage() {
                 placeholder={t('email_placeholder')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-slate-950/50 border border-slate-900 rounded-xl py-3 pl-11 pr-4 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-purple-500 transition-all"
+                className="w-full bg-white border border-gray-200 rounded-xl py-3 pl-11 pr-4 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-orange-400 transition-all shadow-sm"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-400 mb-1.5 tracking-wide">
+            <label className="block text-xs font-semibold text-gray-500 mb-1.5 tracking-wide">
               {t('password_label')}
             </label>
             <div className="relative">
-              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4" />
+              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
               <input
                 id="login-password-input"
                 type={showPassword ? 'text' : 'password'}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-slate-950/50 border border-slate-900 rounded-xl py-3 pl-11 pr-11 text-sm text-slate-200 focus:outline-none focus:border-purple-500 transition-all"
+                className="w-full bg-white border border-gray-200 rounded-xl py-3 pl-11 pr-11 text-sm text-gray-800 focus:outline-none focus:border-orange-400 transition-all shadow-sm"
               />
               <button
                 id="password-toggle-btn"
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition"
               >
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
@@ -201,18 +201,18 @@ export default function LoginPage() {
           {isSignUp && (
             <>
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1.5 tracking-wide">
+                <label className="block text-xs font-semibold text-gray-500 mb-1.5 tracking-wide">
                   {t('confirm_password_label')}
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4" />
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
                   <input
                     id="signup-confirm-password-input"
                     type={showPassword ? 'text' : 'password'}
                     required
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full bg-slate-950/50 border border-slate-900 rounded-xl py-3 pl-11 pr-4 text-sm text-slate-200 focus:outline-none focus:border-purple-500 transition-all"
+                    className="w-full bg-white border border-gray-200 rounded-xl py-3 pl-11 pr-4 text-sm text-gray-800 focus:outline-none focus:border-orange-400 transition-all shadow-sm"
                   />
                 </div>
               </div>
@@ -224,10 +224,10 @@ export default function LoginPage() {
                   onClick={() => setAcceptTerms(!acceptTerms)}
                   className="flex items-start gap-3 text-left w-full group"
                 >
-                  <span className="text-purple-400 mt-0.5 group-hover:text-purple-300 transition">
+                  <span className="text-orange-500 mt-0.5 group-hover:text-orange-600 transition">
                     {acceptTerms ? <CheckSquare size={18} /> : <Square size={18} />}
                   </span>
-                  <span className="text-xs text-slate-400 group-hover:text-slate-300 transition">
+                  <span className="text-xs text-gray-500 group-hover:text-gray-700 transition">
                     {t('terms_accept')}
                   </span>
                 </button>
@@ -238,11 +238,11 @@ export default function LoginPage() {
                   onClick={() => setConfirmAge(!confirmAge)}
                   className="flex items-start gap-3 text-left w-full group"
                 >
-                  <span className="text-purple-400 mt-0.5 group-hover:text-purple-300 transition">
+                  <span className="text-orange-500 mt-0.5 group-hover:text-orange-600 transition">
                     {confirmAge ? <CheckSquare size={18} /> : <Square size={18} />}
                   </span>
-                  <span className="text-xs text-slate-400 group-hover:text-slate-300 transition flex items-center gap-1.5">
-                    <ShieldCheck size={14} className="text-slate-500" />
+                  <span className="text-xs text-gray-500 group-hover:text-gray-700 transition flex items-center gap-1.5">
+                    <ShieldCheck size={14} className="text-gray-400" />
                     {t('age_confirm')}
                   </span>
                 </button>
@@ -254,7 +254,7 @@ export default function LoginPage() {
             id="auth-submit-btn"
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-500 hover:to-blue-400 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-purple-600/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-4 text-sm disabled:opacity-50"
+            className="w-full bg-gradient-to-r from-orange-500 to-orange-400 hover:from-orange-600 hover:to-orange-500 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-orange-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-4 text-sm disabled:opacity-50"
           >
             {loading ? (
               <>
@@ -279,7 +279,7 @@ export default function LoginPage() {
               setPassword('');
               setConfirmPassword('');
             }}
-            className="text-xs font-semibold text-purple-400 hover:text-purple-300 transition"
+            className="text-xs font-semibold text-orange-500 hover:text-orange-600 transition"
           >
             {isSignUp ? t('switch_login') : t('switch_signup')}
           </button>

@@ -11,14 +11,14 @@ import { encodeGeohash, hasProfanity } from '../utils';
 import { CategoryType } from '../types';
 
 const CATEGORIES: { id: CategoryType; labelEn: string; labelEl: string; emoji: string; color: string; hover: string; selectClass: string }[] = [
-  { id: 'coffee', labelEn: 'Coffee', labelEl: 'Καφές', emoji: '☕', color: 'bg-amber-950/20 text-amber-400 border-amber-900/40', hover: 'hover:bg-amber-900/10', selectClass: 'bg-amber-500 text-slate-950 border-amber-400 font-bold scale-[1.04]' },
-  { id: 'study', labelEn: 'Study', labelEl: 'Διάβασμα', emoji: '📚', color: 'bg-blue-950/20 text-blue-400 border-blue-900/40', hover: 'hover:bg-blue-900/10', selectClass: 'bg-blue-500 text-slate-950 border-blue-400 font-bold scale-[1.04]' },
-  { id: 'walk', labelEn: 'Walk', labelEl: 'Βόλτα', emoji: '🌿', color: 'bg-emerald-950/20 text-emerald-400 border-emerald-900/40', hover: 'hover:bg-emerald-900/10', selectClass: 'bg-emerald-500 text-slate-950 border-emerald-400 font-bold scale-[1.04]' },
-  { id: 'movies', labelEn: 'Movies', labelEl: 'Ταινίες', emoji: '🎬', color: 'bg-purple-950/20 text-purple-400 border-purple-900/40', hover: 'hover:bg-purple-900/10', selectClass: 'bg-purple-500 text-slate-950 border-purple-400 font-bold scale-[1.04]' },
-  { id: 'party', labelEn: 'Party', labelEl: 'Πάρτι', emoji: '🎉', color: 'bg-pink-950/20 text-pink-400 border-pink-900/40', hover: 'hover:bg-pink-900/10', selectClass: 'bg-pink-500 text-slate-950 border-pink-400 font-bold scale-[1.04]' },
-  { id: 'gaming', labelEn: 'Gaming', labelEl: 'Gaming', emoji: '🎮', color: 'bg-indigo-950/20 text-indigo-400 border-indigo-900/40', hover: 'hover:bg-indigo-900/10', selectClass: 'bg-indigo-500 text-slate-950 border-indigo-400 font-bold scale-[1.04]' },
-  { id: 'sports', labelEn: 'Sports', labelEl: 'Αθλητισμός', emoji: '⚽', color: 'bg-orange-950/20 text-orange-400 border-orange-900/40', hover: 'hover:bg-orange-900/10', selectClass: 'bg-orange-500 text-slate-950 border-orange-400 font-bold scale-[1.04]' },
-  { id: 'music', labelEn: 'Music', labelEl: 'Μουσική', emoji: '🎵', color: 'bg-rose-950/20 text-rose-400 border-rose-900/40', hover: 'hover:bg-rose-900/10', selectClass: 'bg-rose-500 text-slate-950 border-rose-400 font-bold scale-[1.04]' },
+  { id: 'coffee', labelEn: 'Coffee', labelEl: 'Καφές', emoji: '☕', color: 'bg-amber-50 text-amber-800 border-amber-200', hover: 'hover:bg-amber-100', selectClass: 'bg-amber-500 text-white border-amber-500 font-bold scale-[1.04] shadow-sm' },
+  { id: 'study', labelEn: 'Study', labelEl: 'Διάβασμα', emoji: '📚', color: 'bg-blue-50 text-blue-800 border-blue-200', hover: 'hover:bg-blue-100', selectClass: 'bg-blue-500 text-white border-blue-500 font-bold scale-[1.04] shadow-sm' },
+  { id: 'walk', labelEn: 'Walk', labelEl: 'Βόλτα', emoji: '🌿', color: 'bg-emerald-50 text-emerald-800 border-emerald-200', hover: 'hover:bg-emerald-100', selectClass: 'bg-emerald-500 text-white border-emerald-500 font-bold scale-[1.04] shadow-sm' },
+  { id: 'movies', labelEn: 'Movies', labelEl: 'Ταινίες', emoji: '🎬', color: 'bg-purple-50 text-purple-800 border-purple-200', hover: 'hover:bg-purple-100', selectClass: 'bg-purple-500 text-white border-purple-500 font-bold scale-[1.04] shadow-sm' },
+  { id: 'party', labelEn: 'Party', labelEl: 'Πάρτι', emoji: '🎉', color: 'bg-pink-50 text-pink-800 border-pink-200', hover: 'hover:bg-pink-100', selectClass: 'bg-pink-500 text-white border-pink-500 font-bold scale-[1.04] shadow-sm' },
+  { id: 'gaming', labelEn: 'Gaming', labelEl: 'Gaming', emoji: '🎮', color: 'bg-indigo-50 text-indigo-800 border-indigo-200', hover: 'hover:bg-indigo-100', selectClass: 'bg-indigo-500 text-white border-indigo-500 font-bold scale-[1.04] shadow-sm' },
+  { id: 'sports', labelEn: 'Sports', labelEl: 'Αθλητισμός', emoji: '⚽', color: 'bg-orange-50 text-orange-800 border-orange-200', hover: 'hover:bg-orange-100', selectClass: 'bg-orange-500 text-white border-orange-500 font-bold scale-[1.04] shadow-sm' },
+  { id: 'music', labelEn: 'Music', labelEl: 'Μουσική', emoji: '🎵', color: 'bg-rose-50 text-rose-800 border-rose-200', hover: 'hover:bg-rose-100', selectClass: 'bg-rose-500 text-white border-rose-500 font-bold scale-[1.04] shadow-sm' },
 ];
 
 export default function CreateMeetupPage() {
@@ -100,18 +100,18 @@ export default function CreateMeetupPage() {
   return (
     <Layout>
       {/* Sticky Header */}
-      <header className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-900 px-4 py-3 flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-200 px-4 py-3 flex items-center justify-between">
         <button
           id="create-back-btn"
           onClick={() => navigate('/')}
-          className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-850 border border-slate-800/60 text-slate-400 hover:text-slate-200 transition-all flex items-center gap-1.5 text-xs font-semibold"
+          className="p-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-500 hover:text-gray-750 transition-all flex items-center gap-1.5 text-xs font-semibold"
         >
           <ArrowLeft size={14} />
           <span>{t('back')}</span>
         </button>
 
-        <h1 className="text-sm font-extrabold text-slate-200 tracking-tight flex items-center gap-1.5">
-          <Calendar size={14} className="text-purple-400" />
+        <h1 className="text-sm font-extrabold text-gray-900 tracking-tight flex items-center gap-1.5">
+          <Calendar size={14} className="text-orange-500" />
           <span>Become Available</span>
         </h1>
 
@@ -124,8 +124,8 @@ export default function CreateMeetupPage() {
             
             {/* Category Select section */}
             <div>
-              <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-3.5 flex items-center gap-2">
-                <span className="text-purple-400">01</span>
+              <h3 className="text-xs font-extrabold text-gray-500 uppercase tracking-widest mb-3.5 flex items-center gap-2">
+                <span className="text-orange-500">01</span>
                 <span>{t('category_title')}</span>
               </h3>
 
@@ -153,14 +153,14 @@ export default function CreateMeetupPage() {
 
             {/* Title text input Section */}
             <div>
-              <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-3.5 flex items-center gap-2">
-                <span className="text-purple-400">02</span>
+              <h3 className="text-xs font-extrabold text-gray-500 uppercase tracking-widest mb-3.5 flex items-center gap-2">
+                <span className="text-orange-500">02</span>
                 <span>{t('title_section')}</span>
               </h3>
 
-              <div className="p-4 bg-slate-950 border border-slate-900 rounded-2xl">
+              <div className="p-4 bg-white border border-gray-200 rounded-2xl shadow-sm">
                 {/* Prefix Label */}
-                <p className="text-xs text-purple-400 font-extrabold uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <p className="text-xs text-orange-600 font-extrabold uppercase tracking-wider mb-2 flex items-center gap-1.5">
                   <Sparkles size={13} />
                   <span>{t('prefix_looking_for')}...</span>
                 </p>
@@ -174,12 +174,12 @@ export default function CreateMeetupPage() {
                   placeholder={t('title_placeholder')}
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full bg-slate-900/20 border border-slate-900 rounded-xl p-3 text-sm text-slate-100 placeholder:text-slate-700 focus:outline-none focus:border-purple-500 resize-none font-medium leading-relaxed"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-orange-400 resize-none font-medium leading-relaxed"
                 />
 
-                <div className="flex justify-between items-center mt-2.5 text-[10px] text-slate-600 font-mono">
+                <div className="flex justify-between items-center mt-2.5 text-[10px] text-gray-400 font-mono">
                   <div className="flex items-center gap-1">
-                    <AlertCircle size={10} className="text-slate-500" />
+                    <AlertCircle size={10} className="text-gray-400" />
                     <span>Avoid spam / profanities</span>
                   </div>
                   <span>{title.length} / 60</span>
@@ -188,10 +188,10 @@ export default function CreateMeetupPage() {
             </div>
 
             {/* Requires Approval Toggle */}
-            <div className="p-4 bg-slate-950 border border-slate-900 rounded-2xl flex items-center justify-between gap-4">
+            <div className="p-4 bg-white border border-gray-200 rounded-2xl shadow-sm flex items-center justify-between gap-4">
               <div>
-                <h4 className="text-xs font-bold text-slate-200">Require Organizer Approval</h4>
-                <p className="text-[10px] text-slate-500 mt-1">
+                <h4 className="text-xs font-bold text-gray-800">Require Organizer Approval</h4>
+                <p className="text-[10px] text-gray-500 mt-1">
                   Students must request to join, and you can approve them before they can enter the chat.
                 </p>
               </div>
@@ -203,15 +203,15 @@ export default function CreateMeetupPage() {
                   onChange={(e) => setRequiresApproval(e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-slate-400 after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-purple-600 peer-checked:after:bg-white"></div>
+                <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-gray-400 after:border-gray-350 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-orange-500 peer-checked:after:bg-white"></div>
               </label>
             </div>
 
             {/* Location Display Indicator */}
-            <div className="p-3.5 bg-slate-900/20 border border-slate-900 rounded-xl flex items-center gap-3">
-              <MapPin size={16} className="text-purple-400 shrink-0" />
-              <div className="text-[11px] text-slate-400">
-                <p className="font-bold uppercase tracking-wider text-purple-400 text-[9px]">Location Anchor</p>
+            <div className="p-3.5 bg-gray-50 border border-gray-200 rounded-xl flex items-center gap-3">
+              <MapPin size={16} className="text-orange-500 shrink-0" />
+              <div className="text-[11px] text-gray-600">
+                <p className="font-bold uppercase tracking-wider text-orange-600 text-[9px]">Location Anchor</p>
                 <p className="mt-0.5">Meetup will be anchored to your current coordinates (6h expires).</p>
               </div>
             </div>
@@ -221,7 +221,7 @@ export default function CreateMeetupPage() {
             id="create-submit-btn"
             type="submit"
             disabled={!title.trim() || loading}
-            className="w-full bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-500 hover:to-blue-400 text-white font-bold py-4 px-4 rounded-xl shadow-lg shadow-purple-600/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-8 text-sm disabled:opacity-50"
+            className="w-full bg-gradient-to-r from-orange-500 to-orange-400 hover:from-orange-600 hover:to-orange-500 text-white font-bold py-4 px-4 rounded-xl shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-8 text-sm disabled:opacity-50"
           >
             {loading ? (
               <>
