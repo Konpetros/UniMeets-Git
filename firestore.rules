@@ -95,5 +95,18 @@ service cloud.firestore {
           );
       }
     }
+
+    // Blocks rules
+    match /blocks/{blockId} {
+      allow read: if isSignedIn() && (resource == null || resource.data.blocker_id == request.auth.uid);
+      allow create: if isSignedIn() && incoming().blocker_id == request.auth.uid;
+      allow delete: if isSignedIn() && existing().blocker_id == request.auth.uid;
+    }
+
+    // Reports rules
+    match /reports/{reportId} {
+      allow read: if isSignedIn() && existing().reporter_id == request.auth.uid;
+      allow create: if isSignedIn() && incoming().reporter_id == request.auth.uid;
+    }
   }
 }

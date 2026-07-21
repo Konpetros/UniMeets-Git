@@ -5,10 +5,11 @@ import { useTranslation } from '../i18n';
 import Layout from './Layout';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  ArrowLeft, Send, Clock, Users, Check, X, ShieldAlert, AlertCircle, Sparkles, MessageSquare
+  ArrowLeft, Send, Clock, Users, Check, X, ShieldAlert, AlertCircle, Sparkles, MessageSquare,
+  MoreVertical, Ban
 } from 'lucide-react';
 import { 
-  doc, onSnapshot, collection, addDoc, query, orderBy, updateDoc, arrayUnion, arrayRemove, Timestamp 
+  doc, onSnapshot, collection, addDoc, query, orderBy, updateDoc, arrayUnion, arrayRemove, Timestamp, getDoc
 } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../firebase';
 import { UniMeet } from '../types';
@@ -25,7 +26,7 @@ interface Message {
 
 export default function ChatScreenPage() {
   const { unimeetId } = useParams<{ unimeetId: string }>();
-  const { user, profile, showToast } = useAuth();
+  const { user, profile, showToast, refreshBlocks } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -37,7 +38,55 @@ export default function ChatScreenPage() {
   const [showQueue, setShowQueue] = useState(true); // Toggle for approval queue
   const [nowTime, setNowTime] = useState<number>(Date.now());
 
+  // Block & Menu states
+  const [showHeaderMenu, setShowHeaderMenu] = useState(false);
+  const [confirmBlockUser, setConfirmBlockUser] = useState<{ uid: string; username: string } | null>(null);
+  const [participantProfiles, setParticipantProfiles] = useState<Record<string, string>>({});
+
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  // Fetch participant usernames
+  useEffect(() => {
+    if (!meet || !meet.participant_ids || meet.participant_ids.length === 0) return;
+    const fetchProfiles = async () => {
+      const newProfiles: Record<string, string> = {};
+      const promises = meet.participant_ids.map(async (pId) => {
+        try {
+          const profileDoc = await getDoc(doc(db, 'profiles', pId));
+          if (profileDoc.exists()) {
+            newProfiles[pId] = profileDoc.data().username || pId.substring(0, 5);
+          } else {
+            newProfiles[pId] = pId.substring(0, 5);
+          }
+        } catch (err) {
+          console.error("Error fetching participant profile:", err);
+          newProfiles[pId] = pId.substring(0, 5);
+        }
+      });
+      await Promise.all(promises);
+      setParticipantProfiles(newProfiles);
+    };
+    fetchProfiles();
+  }, [meet?.participant_ids]);
+
+  const handleBlockUserInChat = async () => {
+    if (!user || !confirmBlockUser) return;
+    try {
+      await addDoc(collection(db, 'blocks'), {
+        blocker_id: user.uid,
+        blocked_id: confirmBlockUser.uid,
+        created_at: new Date()
+      });
+      await refreshBlocks();
+      showToast(`@${confirmBlockUser.username} blocked`, 'success');
+      setConfirmBlockUser(null);
+      // Navigate out of the chat since we have blocked them
+      navigate('/my-unimeets');
+    } catch (err) {
+      console.error("Error blocking user in chat:", err);
+      showToast('Failed to block user', 'error');
+    }
+  };
 
   // Tick clock for remaining time
   useEffect(() => {
@@ -266,22 +315,91 @@ export default function ChatScreenPage() {
           </div>
         </div>
 
-        {/* Action Button: Toggle Pending Queue */}
-        {isCreator && meet.requires_approval && (meet.pending_ids?.length || 0) > 0 ? (
-          <button
-            id="toggle-queue-btn"
-            onClick={() => setShowQueue(!showQueue)}
-            className="p-1.5 rounded-lg bg-amber-950/30 border border-amber-900/40 text-amber-400 hover:bg-amber-900/30 relative"
-            title="Approval Queue"
-          >
-            <ShieldAlert size={16} />
-            <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[8px] font-extrabold px-1 rounded-full">
-              {meet.pending_ids?.length}
-            </span>
-          </button>
-        ) : (
-          <div className="w-8"></div>
-        )}
+        {/* Header Actions */}
+        <div className="flex items-center gap-1.5">
+          {isCreator && meet.requires_approval && (meet.pending_ids?.length || 0) > 0 && (
+            <button
+              id="toggle-queue-btn"
+              onClick={() => setShowQueue(!showQueue)}
+              className="p-1.5 rounded-lg bg-amber-950/30 border border-amber-900/40 text-amber-400 hover:bg-amber-900/30 relative"
+              title="Approval Queue"
+            >
+              <ShieldAlert size={16} />
+              <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[8px] font-extrabold px-1 rounded-full">
+                {meet.pending_ids?.length}
+              </span>
+            </button>
+          )}
+
+          {/* Action Menu (Block dropdown) */}
+          <div className="relative">
+            <button
+              id="chat-header-menu-btn"
+              onClick={() => setShowHeaderMenu(!showHeaderMenu)}
+              className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-850 border border-slate-800/60 text-slate-400 hover:text-slate-200 transition"
+            >
+              <MoreVertical size={16} />
+            </button>
+
+            {showHeaderMenu && (
+              <div className="absolute right-0 mt-2 w-48 bg-slate-950 border border-slate-900 rounded-2xl py-1.5 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2">
+                {/* Option for participant to block organizer */}
+                {!isCreator && (
+                  <button
+                    id="block-organizer-btn"
+                    onClick={() => {
+                      setShowHeaderMenu(false);
+                      setConfirmBlockUser({
+                        uid: meet.creator_id,
+                        username: meet.creator_username,
+                      });
+                    }}
+                    className="w-full text-left px-4 py-2.5 text-xs font-semibold text-red-500 hover:bg-slate-900 transition flex items-center gap-2"
+                  >
+                    <Ban size={12} />
+                    <span>Block @{meet.creator_username}</span>
+                  </button>
+                )}
+
+                {/* Option for organizer to block any of the participants */}
+                {isCreator && meet.participant_ids.length > 0 && (
+                  <>
+                    <div className="px-4 py-1.5 text-[9px] font-extrabold uppercase tracking-wider text-slate-500 border-b border-slate-900 mb-1">
+                      Block Participant
+                    </div>
+                    {meet.participant_ids.map((pId) => {
+                      const pUsername = participantProfiles[pId] || `Student_${pId.substring(0, 4)}`;
+                      return (
+                        <button
+                          key={pId}
+                          id={`block-participant-${pId}`}
+                          onClick={() => {
+                            setShowHeaderMenu(false);
+                            setConfirmBlockUser({
+                              uid: pId,
+                              username: pUsername,
+                            });
+                          }}
+                          className="w-full text-left px-4 py-2 text-xs font-medium text-slate-300 hover:bg-slate-900 hover:text-red-500 transition flex items-center gap-2"
+                        >
+                          <Ban size={11} className="text-red-600" />
+                          <span className="truncate">@{pUsername}</span>
+                        </button>
+                      );
+                    })}
+                  </>
+                )}
+
+                {/* Empty state if organizer with no participants yet */}
+                {isCreator && meet.participant_ids.length === 0 && (
+                  <div className="px-4 py-3 text-[10px] text-slate-500 text-center">
+                    No participants to block yet.
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
       </header>
 
       {/* Main chat layout */}
@@ -454,6 +572,39 @@ export default function ChatScreenPage() {
         </div>
 
       </div>
+
+      {/* Block Confirmation Modal */}
+      {confirmBlockUser && (
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-[60] animate-in fade-in duration-200">
+          <div className="bg-slate-950 border border-slate-900 rounded-3xl p-6 w-full max-w-sm shadow-2xl animate-in zoom-in-95 duration-200">
+            <div className="w-12 h-12 rounded-2xl bg-red-950/20 border border-red-900/30 text-red-500 flex items-center justify-center mb-4 mx-auto">
+              <Ban size={22} />
+            </div>
+            <h3 className="text-base font-extrabold text-slate-100 text-center">
+              Block @{confirmBlockUser.username}?
+            </h3>
+            <p className="text-xs text-slate-400 text-center mt-2 leading-relaxed">
+              They won't be able to see your UniMeets and you won't see theirs.
+            </p>
+            <div className="flex gap-2.5 mt-6">
+              <button
+                id="cancel-chat-block"
+                onClick={() => setConfirmBlockUser(null)}
+                className="flex-1 py-2.5 bg-slate-900 border border-slate-850 text-slate-400 hover:text-slate-200 rounded-xl text-xs font-bold transition"
+              >
+                Cancel
+              </button>
+              <button
+                id="submit-chat-block"
+                onClick={handleBlockUserInChat}
+                className="flex-1 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold transition"
+              >
+                Block
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 }

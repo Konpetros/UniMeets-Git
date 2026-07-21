@@ -6,9 +6,10 @@ import Layout from './Layout';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Home as HomeIcon, Calendar, User as UserIcon, Search, SlidersHorizontal, Plus, 
-  MapPin, Clock, Users, Trash2, LogOut, Check, ChevronRight, Compass, Save, Edit, HelpCircle
+  MapPin, Clock, Users, Trash2, LogOut, Check, ChevronRight, Compass, Save, Edit, HelpCircle,
+  MoreVertical, Flag, Ban
 } from 'lucide-react';
-import { collection, query, where, onSnapshot, doc, updateDoc, arrayUnion, arrayRemove, Timestamp, getDocs } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, doc, updateDoc, arrayUnion, arrayRemove, Timestamp, getDocs, addDoc } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../firebase';
 import { UniMeet, CategoryType } from '../types';
 import { calculateDistance } from '../utils';
@@ -38,12 +39,84 @@ export const CATEGORY_EMOJIS: Record<CategoryType, string> = {
 };
 
 export default function FeedPage() {
-  const { user, profile, refreshProfile, logout, showToast } = useAuth();
+  const { user, profile, refreshProfile, logout, showToast, blockedUsers = [], blockedByUsers = [], refreshBlocks } = useAuth();
   const { t, language } = useTranslation();
   const navigate = useNavigate();
 
   // Active Tab
   const [activeTab, setActiveTab] = useState<'home' | 'my-meets' | 'profile'>('home');
+
+  // Block & Report states
+  const [activeMenuMeetId, setActiveMenuMeetId] = useState<string | null>(null);
+  const [blockingUser, setBlockingUser] = useState<UniMeet | null>(null);
+  const [reportingMeet, setReportingMeet] = useState<UniMeet | null>(null);
+  const [reportReason, setReportReason] = useState<string>('');
+  const [reportDetails, setReportDetails] = useState<string>('');
+  const [submittingReport, setSubmittingReport] = useState<boolean>(false);
+
+  const handleOpenBlockConfirm = (meet: UniMeet) => {
+    setBlockingUser(meet);
+  };
+
+  const handleOpenReportSheet = (meet: UniMeet) => {
+    setReportingMeet(meet);
+    setReportReason('');
+    setReportDetails('');
+  };
+
+  const handleBlockSubmit = async () => {
+    if (!user || !blockingUser) return;
+    try {
+      await addDoc(collection(db, 'blocks'), {
+        blocker_id: user.uid,
+        blocked_id: blockingUser.creator_id,
+        created_at: new Date()
+      });
+      await refreshBlocks();
+      showToast(`@${blockingUser.creator_username} blocked`, 'success');
+      setBlockingUser(null);
+    } catch (err) {
+      console.error("Error blocking user:", err);
+      showToast('Failed to block user', 'error');
+    }
+  };
+
+  const handleReportSubmit = async () => {
+    if (!user || !reportingMeet || !reportReason) return;
+    setSubmittingReport(true);
+    try {
+      const qDup = query(
+        collection(db, 'reports'),
+        where('reporter_id', '==', user.uid),
+        where('reported_user_id', '==', reportingMeet.creator_id),
+        where('unimeet_id', '==', reportingMeet.id)
+      );
+      const snap = await getDocs(qDup);
+      if (!snap.empty) {
+        showToast("Already reported", "error");
+        setReportingMeet(null);
+        return;
+      }
+
+      await addDoc(collection(db, 'reports'), {
+        reporter_id: user.uid,
+        reported_user_id: reportingMeet.creator_id,
+        unimeet_id: reportingMeet.id,
+        reason: reportReason,
+        details: reportDetails.trim(),
+        status: 'pending',
+        created_at: new Date()
+      });
+
+      showToast("Report submitted. We'll review it shortly.", 'success');
+      setReportingMeet(null);
+    } catch (err) {
+      console.error("Error submitting report:", err);
+      showToast('Failed to submit report', 'error');
+    } finally {
+      setSubmittingReport(false);
+    }
+  };
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -313,6 +386,9 @@ export default function FeedPage() {
   const filteredMeetups = unimeets.filter((meet) => {
     if (hiddenMeetIds.includes(meet.id)) return false;
     
+    // Block filter: hide posts of anyone blocked by me or who blocked me
+    if (blockedUsers.includes(meet.creator_id) || blockedByUsers.includes(meet.creator_id)) return false;
+
     // Category filter
     if (selectedCategory && meet.category !== selectedCategory) return false;
 
@@ -357,7 +433,10 @@ export default function FeedPage() {
 
   // Filter lists of UniMeets for "My Meets" tab
   const myCreatedMeets = unimeets.filter((m) => m.creator_id === user?.uid);
-  const myJoinedMeets = unimeets.filter((m) => m.participant_ids.includes(user?.uid || ''));
+  const myJoinedMeets = unimeets.filter((m) => {
+    if (blockedUsers.includes(m.creator_id) || blockedByUsers.includes(m.creator_id)) return false;
+    return m.participant_ids.includes(user?.uid || '');
+  });
 
   return (
     <Layout showHeader>
@@ -580,10 +659,57 @@ export default function FeedPage() {
                               </div>
                             </div>
 
-                            {/* Category Badge */}
-                            <div className={`px-2.5 py-1 rounded-full border text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 ${col.bg} ${col.text} ${col.border}`}>
-                              <span>{CATEGORY_EMOJIS[meet.category]}</span>
-                              <span>{meet.category}</span>
+                            {/* Category & Options */}
+                            <div className="flex items-center gap-2">
+                              <div className={`px-2.5 py-1 rounded-full border text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 ${col.bg} ${col.text} ${col.border}`}>
+                                <span>{CATEGORY_EMOJIS[meet.category]}</span>
+                                <span>{meet.category}</span>
+                              </div>
+
+                              {/* Options Button */}
+                              {!isCreator && (
+                                <div className="relative">
+                                  <button
+                                    id={`options-btn-${meet.id}`}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setActiveMenuMeetId(activeMenuMeetId === meet.id ? null : meet.id);
+                                    }}
+                                    className="p-1.5 bg-slate-900/60 hover:bg-slate-900 rounded-lg text-slate-400 hover:text-slate-200 transition"
+                                  >
+                                    <MoreVertical size={14} />
+                                  </button>
+
+                                  {activeMenuMeetId === meet.id && (
+                                    <div className="absolute right-0 mt-1.5 w-36 bg-slate-900 border border-slate-800 rounded-xl py-1 shadow-xl z-50 animate-in fade-in slide-in-from-top-1">
+                                      <button
+                                        id={`report-opt-${meet.id}`}
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setActiveMenuMeetId(null);
+                                          handleOpenReportSheet(meet);
+                                        }}
+                                        className="w-full text-left px-3.5 py-2 text-xs font-semibold text-slate-300 hover:bg-slate-850 hover:text-rose-400 transition flex items-center gap-2"
+                                      >
+                                        <Flag size={12} />
+                                        <span>Report</span>
+                                      </button>
+                                      <button
+                                        id={`block-opt-${meet.id}`}
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setActiveMenuMeetId(null);
+                                          handleOpenBlockConfirm(meet);
+                                        }}
+                                        className="w-full text-left px-3.5 py-2 text-xs font-semibold text-slate-300 hover:bg-slate-850 hover:text-red-500 transition flex items-center gap-2 border-t border-slate-850"
+                                      >
+                                        <Ban size={12} />
+                                        <span>Block User</span>
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
                             </div>
                           </div>
 
@@ -1034,6 +1160,119 @@ export default function FeedPage() {
                 Clear Filters
               </button>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Block Confirmation Modal */}
+      {blockingUser && (
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-[60] animate-in fade-in duration-200">
+          <div className="bg-slate-950 border border-slate-900 rounded-3xl p-6 w-full max-w-sm shadow-2xl animate-in zoom-in-95 duration-200">
+            <div className="w-12 h-12 rounded-2xl bg-red-950/20 border border-red-900/30 text-red-500 flex items-center justify-center mb-4 mx-auto">
+              <Ban size={22} />
+            </div>
+            <h3 className="text-base font-extrabold text-slate-100 text-center">
+              Block @{blockingUser.creator_username}?
+            </h3>
+            <p className="text-xs text-slate-400 text-center mt-2 leading-relaxed">
+              They won't be able to see your UniMeets and you won't see theirs.
+            </p>
+            <div className="flex gap-2.5 mt-6">
+              <button
+                id="cancel-block-confirm"
+                onClick={() => setBlockingUser(null)}
+                className="flex-1 py-2.5 bg-slate-900 border border-slate-850 text-slate-400 hover:text-slate-200 rounded-xl text-xs font-bold transition"
+              >
+                Cancel
+              </button>
+              <button
+                id="submit-block-confirm"
+                onClick={handleBlockSubmit}
+                className="flex-1 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold transition"
+              >
+                Block
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Report Bottom Sheet */}
+      {reportingMeet && (
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-end justify-center z-[60] animate-in fade-in duration-200">
+          <div className="bg-slate-950 border-t border-slate-900 rounded-t-3xl p-6 w-full max-w-md shadow-2xl animate-in slide-in-from-bottom duration-300">
+            <div className="w-12 h-1.5 bg-slate-900 rounded-full mx-auto mb-4"></div>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-base font-extrabold text-slate-100">
+                Report @{reportingMeet.creator_username}
+              </h3>
+              <button
+                id="close-report-sheet"
+                onClick={() => setReportingMeet(null)}
+                className="text-slate-500 hover:text-slate-300 text-sm"
+              >
+                ✕
+              </button>
+            </div>
+            <p className="text-xs text-slate-500 mb-4">
+              Why are you reporting this student? Your report is confidential.
+            </p>
+
+            {/* Reason selection */}
+            <div className="space-y-2 mb-4">
+              {[
+                { id: 'harassment', en: 'Harassment or bullying', el: 'Παρενόχληση ή εκφοβισμός' },
+                { id: 'spam', en: 'Spam or fake profile', el: 'Spam ή ψεύτικο προφίλ' },
+                { id: 'inappropriate', en: 'Inappropriate content', el: 'Ακατάλληλο περιεχόμενο' },
+                { id: 'noshow', en: "No-show (didn't show up)", el: 'Δεν εμφανίστηκε (No-show)' },
+                { id: 'other', en: 'Other', el: 'Άλλο' },
+              ].map((reasonOption) => (
+                <button
+                  key={reasonOption.id}
+                  id={`reason-opt-${reasonOption.id}`}
+                  onClick={() => setReportReason(reasonOption.id)}
+                  className={`w-full text-left p-3 rounded-xl border text-xs font-semibold flex items-center justify-between transition ${
+                    reportReason === reasonOption.id
+                      ? 'bg-purple-950/20 border-purple-500 text-purple-300'
+                      : 'bg-slate-900/40 border-slate-900 text-slate-300 hover:bg-slate-900'
+                  }`}
+                >
+                  <span>{language === 'el' ? reasonOption.el : reasonOption.en}</span>
+                  {reportReason === reasonOption.id && (
+                    <Check size={14} className="text-purple-400" />
+                  )}
+                </button>
+              ))}
+            </div>
+
+            {/* Optional details textarea */}
+            <div className="mb-6">
+              <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                Additional Details (Optional)
+              </label>
+              <textarea
+                id="report-details-textarea"
+                maxLength={200}
+                rows={3}
+                value={reportDetails}
+                onChange={(e) => setReportDetails(e.target.value)}
+                placeholder="Include any helpful details (max 200 characters)..."
+                className="w-full bg-slate-900 border border-slate-900 rounded-xl p-3 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-purple-500 resize-none"
+              />
+              <div className="text-[10px] text-slate-600 text-right font-mono mt-1">
+                {reportDetails.length}/200
+              </div>
+            </div>
+
+            {/* Actions */}
+            <button
+              id="submit-report-btn"
+              onClick={handleReportSubmit}
+              disabled={submittingReport || !reportReason}
+              className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-500 hover:to-blue-400 text-white rounded-xl text-xs font-bold shadow-lg transition disabled:opacity-50"
+            >
+              {submittingReport ? 'Submitting...' : 'Submit Report'}
+            </button>
           </div>
         </div>
       )}

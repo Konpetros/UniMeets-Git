@@ -13,7 +13,7 @@ import { UniMeet } from '../types';
 import { CATEGORY_COLORS, CATEGORY_EMOJIS } from './FeedPage';
 
 export default function MyUniMeetsPage() {
-  const { user, showToast } = useAuth();
+  const { user, showToast, blockedUsers = [], blockedByUsers = [] } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -293,9 +293,9 @@ export default function MyUniMeetsPage() {
               <div className="flex justify-center py-12">
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-500"></div>
               </div>
-            ) : joinedPosts.length > 0 ? (
+            ) : (joinedPosts.filter(m => !blockedUsers.includes(m.creator_id) && !blockedByUsers.includes(m.creator_id))).length > 0 ? (
               <div className="space-y-4">
-                {joinedPosts.map((meet) => {
+                {joinedPosts.filter(m => !blockedUsers.includes(m.creator_id) && !blockedByUsers.includes(m.creator_id)).map((meet) => {
                   const countdown = getCountdownText(meet);
                   const isMuted = !countdown.active;
                   const col = CATEGORY_COLORS[meet.category] || CATEGORY_COLORS.coffee;
