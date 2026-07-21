@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from '../i18n';
 import Layout from './Layout';
 import { ArrowLeft, Trash2, ShieldAlert } from 'lucide-react';
 import { useAuth } from './AuthContext';
-import { doc, deleteDoc } from 'firebase/firestore';
+import { doc, deleteDoc, collection, query, where, getDocs, updateDoc, arrayRemove } from 'firebase/firestore';
+import { deleteUser } from 'firebase/auth';
 import { db, handleFirestoreError, OperationType } from '../firebase';
 
 export default function DeleteAccountPage() {
   const { user, logout, showToast, language } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const [confirmText, setConfirmText] = useState('');
   const [loading, setLoading] = useState(false);
 
   const tr = {
@@ -18,41 +18,78 @@ export default function DeleteAccountPage() {
       title: 'Delete Account',
       sub: 'This is a permanent action that cannot be undone',
       warning_head: 'Are you absolutely sure?',
-      warning_body: 'Deleting your student account will permanently purge your profile, active statuses, historical meetups, and joined chat records. This action is irreversible.',
+      warning_body: 'Deleting your student account will permanently remove your profile, cancel all UniMeets you created, and remove you from any joined chats. This action is irreversible.',
+      confirm_placeholder: 'Type "DELETE" to confirm',
       button_label: 'Permanently Delete Account',
-      deleting: 'Deleting...',
-      success: 'Your student profile has been completely deleted.',
+      deleting: 'Deleting Account...',
+      success: 'Your student profile and account have been completely deleted.',
       back: 'Back to Profile',
     },
     el: {
       title: 'Διαγραφή Λογαριασμού',
       sub: 'Αυτή είναι μια μόνιμη ενέργεια που δεν μπορεί να αναιρεθεί',
       warning_head: 'Είστε απολύτως σίγουροι;',
-      warning_body: 'Η διαγραφή του φοιτητικού σας λογαριασμού θα αφαιρέσει οριστικά το προφίλ, τις ενεργές καταστάσεις, το ιστορικό συναντήσεων και τα αρχεία συνομιλιών σας. Αυτή η ενέργεια είναι μη αναστρέψιμη.',
+      warning_body: 'Η διαγραφή του φοιτητικού σας λογαριασμού θα αφαιρέσει οριστικά το προφίλ σας, θα ακυρώσει όλα τα UniMeets που δημιουργήσατε και θα σας αφαιρέσει από όλες τις συνομιλίες. Αυτή η ενέργεια είναι μη αναστρέψιμη.',
+      confirm_placeholder: 'Πληκτρολογήστε "DELETE" για επιβεβαίωση',
       button_label: 'Οριστική Διαγραφή Λογαριασμού',
-      deleting: 'Διαγραφή...',
-      success: 'Το φοιτητικό σας προφίλ διαγράφηκε οριστικά.',
+      deleting: 'Διαγραφή Λογαριασμού...',
+      success: 'Το φοιτητικό σας προφίλ και ο λογαριασμός διαγράφηκαν οριστικά.',
       back: 'Επιστροφή στο Προφίλ',
     }
   }[language === 'el' ? 'el' : 'en'];
 
   const handleDeleteAccount = async () => {
-    if (!user) return;
+    if (!user || confirmText !== 'DELETE') return;
     setLoading(true);
     const path = `profiles/${user.uid}`;
     try {
-      // 1. Delete profile from Firestore
+      // 1. Cancel all active meetups created by this user
+      const qCreated = query(
+        collection(db, 'unimeets'),
+        where('creator_id', '==', user.uid),
+        where('status', '==', 'active')
+      );
+      const createdSnap = await getDocs(qCreated);
+      const cancelPromises: Promise<any>[] = [];
+      createdSnap.forEach((meetDoc) => {
+        cancelPromises.push(updateDoc(doc(db, 'unimeets', meetDoc.id), { status: 'cancelled' }));
+      });
+      await Promise.all(cancelPromises);
+
+      // 2. Remove the user from all active participant lists (chats) they joined
+      const qJoined = query(
+        collection(db, 'unimeets'),
+        where('participant_ids', 'array-contains', user.uid),
+        where('status', '==', 'active')
+      );
+      const joinedSnap = await getDocs(qJoined);
+      const leavePromises: Promise<any>[] = [];
+      joinedSnap.forEach((meetDoc) => {
+        leavePromises.push(updateDoc(doc(db, 'unimeets', meetDoc.id), {
+          participant_ids: arrayRemove(user.uid)
+        }));
+      });
+      await Promise.all(leavePromises);
+
+      // 3. Delete profiles document from Firestore
       await deleteDoc(doc(db, 'profiles', user.uid));
       
-      // 2. Sign out the user
+      // 4. Delete the user from Firebase Auth
+      await deleteUser(user);
+      
+      // 5. Sign out the local state (using logout) and redirect
       await logout();
       
       showToast(tr.success, 'info');
       navigate('/login');
-    } catch (err) {
-      console.error(err);
-      handleFirestoreError(err, OperationType.DELETE, path);
-      showToast('Failed to delete account data', 'error');
+    } catch (err: any) {
+      console.error("Error during account deletion:", err);
+      if (err?.code === 'auth/requires-recent-login') {
+        showToast('Please sign out and sign back in to delete your account for security reasons.', 'error');
+      } else {
+        handleFirestoreError(err, OperationType.DELETE, path);
+        showToast('Failed to delete account. Please try again.', 'error');
+      }
     } finally {
       setLoading(false);
     }
@@ -70,14 +107,14 @@ export default function DeleteAccountPage() {
           <span>{tr.back}</span>
         </button>
 
-        <h2 className="text-xl font-extrabold text-slate-100 flex items-center gap-2 mb-1.5">
+        <h2 className="text-xl font-extrabold text-slate-100 flex items-center gap-2 mb-1.5 animate-pulse">
           <Trash2 className="text-red-500 w-5 h-5" />
           <span className="text-red-500">{tr.title}</span>
         </h2>
         <p className="text-xs text-slate-500 mb-6">{tr.sub}</p>
 
-        {/* Warning card */}
-        <div className="bg-red-950/10 border border-red-900/30 rounded-2.5xl p-5 mb-8 flex flex-col items-center text-center">
+        {/* Warning Card */}
+        <div className="bg-red-950/10 border border-red-900/30 rounded-2.5xl p-5 mb-6 flex flex-col items-center text-center">
           <div className="w-12 h-12 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center mb-4">
             <ShieldAlert size={22} />
           </div>
@@ -87,12 +124,27 @@ export default function DeleteAccountPage() {
           </p>
         </div>
 
+        {/* Confirmation Text Input */}
+        <div className="mb-6 space-y-2">
+          <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+            {tr.confirm_placeholder}
+          </label>
+          <input
+            id="delete-confirmation-input"
+            type="text"
+            value={confirmText}
+            onChange={(e) => setConfirmText(e.target.value)}
+            placeholder='Type "DELETE"'
+            className="w-full bg-slate-950 border border-slate-900 focus:border-red-500 rounded-xl p-3 text-sm text-center font-bold text-red-500 placeholder-slate-800 tracking-wider focus:outline-none transition-all"
+          />
+        </div>
+
         {/* Action Button */}
         <button
           id="confirm-delete-account-btn"
-          disabled={loading}
+          disabled={loading || confirmText !== 'DELETE'}
           onClick={handleDeleteAccount}
-          className="w-full bg-red-600 hover:bg-red-500 text-white font-extrabold py-3.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-red-500/10 transition disabled:opacity-50"
+          className="w-full bg-red-600 hover:bg-red-500 disabled:bg-slate-900/40 text-white font-extrabold py-3.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-red-500/10 transition disabled:opacity-50 disabled:text-slate-600 border border-transparent disabled:border-slate-900/60"
         >
           {loading ? (
             <>

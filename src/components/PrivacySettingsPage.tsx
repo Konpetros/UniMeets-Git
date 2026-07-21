@@ -1,43 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../i18n';
 import Layout from './Layout';
-import { ArrowLeft, Lock, Shield, Eye, MapPin } from 'lucide-react';
+import { ArrowLeft, Lock, Shield, Eye, Flame } from 'lucide-react';
 import { useAuth } from './AuthContext';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 export default function PrivacySettingsPage() {
-  const { language } = useAuth();
+  const { user, profile, refreshProfile, language, showToast } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
-  const [shareUni, setShareUni] = useState(true);
-  const [preciseLoc, setPreciseLoc] = useState(false);
-  const [searchable, setSearchable] = useState(true);
+  const [showUniversity, setShowUniversity] = useState(() => profile?.privacy_settings?.show_university ?? true);
+  const [showJoinedCount, setShowJoinedCount] = useState(() => profile?.privacy_settings?.show_joined_count ?? true);
+  const [showOnlineStatus, setShowOnlineStatus] = useState(() => profile?.privacy_settings?.show_online_status ?? true);
+
+  useEffect(() => {
+    if (profile?.privacy_settings) {
+      setShowUniversity(profile.privacy_settings.show_university ?? true);
+      setShowJoinedCount(profile.privacy_settings.show_joined_count ?? true);
+      setShowOnlineStatus(profile.privacy_settings.show_online_status ?? true);
+    }
+  }, [profile]);
 
   const tr = {
     en: {
       title: 'Privacy Settings',
       sub: 'Manage how your data is shared and who can view your profile',
-      share_uni: 'Show university to non-participants',
-      share_uni_desc: 'Allows students outside of your joined meets to see which Greek university you attend',
-      precise: 'Share location precisely',
-      precise_desc: 'Show a more precise indicator of your meetup coordinates (default is rounded geohashes)',
-      searchable: 'Profile visible in searches',
-      searchable_desc: 'Allow your student profile to be viewed by non-participants on the map and feed',
+      show_university: 'Show my university on my profile',
+      show_university_desc: 'Allows other students to see which Greek university you attend',
+      show_joined_count: "Show how many UniMeets I've joined",
+      show_joined_count_desc: 'Display your total met-up statistics publicly on your profile card',
+      show_online_status: 'Show my online status',
+      show_online_status_desc: 'Let other students see when you are active or online',
       back: 'Back to Profile',
     },
     el: {
       title: 'Ρυθμίσεις Απορρήτου',
       sub: 'Διαχειρίσου τον τρόπο κοινής χρήσης των δεδομένων σου',
-      share_uni: 'Εμφάνιση πανεπιστημίου σε μη συμμετέχοντες',
-      share_uni_desc: 'Επιτρέπει σε φοιτητές εκτός των συναντήσεών σου να βλέπουν σε ποιο ελληνικό πανεπιστήμιο φοιτάς',
-      precise: 'Ακριβής κοινή χρήση τοποθεσίας',
-      precise_desc: 'Εμφάνιση πιο ακριβών συντεταγμένων συνάντησης (η προεπιλογή είναι στρογγυλοποιημένα geohashes)',
-      searchable: 'Προφίλ ορατό σε αναζητήσεις',
-      searchable_desc: 'Επίτρεψε στο φοιτητικό σου προφίλ να εμφανίζεται σε μη συμμετέχοντες στο χάρτη και στη ροή',
+      show_university: 'Εμφάνιση του πανεπιστημίου μου στο προφίλ μου',
+      show_university_desc: 'Επιτρέπει σε άλλους φοιτητές να βλέπουν σε ποιο ελληνικό πανεπιστήμιο φοιτάς',
+      show_joined_count: 'Εμφάνιση του αριθμού UniMeets που έχω συμμετάσχει',
+      show_joined_count_desc: 'Εμφάνιση των στατιστικών των συναντήσεών σου δημόσια στην κάρτα προφίλ σου',
+      show_online_status: 'Εμφάνιση της κατάστασης σύνδεσής μου',
+      show_online_status_desc: 'Επιτρέπει σε άλλους φοιτητές να βλέπουν πότε είσαι ενεργός/-ή',
       back: 'Επιστροφή στο Προφίλ',
     }
   }[language === 'el' ? 'el' : 'en'];
+
+  const handleToggle = async (key: 'show_university' | 'show_joined_count' | 'show_online_status', currentVal: boolean) => {
+    if (!user) return;
+
+    const newVal = !currentVal;
+    if (key === 'show_university') setShowUniversity(newVal);
+    if (key === 'show_joined_count') setShowJoinedCount(newVal);
+    if (key === 'show_online_status') setShowOnlineStatus(newVal);
+
+    try {
+      const docRef = doc(db, 'profiles', user.uid);
+      await updateDoc(docRef, {
+        [`privacy_settings.${key}`]: newVal
+      });
+      await refreshProfile();
+    } catch (err) {
+      console.error("Error updating privacy setting:", err);
+      showToast("Failed to save setting", "error");
+      // Revert
+      if (key === 'show_university') setShowUniversity(currentVal);
+      if (key === 'show_joined_count') setShowJoinedCount(currentVal);
+      if (key === 'show_online_status') setShowOnlineStatus(currentVal);
+    }
+  };
 
   return (
     <Layout showHeader>
@@ -59,79 +92,82 @@ export default function PrivacySettingsPage() {
 
         {/* Toggles */}
         <div className="bg-slate-950 border border-slate-900 rounded-2.5xl p-5 space-y-6 shadow-xl">
-          {/* Share university */}
+          {/* Show University */}
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-start gap-3">
               <div className="p-2 bg-purple-500/10 rounded-xl text-purple-400 mt-0.5">
                 <Shield size={16} />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-slate-200">{tr.share_uni}</h4>
-                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.share_uni_desc}</p>
+                <h4 className="text-sm font-semibold text-slate-200">{tr.show_university}</h4>
+                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.show_university_desc}</p>
               </div>
             </div>
             
             <button
-              onClick={() => setShareUni(!shareUni)}
-              className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none ${
-                shareUni ? 'bg-purple-600' : 'bg-slate-800'
+              id="toggle-show-university"
+              onClick={() => handleToggle('show_university', showUniversity)}
+              className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none shrink-0 ${
+                showUniversity ? 'bg-purple-600' : 'bg-slate-800'
               }`}
             >
               <div
                 className={`bg-white w-5 h-5 rounded-full shadow-md transform transition duration-200 ${
-                  shareUni ? 'translate-x-5' : 'translate-x-0'
+                  showUniversity ? 'translate-x-5' : 'translate-x-0'
                 }`}
               />
             </button>
           </div>
 
-          {/* Precise Location */}
+          {/* Show Joined Count */}
           <div className="flex items-center justify-between gap-4 border-t border-slate-900/80 pt-5">
             <div className="flex items-start gap-3">
               <div className="p-2 bg-blue-500/10 rounded-xl text-blue-400 mt-0.5">
-                <MapPin size={16} />
+                <Flame size={16} />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-slate-200">{tr.precise}</h4>
-                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.precise_desc}</p>
+                <h4 className="text-sm font-semibold text-slate-200">{tr.show_joined_count}</h4>
+                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.show_joined_count_desc}</p>
               </div>
             </div>
             
             <button
-              onClick={() => setPreciseLoc(!preciseLoc)}
-              className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none ${
-                preciseLoc ? 'bg-purple-600' : 'bg-slate-800'
+              id="toggle-show-joined-count"
+              onClick={() => handleToggle('show_joined_count', showJoinedCount)}
+              className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none shrink-0 ${
+                showJoinedCount ? 'bg-purple-600' : 'bg-slate-800'
               }`}
             >
               <div
                 className={`bg-white w-5 h-5 rounded-full shadow-md transform transition duration-200 ${
-                  preciseLoc ? 'translate-x-5' : 'translate-x-0'
+                  showJoinedCount ? 'translate-x-5' : 'translate-x-0'
                 }`}
               />
             </button>
           </div>
 
-          {/* Profile Searchable */}
+          {/* Show Online Status */}
           <div className="flex items-center justify-between gap-4 border-t border-slate-900/80 pt-5">
             <div className="flex items-start gap-3">
               <div className="p-2 bg-emerald-500/10 rounded-xl text-emerald-400 mt-0.5">
                 <Eye size={16} />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-slate-200">{tr.searchable}</h4>
-                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.searchable_desc}</p>
+                <h4 className="text-sm font-semibold text-slate-200">{tr.show_online_status}</h4>
+                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.show_online_status_desc}</p>
               </div>
             </div>
             
             <button
-              onClick={() => setSearchable(!searchable)}
-              className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none ${
-                searchable ? 'bg-purple-600' : 'bg-slate-800'
+              id="toggle-show-online-status"
+              onClick={() => handleToggle('show_online_status', showOnlineStatus)}
+              className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none shrink-0 ${
+                showOnlineStatus ? 'bg-purple-600' : 'bg-slate-800'
               }`}
             >
               <div
                 className={`bg-white w-5 h-5 rounded-full shadow-md transform transition duration-200 ${
-                  searchable ? 'translate-x-5' : 'translate-x-0'
+                  showOnlineStatus ? 'translate-x-5' : 'translate-x-0'
                 }`}
               />
             </button>

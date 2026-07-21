@@ -1,48 +1,90 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../i18n';
 import Layout from './Layout';
-import { ArrowLeft, Bell, Sparkles, MessageSquare, Flame } from 'lucide-react';
+import { ArrowLeft, Bell, Users, MessageSquare, Flame, CheckCircle } from 'lucide-react';
 import { useAuth } from './AuthContext';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 export default function NotificationsPage() {
-  const { language } = useAuth();
+  const { user, profile, refreshProfile, language, showToast } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
-  const [meetupAlerts, setMeetupAlerts] = useState(true);
-  const [messages, setMessages] = useState(true);
-  const [requests, setRequests] = useState(true);
+  const [newJoinRequest, setNewJoinRequest] = useState(() => profile?.notification_settings?.new_join_request ?? true);
+  const [someoneJoined, setSomeoneJoined] = useState(() => profile?.notification_settings?.someone_joined ?? true);
+  const [joinApproved, setJoinApproved] = useState(() => profile?.notification_settings?.join_approved ?? true);
+  const [newMessage, setNewMessage] = useState(() => profile?.notification_settings?.new_message ?? true);
+
+  useEffect(() => {
+    if (profile?.notification_settings) {
+      setNewJoinRequest(profile.notification_settings.new_join_request ?? true);
+      setSomeoneJoined(profile.notification_settings.someone_joined ?? true);
+      setJoinApproved(profile.notification_settings.join_approved ?? true);
+      setNewMessage(profile.notification_settings.new_message ?? true);
+    }
+  }, [profile]);
 
   const tr = {
     en: {
       title: 'Notifications',
       sub: 'Manage how you want to stay updated on UniMeets',
-      meetups: 'Spontaneous meetup alerts',
-      meetups_desc: 'Get notified when new UniMeets are created near your university',
-      chats: 'New chat messages',
-      chats_desc: 'Receive push alerts when someone sends a message inside joined chats',
-      joins: 'Join requests & approvals',
-      joins_desc: 'Get notified when users request to join your meets or when your request is accepted',
+      new_join_request: 'New join request on my UniMeet',
+      new_join_request_desc: 'Get notified when a student requests to join one of your active UniMeets',
+      someone_joined: 'Someone joined my UniMeet',
+      someone_joined_desc: 'Get notified when a participant successfully joins or is approved for your UniMeet',
+      join_approved: 'My join request was approved',
+      join_approved_desc: 'Get notified when an organizer accepts your request to join their UniMeet',
+      new_message: 'New message in chat',
+      new_message_desc: 'Receive alerts when someone sends a message inside active UniMeet chats',
       back: 'Back to Profile',
     },
     el: {
       title: 'Ειδοποιήσεις',
       sub: 'Διαχειρίσου τον τρόπο που ενημερώνεσαι στο UniMeets',
-      meetups: 'Ειδοποιήσεις για αυθόρμητες συναντήσεις',
-      meetups_desc: 'Λάβε ειδοποίηση όταν δημιουργούνται νέα UniMeets κοντά στο πανεπιστήμιό σου',
-      chats: 'Νέα μηνύματα συνομιλίας',
-      chats_desc: 'Λάβε ειδοποιήσεις push όταν κάποιος στέλνει μήνυμα σε συνομιλίες που συμμετέχεις',
-      joins: 'Αιτήματα συμμετοχής & εγκρίσεις',
-      joins_desc: 'Λάβε ειδοποίηση όταν χρήστες ζητούν να συμμετάσχουν ή όταν εγκρίνεται το αίτημά σου',
+      new_join_request: 'Νέο αίτημα συμμετοχής στο UniMeet μου',
+      new_join_request_desc: 'Λάβε ειδοποίηση όταν ένας φοιτητής ζητά να συμμετάσχει σε ένα ενεργό UniMeet σου',
+      someone_joined: 'Κάποιος συμμετείχε στο UniMeet μου',
+      someone_joined_desc: 'Λάβε ειδοποίηση όταν ένας συμμετέχων εισέρχεται ή εγκρίνεται στο UniMeet σου',
+      join_approved: 'Το αίτημα συμμετοχής μου εγκρίθηκε',
+      join_approved_desc: 'Λάβε ειδοποίηση όταν ένας διοργανωτής κάνει δεκτό το αίτημά σου για συμμετοχή',
+      new_message: 'Νέο μήνυμα στη συνομιλία',
+      new_message_desc: 'Λάβε ειδοποιήσεις όταν κάποιος στέλνει μήνυμα σε ενεργές συνομιλίες UniMeets',
       back: 'Επιστροφή στο Προφίλ',
     }
   }[language === 'el' ? 'el' : 'en'];
 
+  const handleToggle = async (key: 'new_join_request' | 'someone_joined' | 'join_approved' | 'new_message', currentVal: boolean) => {
+    if (!user) return;
+    
+    // Optimistic update
+    const newVal = !currentVal;
+    if (key === 'new_join_request') setNewJoinRequest(newVal);
+    if (key === 'someone_joined') setSomeoneJoined(newVal);
+    if (key === 'join_approved') setJoinApproved(newVal);
+    if (key === 'new_message') setNewMessage(newVal);
+
+    try {
+      const docRef = doc(db, 'profiles', user.uid);
+      await updateDoc(docRef, {
+        [`notification_settings.${key}`]: newVal
+      });
+      await refreshProfile();
+    } catch (err) {
+      console.error("Error updating notification setting:", err);
+      showToast("Failed to save setting", "error");
+      // Revert on error
+      if (key === 'new_join_request') setNewJoinRequest(currentVal);
+      if (key === 'someone_joined') setSomeoneJoined(currentVal);
+      if (key === 'join_approved') setJoinApproved(currentVal);
+      if (key === 'new_message') setNewMessage(currentVal);
+    }
+  };
+
   return (
     <Layout showHeader>
       <div className="flex-1 flex flex-col p-5 overflow-y-auto">
-        {/* Back Button & Title */}
+        {/* Back Button */}
         <button
           onClick={() => navigate('/profile')}
           className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-slate-200 transition mb-6"
@@ -59,85 +101,116 @@ export default function NotificationsPage() {
 
         {/* Toggles Container */}
         <div className="bg-slate-950 border border-slate-900 rounded-2.5xl p-5 space-y-6 shadow-xl">
-          {/* Meetup Alerts */}
+          
+          {/* New join request on my UniMeet */}
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-start gap-3">
               <div className="p-2 bg-purple-500/10 rounded-xl text-purple-400 mt-0.5">
-                <Sparkles size={16} />
+                <Users size={16} />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-slate-200">{tr.meetups}</h4>
-                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.meetups_desc}</p>
+                <h4 className="text-sm font-semibold text-slate-200">{tr.new_join_request}</h4>
+                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.new_join_request_desc}</p>
               </div>
             </div>
             
             <button
-              onClick={() => setMeetupAlerts(!meetupAlerts)}
-              className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none ${
-                meetupAlerts ? 'bg-purple-600' : 'bg-slate-800'
+              id="toggle-new-join-request"
+              onClick={() => handleToggle('new_join_request', newJoinRequest)}
+              className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none shrink-0 ${
+                newJoinRequest ? 'bg-purple-600' : 'bg-slate-800'
               }`}
             >
               <div
                 className={`bg-white w-5 h-5 rounded-full shadow-md transform transition duration-200 ${
-                  meetupAlerts ? 'translate-x-5' : 'translate-x-0'
+                  newJoinRequest ? 'translate-x-5' : 'translate-x-0'
                 }`}
               />
             </button>
           </div>
 
-          {/* New messages */}
+          {/* Someone joined my UniMeet */}
           <div className="flex items-center justify-between gap-4 border-t border-slate-900/80 pt-5">
             <div className="flex items-start gap-3">
               <div className="p-2 bg-blue-500/10 rounded-xl text-blue-400 mt-0.5">
-                <MessageSquare size={16} />
+                <Users size={16} />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-slate-200">{tr.chats}</h4>
-                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.chats_desc}</p>
+                <h4 className="text-sm font-semibold text-slate-200">{tr.someone_joined}</h4>
+                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.someone_joined_desc}</p>
               </div>
             </div>
             
             <button
-              onClick={() => setMessages(!messages)}
-              className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none ${
-                messages ? 'bg-purple-600' : 'bg-slate-800'
+              id="toggle-someone-joined"
+              onClick={() => handleToggle('someone_joined', someoneJoined)}
+              className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none shrink-0 ${
+                someoneJoined ? 'bg-purple-600' : 'bg-slate-800'
               }`}
             >
               <div
                 className={`bg-white w-5 h-5 rounded-full shadow-md transform transition duration-200 ${
-                  messages ? 'translate-x-5' : 'translate-x-0'
+                  someoneJoined ? 'translate-x-5' : 'translate-x-0'
                 }`}
               />
             </button>
           </div>
 
-          {/* Joins and approvals */}
+          {/* My join request was approved */}
           <div className="flex items-center justify-between gap-4 border-t border-slate-900/80 pt-5">
             <div className="flex items-start gap-3">
               <div className="p-2 bg-emerald-500/10 rounded-xl text-emerald-400 mt-0.5">
-                <Flame size={16} />
+                <CheckCircle size={16} />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-slate-200">{tr.joins}</h4>
-                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.joins_desc}</p>
+                <h4 className="text-sm font-semibold text-slate-200">{tr.join_approved}</h4>
+                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.join_approved_desc}</p>
               </div>
             </div>
             
             <button
-              onClick={() => setRequests(!requests)}
-              className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none ${
-                requests ? 'bg-purple-600' : 'bg-slate-800'
+              id="toggle-join-approved"
+              onClick={() => handleToggle('join_approved', joinApproved)}
+              className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none shrink-0 ${
+                joinApproved ? 'bg-purple-600' : 'bg-slate-800'
               }`}
             >
               <div
                 className={`bg-white w-5 h-5 rounded-full shadow-md transform transition duration-200 ${
-                  requests ? 'translate-x-5' : 'translate-x-0'
+                  joinApproved ? 'translate-x-5' : 'translate-x-0'
                 }`}
               />
             </button>
           </div>
-        </div>
 
+          {/* New message in chat */}
+          <div className="flex items-center justify-between gap-4 border-t border-slate-900/80 pt-5">
+            <div className="flex items-start gap-3">
+              <div className="p-2 bg-amber-500/10 rounded-xl text-amber-400 mt-0.5">
+                <MessageSquare size={16} />
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold text-slate-200">{tr.new_message}</h4>
+                <p className="text-[10px] text-slate-500 mt-1 max-w-[220px] leading-relaxed">{tr.new_message_desc}</p>
+              </div>
+            </div>
+            
+            <button
+              id="toggle-new-message"
+              onClick={() => handleToggle('new_message', newMessage)}
+              className={`w-11 h-6 rounded-full p-0.5 transition duration-200 focus:outline-none shrink-0 ${
+                newMessage ? 'bg-purple-600' : 'bg-slate-800'
+              }`}
+            >
+              <div
+                className={`bg-white w-5 h-5 rounded-full shadow-md transform transition duration-200 ${
+                  newMessage ? 'translate-x-5' : 'translate-x-0'
+                }`}
+              />
+            </button>
+          </div>
+
+        </div>
       </div>
     </Layout>
   );

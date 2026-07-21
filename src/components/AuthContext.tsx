@@ -65,6 +65,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           avatar_url: data.avatar_url || '',
           interests: data.interests || [],
           onboarding_completed: data.onboarding_completed ?? false,
+          notification_settings: data.notification_settings,
+          privacy_settings: data.privacy_settings,
         };
       }
       return null;
@@ -129,6 +131,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               avatar_url: data.avatar_url || '',
               interests: data.interests || [],
               onboarding_completed: data.onboarding_completed ?? false,
+              notification_settings: data.notification_settings,
+              privacy_settings: data.privacy_settings,
             };
             setProfile(p);
             setOnboardingCompleted(p.onboarding_completed);
