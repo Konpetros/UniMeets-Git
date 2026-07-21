@@ -28,6 +28,7 @@ export default function CreateMeetupPage() {
 
   const [category, setCategory] = useState<CategoryType>('coffee');
   const [title, setTitle] = useState('');
+  const [requiresApproval, setRequiresApproval] = useState(false);
   const [loading, setLoading] = useState(false);
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
 
@@ -80,6 +81,8 @@ export default function CreateMeetupPage() {
         expires_at: Timestamp.fromDate(expires),
         status: 'active',
         participant_ids: [],
+        pending_ids: [],
+        requires_approval: requiresApproval,
         created_at: Timestamp.fromDate(now),
       };
 
@@ -182,6 +185,26 @@ export default function CreateMeetupPage() {
                   <span>{title.length} / 60</span>
                 </div>
               </div>
+            </div>
+
+            {/* Requires Approval Toggle */}
+            <div className="p-4 bg-slate-950 border border-slate-900 rounded-2xl flex items-center justify-between gap-4">
+              <div>
+                <h4 className="text-xs font-bold text-slate-200">Require Organizer Approval</h4>
+                <p className="text-[10px] text-slate-500 mt-1">
+                  Students must request to join, and you can approve them before they can enter the chat.
+                </p>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  id="requires-approval-toggle"
+                  type="checkbox"
+                  checked={requiresApproval}
+                  onChange={(e) => setRequiresApproval(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-slate-400 after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-purple-600 peer-checked:after:bg-white"></div>
+              </label>
             </div>
 
             {/* Location Display Indicator */}

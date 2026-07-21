@@ -6,6 +6,8 @@ import LoginPage from './components/LoginPage';
 import OnboardingPage from './components/OnboardingPage';
 import FeedPage from './components/FeedPage';
 import CreateMeetupPage from './components/CreateMeetupPage';
+import MyUniMeetsPage from './components/MyUniMeetsPage';
+import ChatScreenPage from './components/ChatScreenPage';
 
 // Auth Guard for standard users: Must be authenticated and onboarding completed
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -88,6 +90,26 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <CreateMeetupPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* My UniMeets route */}
+            <Route
+              path="/my-unimeets"
+              element={
+                <ProtectedRoute>
+                  <MyUniMeetsPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Chat Screen route */}
+            <Route
+              path="/chat/:unimeetId"
+              element={
+                <ProtectedRoute>
+                  <ChatScreenPage />
                 </ProtectedRoute>
               }
             />

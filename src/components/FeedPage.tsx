@@ -12,6 +12,7 @@ import { collection, query, where, onSnapshot, doc, updateDoc, arrayUnion, array
 import { db, handleFirestoreError, OperationType } from '../firebase';
 import { UniMeet, CategoryType } from '../types';
 import { calculateDistance } from '../utils';
+import confetti from 'canvas-confetti';
 
 // Color map for categories
 export const CATEGORY_COLORS: Record<CategoryType, { bg: string; text: string; border: string; accent: string }> = {
@@ -42,7 +43,12 @@ export default function FeedPage() {
   const navigate = useNavigate();
 
   // Active Tab
-  const [activeTab, setActiveTab] = useState<'home' | 'my-meets' | 'profile'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'my-meets' | 'profile'>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get('tab');
+    if (tab === 'profile') return 'profile';
+    return 'home';
+  });
 
   // Location state
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
@@ -195,10 +201,22 @@ export default function FeedPage() {
     const path = `unimeets/${meet.id}`;
     try {
       const docRef = doc(db, 'unimeets', meet.id);
-      await updateDoc(docRef, {
-        participant_ids: arrayUnion(user.uid)
-      });
-      showToast("Successfully joined meetup!", "success");
+      if (meet.requires_approval) {
+        await updateDoc(docRef, {
+          pending_ids: arrayUnion(user.uid)
+        });
+        showToast("Join request sent! Pending approval ⌛", "success");
+      } else {
+        await updateDoc(docRef, {
+          participant_ids: arrayUnion(user.uid)
+        });
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+        showToast("You joined! Say hello 👋", "success");
+      }
     } catch (err) {
       handleFirestoreError(err, OperationType.UPDATE, path);
       showToast("Failed to join meetup", "error");
@@ -613,20 +631,47 @@ export default function FeedPage() {
                           {/* Quick Actions overlay bar */}
                           <div className="mt-4 flex gap-2">
                             {isCreator ? (
-                              <button
-                                id={`cancel-meetup-btn-${meet.id}`}
-                                onClick={() => handleCancelMeetup(meet)}
-                                className="w-full py-2 rounded-xl bg-red-950/20 border border-red-900/30 text-red-400 text-xs font-bold hover:bg-red-950/40 transition"
-                              >
-                                {t('cancel_meetup')}
-                              </button>
+                              <>
+                                <button
+                                  id={`chat-meetup-btn-${meet.id}`}
+                                  onClick={() => navigate(`/chat/${meet.id}`)}
+                                  className="flex-1 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-500 text-white text-xs font-bold hover:from-purple-500 hover:to-blue-400 transition text-center"
+                                >
+                                  Chat
+                                </button>
+                                <button
+                                  id={`cancel-meetup-btn-${meet.id}`}
+                                  onClick={() => handleCancelMeetup(meet)}
+                                  className="px-3.5 py-2 rounded-xl bg-red-950/20 border border-red-900/30 text-red-400 text-xs font-bold hover:bg-red-950/40 transition"
+                                  title={t('cancel_meetup')}
+                                >
+                                  <Trash2 size={14} />
+                                </button>
+                              </>
                             ) : hasJoined ? (
+                              <>
+                                <button
+                                  id={`chat-meetup-btn-${meet.id}`}
+                                  onClick={() => navigate(`/chat/${meet.id}`)}
+                                  className="flex-1 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-500 text-white text-xs font-bold hover:from-purple-500 hover:to-blue-400 transition text-center"
+                                >
+                                  Chat
+                                </button>
+                                <button
+                                  id={`leave-meetup-btn-${meet.id}`}
+                                  onClick={() => handleLeave(meet)}
+                                  className="px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 text-xs font-bold hover:bg-slate-850 transition"
+                                >
+                                  Leave
+                                </button>
+                              </>
+                            ) : meet.pending_ids?.includes(user?.uid || '') ? (
                               <button
-                                id={`leave-meetup-btn-${meet.id}`}
-                                onClick={() => handleLeave(meet)}
-                                className="w-full py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 text-xs font-bold hover:bg-slate-850 transition"
+                                id={`pending-meetup-btn-${meet.id}`}
+                                disabled
+                                className="w-full py-2 rounded-xl bg-slate-900 border border-slate-800 text-amber-500 text-xs font-bold cursor-not-allowed"
                               >
-                                {t('leave_meetup')}
+                                Pending Approval
                               </button>
                             ) : (
                               <button
@@ -634,7 +679,7 @@ export default function FeedPage() {
                                 onClick={() => handleJoin(meet)}
                                 className="w-full py-2 rounded-xl bg-gradient-to-r from-purple-600 to-blue-500 text-white text-xs font-bold hover:from-purple-500 hover:to-blue-400 transition"
                               >
-                                {t('join')}
+                                {meet.requires_approval ? 'Request to Join' : t('join')}
                               </button>
                             )}
 
@@ -915,7 +960,7 @@ export default function FeedPage() {
 
           <button
             id="nav-tab-my-meets"
-            onClick={() => setActiveTab('my-meets')}
+            onClick={() => navigate('/my-unimeets')}
             className={`flex-1 flex flex-col justify-center items-center gap-1 transition ${
               activeTab === 'my-meets' ? 'text-purple-400 font-bold' : 'text-slate-500 hover:text-slate-400'
             }`}

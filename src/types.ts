@@ -22,8 +22,10 @@ export interface UniMeet {
   longitude: number;
   geohash: string;
   expires_at: any; // Firestore Timestamp
-  status: 'active' | 'expired';
+  status: 'active' | 'expired' | 'cancelled';
   participant_ids: string[];
+  pending_ids?: string[];
+  requires_approval?: boolean;
   created_at: any; // Firestore Timestamp
 }
 

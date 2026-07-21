@@ -62,16 +62,38 @@ service cloud.firestore {
 
       allow update: if isSignedIn()
         && (
-          // Action 1: Creator updating or expiring the meetup
+          // Action 1: Creator updating or expiring/cancelling the meetup
           (existing().creator_id == request.auth.uid && incoming().creator_id == request.auth.uid)
           ||
-          // Action 2: Student joining the meetup (only allowed to update participant_ids list)
+          // Action 2: Student joining/requesting the meetup (only allowed to update participant_ids/pending_ids list)
           (
             existing().status == 'active'
-            && incoming().diff(existing()).affectedKeys().hasOnly(['participant_ids'])
-            && incoming().participant_ids.size() <= 50
+            && (
+              incoming().diff(existing()).affectedKeys().hasOnly(['participant_ids']) ||
+              incoming().diff(existing()).affectedKeys().hasOnly(['pending_ids']) ||
+              incoming().diff(existing()).affectedKeys().hasOnly(['participant_ids', 'pending_ids'])
+            )
+            && (!incoming().keys().hasAll(['participant_ids']) || incoming().participant_ids.size() <= 50)
+            && (!incoming().keys().hasAll(['pending_ids']) || incoming().pending_ids.size() <= 50)
           )
         );
+
+      // Messages subcollection
+      match /messages/{messageId} {
+        allow read: if isSignedIn() && (
+          get(/databases/$(database)/documents/unimeets/$(unimeetId)).data.creator_id == request.auth.uid ||
+          request.auth.uid in get(/databases/$(database)/documents/unimeets/$(unimeetId)).data.participant_ids
+        );
+        
+        allow write: if isSignedIn() 
+          && incoming().sender_id == request.auth.uid
+          && incoming().text is string 
+          && incoming().text.size() <= 500
+          && (
+            get(/databases/$(database)/documents/unimeets/$(unimeetId)).data.creator_id == request.auth.uid ||
+            request.auth.uid in get(/databases/$(database)/documents/unimeets/$(unimeetId)).data.participant_ids
+          );
+      }
     }
   }
 }
