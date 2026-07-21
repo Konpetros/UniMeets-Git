@@ -43,12 +43,14 @@ export default function FeedPage() {
   const navigate = useNavigate();
 
   // Active Tab
-  const [activeTab, setActiveTab] = useState<'home' | 'my-meets' | 'profile'>(() => {
+  const [activeTab, setActiveTab] = useState<'home' | 'my-meets' | 'profile'>('home');
+
+  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const tab = params.get('tab');
-    if (tab === 'profile') return 'profile';
-    return 'home';
-  });
+    if (params.get('tab') === 'profile') {
+      navigate('/profile', { replace: true });
+    }
+  }, [navigate]);
 
   // Location state
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
@@ -971,10 +973,8 @@ export default function FeedPage() {
 
           <button
             id="nav-tab-profile"
-            onClick={() => setActiveTab('profile')}
-            className={`flex-1 flex flex-col justify-center items-center gap-1 transition ${
-              activeTab === 'profile' ? 'text-purple-400 font-bold' : 'text-slate-500 hover:text-slate-400'
-            }`}
+            onClick={() => navigate('/profile')}
+            className="flex-1 flex flex-col justify-center items-center gap-1 text-slate-500 hover:text-slate-400 transition"
           >
             <UserIcon size={18} />
             <span className="text-[10px]">{t('tab_profile')}</span>

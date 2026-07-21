@@ -396,7 +396,7 @@ export default function MyUniMeetsPage() {
 
           <button
             id="nav-tab-profile"
-            onClick={() => navigate('/?tab=profile')}
+            onClick={() => navigate('/profile')}
             className="flex-1 flex flex-col justify-center items-center gap-1 text-slate-500 hover:text-slate-400 transition"
           >
             <UserIcon size={18} />

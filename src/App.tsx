@@ -8,6 +8,12 @@ import FeedPage from './components/FeedPage';
 import CreateMeetupPage from './components/CreateMeetupPage';
 import MyUniMeetsPage from './components/MyUniMeetsPage';
 import ChatScreenPage from './components/ChatScreenPage';
+import ProfilePage from './components/ProfilePage';
+import NotificationsPage from './components/NotificationsPage';
+import PrivacySettingsPage from './components/PrivacySettingsPage';
+import BlockedUsersPage from './components/BlockedUsersPage';
+import TermsOfServicePage from './components/TermsOfServicePage';
+import DeleteAccountPage from './components/DeleteAccountPage';
 
 // Auth Guard for standard users: Must be authenticated and onboarding completed
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -110,6 +116,66 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <ChatScreenPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Profile route */}
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Notifications settings */}
+            <Route
+              path="/account/notifications"
+              element={
+                <ProtectedRoute>
+                  <NotificationsPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Privacy settings */}
+            <Route
+              path="/account/privacy-settings"
+              element={
+                <ProtectedRoute>
+                  <PrivacySettingsPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Blocked Users settings */}
+            <Route
+              path="/account/blocked"
+              element={
+                <ProtectedRoute>
+                  <BlockedUsersPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Terms of Service */}
+            <Route
+              path="/account/terms"
+              element={
+                <ProtectedRoute>
+                  <TermsOfServicePage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Delete Account */}
+            <Route
+              path="/account/delete"
+              element={
+                <ProtectedRoute>
+                  <DeleteAccountPage />
                 </ProtectedRoute>
               }
             />
