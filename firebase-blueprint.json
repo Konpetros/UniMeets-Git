@@ -1,0 +1,128 @@
+{
+  "entities": {
+    "Profile": {
+      "title": "Profile",
+      "description": "User profile data for greek university students",
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 20,
+          "pattern": "^[a-zA-Z0-9_\\u0370-\\u03ff\\u1f00-\\u1fff]+$",
+          "description": "Unique username containing alphanumeric, underscores, and greek letters"
+        },
+        "university": {
+          "type": "string",
+          "description": "Name of the Greek university"
+        },
+        "bio": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Optional short student bio"
+        },
+        "avatar_url": {
+          "type": "string",
+          "description": "Optional profile avatar image URL"
+        },
+        "interests": {
+          "type": "array",
+          "description": "Selectable student badge interests (1 to 5)"
+        },
+        "onboarding_completed": {
+          "type": "boolean",
+          "description": "Indicates if onboarding steps are done"
+        }
+      },
+      "required": ["username", "university", "interests", "onboarding_completed"]
+    },
+    "UniMeet": {
+      "title": "UniMeet",
+      "description": "Spontaneous meetup posts created by students",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 60,
+          "description": "Spontaneous activity title"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["movies", "coffee", "study", "walk", "party", "gaming", "sports", "music"],
+          "description": "Activity category"
+        },
+        "creator_id": {
+          "type": "string",
+          "description": "Firebase Auth UID of the creator"
+        },
+        "creator_username": {
+          "type": "string",
+          "description": "Username of the creator"
+        },
+        "creator_avatar": {
+          "type": "string",
+          "description": "Avatar URL of the creator"
+        },
+        "creator_university": {
+          "type": "string",
+          "description": "University of the creator"
+        },
+        "latitude": {
+          "type": "number",
+          "description": "Latitude of creation location"
+        },
+        "longitude": {
+          "type": "number",
+          "description": "Longitude of creation location"
+        },
+        "geohash": {
+          "type": "string",
+          "description": "Geohash of the location"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "6 hours expiry from creation time"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "expired"],
+          "description": "Active status of the post"
+        },
+        "participant_ids": {
+          "type": "array",
+          "description": "List of student UIDs who joined the meetup"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp"
+        }
+      },
+      "required": [
+        "title",
+        "category",
+        "creator_id",
+        "creator_username",
+        "creator_university",
+        "latitude",
+        "longitude",
+        "geohash",
+        "expires_at",
+        "status",
+        "participant_ids",
+        "created_at"
+      ]
+    }
+  },
+  "firestore": {
+    "profiles/{userId}": {
+      "schema": "Profile",
+      "description": "User profiles keyed by their Firebase Auth UID"
+    },
+    "unimeets/{unimeetId}": {
+      "schema": "UniMeet",
+      "description": "UniMeet posts"
+    }
+  }
+}

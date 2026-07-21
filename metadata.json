@@ -1,0 +1,6 @@
+{
+  "name": "UniMeets",
+  "description": "A spontaneous student meetup app for Greek university students to connect in real-time within a 6-hour window.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

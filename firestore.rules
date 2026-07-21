@@ -1,0 +1,77 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper Functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Profiles rules
+    match /profiles/{userId} {
+      allow read: if isSignedIn();
+      allow create: if isOwner(userId) 
+        && incoming().username is string 
+        && incoming().username.size() >= 3 
+        && incoming().username.size() <= 20
+        && incoming().university is string 
+        && incoming().university.size() > 0
+        && incoming().onboarding_completed == true;
+      allow update: if isOwner(userId)
+        && incoming().username is string 
+        && incoming().username.size() >= 3 
+        && incoming().username.size() <= 20
+        && incoming().university is string 
+        && incoming().university.size() > 0;
+    }
+
+    // UniMeets rules
+    match /unimeets/{unimeetId} {
+      allow read: if isSignedIn();
+      
+      allow create: if isSignedIn() 
+        && isValidId(unimeetId)
+        && incoming().title is string 
+        && incoming().title.size() > 0 
+        && incoming().title.size() <= 60
+        && incoming().category is string
+        && incoming().creator_id == request.auth.uid
+        && incoming().status == 'active'
+        && incoming().participant_ids is list;
+
+      allow update: if isSignedIn()
+        && (
+          // Action 1: Creator updating or expiring the meetup
+          (existing().creator_id == request.auth.uid && incoming().creator_id == request.auth.uid)
+          ||
+          // Action 2: Student joining the meetup (only allowed to update participant_ids list)
+          (
+            existing().status == 'active'
+            && incoming().diff(existing()).affectedKeys().hasOnly(['participant_ids'])
+            && incoming().participant_ids.size() <= 50
+          )
+        );
+    }
+  }
+}
